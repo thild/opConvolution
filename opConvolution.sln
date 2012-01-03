@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{2857B73E-F847-4B02-9238-064979017E93}") = "opConvolution", "src\opConvolution.cproj", "{246863FB-25F1-4BBF-A538-8EE170305FFF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{246863FB-25F1-4BBF-A538-8EE170305FFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{246863FB-25F1-4BBF-A538-8EE170305FFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{246863FB-25F1-4BBF-A538-8EE170305FFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{246863FB-25F1-4BBF-A538-8EE170305FFF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = src\opConvolution.cproj
+	EndGlobalSection
+EndGlobal
