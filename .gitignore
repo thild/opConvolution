@@ -1,0 +1,5 @@
+*.user
+*.usertasks
+*.userprefs
+src/*.pidb
+bin/**/*
