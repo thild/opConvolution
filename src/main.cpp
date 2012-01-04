@@ -38,7 +38,7 @@
 #include <assert.h>
 #include <list>
 
-#include <hwloc.h>
+//#include <hwloc.h>
 //#include <callgrind.h>
 #include <fstream>
 #include <math.h>
