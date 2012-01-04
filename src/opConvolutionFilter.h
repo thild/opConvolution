@@ -27,7 +27,7 @@
 #ifndef _OPCONVUTIONFILTER_H
 #define _OPCONVUTIONFILTER_H
  
-#if !defined(AMD)
+#if !defined(__amd64__)
 #include <smmintrin.h> 
 #endif 
 
@@ -194,6 +194,12 @@
 
 
 #if defined(__amd64__)
+ 
+typedef union 
+{
+    __m128  f;
+    __m128i i;
+} ssp_m128;
 
 inline __m128 _mm_dp_ps (__m128& __X, __m128& __Y, const int __M)
 {
