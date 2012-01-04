@@ -3,7 +3,7 @@ dnl Process this file with autoconf to produce a configure script.
 AC_PREREQ([2.54])
 AC_INIT([opConvolution], [0.1], [tony_hild@yahoo.com],
              [opConvolution], [http://inf.ufbr.br/])
-AM_INIT_AUTOMAKE([foreign - Wall -Werror])
+AM_INIT_AUTOMAKE([foreign -Wall -Werror])
 #AM_INIT_AUTOMAKE([subdir-objects])
 AM_MAINTAINER_MODE
 
