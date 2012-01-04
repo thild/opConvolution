@@ -31,10 +31,6 @@
 #include "timer.h"
 #include "statistics.h"
 #include "util.h"
-#include <omp.h>
-#include <smmintrin.h>
-#include <emmintrin.h>
-#include <xmmintrin.h>
 #include <assert.h>
 #include <list>
 
