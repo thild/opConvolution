@@ -27,12 +27,14 @@
 #ifndef _OPCONVUTIONFILTER_H
 #define _OPCONVUTIONFILTER_H
  
-#include <emmintrin.h>
-#include <xmmintrin.h> 
+#include <xmmintrin.h>  // SSE  (Required to use the __m128, and __m128d type)
+#include <emmintrin.h>  // SSE2 (Required to use the __m128i type)
 
-//#if !defined(__amd64__)
-#include <smmintrin.h> 
-//#endif 
+#if !defined(__amd64__)
+#include <intrin.h>
+#else
+#include <smmintrin.h>  
+#endif 
 
 #include <iostream>
 
@@ -223,6 +225,7 @@
         __X = _mm_and_ps( __X, mHi.f );                                       // Clear input using the high bits of the mask
         __X = _mm_mul_ps( __X, __Y );
         
+        __X = _mm_hadd_ps( __X, __X );                            // Horizontally add the 4 values
         __X = _mm_hadd_ps( __X, __X );                            // Horizontally add the 4 values
         __X = _mm_and_ps( __X, mLo.f );                                      // Clear output using low bits of the mask
         return __X;   
