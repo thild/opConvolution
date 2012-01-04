@@ -41,7 +41,13 @@
 
 #include "opConvolutionFilter.h"
 
-
+//#include <xmmintrin.h>  // SSE  (Required to use the __m128, and __m128d type)
+//#include <emmintrin.h>  // SSE2 (Required to use the __m128i type)
+//#include <pmmintrin.h>  // SSE3
+// 
+//#ifdef __SSE4_1__
+//#include <smmintrin.h>  
+//#endif 
 
                          
 using namespace std;
@@ -1085,9 +1091,15 @@ void naiveConvolveTest( const int iterations, list<int>& kernels,
 
 int main (int argc, char *argv[])
 {
-    #if defined(__amd64__)
+    #ifdef __SSE4_1__
         cout << "Running in AMD architecture..." << endl;
     #endif
+    
+//    PRINT_VECTOR_TRACE(amm_dp_ps(_mm_set1_ps(0.1), _mm_set1_ps(0.2), 254));
+//    PRINT_VECTOR_TRACE(_mm_dp_ps(_mm_set1_ps(0.1), _mm_set1_ps(0.2), 254));
+// 
+//    PRINT_VECTOR_TRACE(amm_blend_ps(_mm_set1_ps(0.1), _mm_set1_ps(0.2), 1));
+//    PRINT_VECTOR_TRACE(_mm_blend_ps(_mm_set1_ps(0.1), _mm_set1_ps(0.2), 1)); 
  
     /* initialize random seed: */
     srand ( time(NULL) );
