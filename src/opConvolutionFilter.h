@@ -211,7 +211,7 @@
     } ssp_m128;
     
 //    extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
-    inline __m128 amm_dp_ps (__m128 a, __m128 b, const int mask) {
+    inline __m128 mm_dp_ps (__m128 a, __m128 b, const int mask) {
         //http://sseplus.sourceforge.net/group__emulated___s_s_e3.html
       
         const static __m128i mulShiftImm_0123 = _mm_set_epi32( 0x010000, 0x020000, 0x040000, 0x080000 );   // Shift mask multiply moves 0,1,2,3 bits to left, becomes MSB
@@ -247,7 +247,7 @@
         return screen;
     } 
 
-    inline __m128  amm_blend_ps( __m128  a, __m128  b, const int mask )               // mm_blend_ps [SSE4.1]
+    inline __m128 mm_blend_ps( __m128  a, __m128  b, const int mask )               // mm_blend_ps [SSE4.1]
     {
 
         ssp_m128 screen, A, B;
