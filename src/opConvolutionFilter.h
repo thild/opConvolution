@@ -226,7 +226,7 @@ inline __m128 _mm_dp_ps (__m128& __X, __m128& __Y, const int __M)
     __X = _mm_hadd_ps( __X, __X );                            // Horizontally add the 4 values
     __X = _mm_and_ps( __X, mLo.f );                                      // Clear output using low bits of the mask
     return __X;   
-
+}
 //typedef __m128 float4;
 //
 //extern float4 float4_mask_xy; // defined as { 0xFFFFFFFF, 0xFFFFFFFF, 0, 0 }
