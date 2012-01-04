@@ -195,41 +195,63 @@
 inline __m128 _mm_dp_ps (__m128& __X, __m128& __Y, const int __M)
 {
     //http://sseplus.sourceforge.net/group__emulated___s_s_e3.html
+  
+    const static __m128i mulShiftImm_0123 = SSP_CONST_SET_32I( 0x010000, 0x020000, 0x040000, 0x080000 );   // Shift mask multiply moves 0,1,2,3 bits to left, becomes MSB
+    const static __m128i mulShiftImm_4567 = SSP_CONST_SET_32I( 0x100000, 0x200000, 0x400000, 0x800000 );   // Shift mask multiply moves 4,5,6,7 bits to left, becomes MSB
     
-typedef __m128 float4;
-
-extern float4 float4_mask_xy; // defined as { 0xFFFFFFFF, 0xFFFFFFFF, 0, 0 }
-extern float4 float4_mask_xyz; // defined as { 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0 }
+    // Begin mask preparation
+    ssp_m128 mHi, mLo;
+    mLo.i = _mm_set1_epi32( mask );                                 // Load the mask into register
+    mLo.i = _mm_slli_si128( mLo.i, 3 );                         // Shift into reach of the 16 bit multiply
     
-inline float4 dot2(float4 a, float4 b) {
-    float4 temp = _mm_mul_ps(a, b);
-    temp = _mm_and_ps(temp, float4_mask_xy);
-    temp = _mm_hadd_ps(temp, temp);
-    return _mm_hadd_ps(temp, temp);
-}
-
-inline float4 dot3(float4 a, float4 b) {
-    float4 temp = _mm_mul_ps(a, b);
-    temp = _mm_and_ps(temp, float4_mask_xyz);
-    temp = _mm_hadd_ps(temp, temp);
-    return _mm_hadd_ps(temp, temp);
-}
-
-inline float4 dot4(float4 a, float4 b) {
-    float4 temp = _mm_mul_ps(a, b);
-    temp = _mm_hadd_ps(temp, temp);
-    return _mm_hadd_ps(temp, temp);
-}
+    mHi.i = _mm_mullo_epi16( mLo.i, mulShiftImm_0123 );   // Shift the bits
+    mLo.i = _mm_mullo_epi16( mLo.i, mulShiftImm_4567 );   // Shift the bits
     
+    mHi.i = _mm_cmplt_epi32( mHi.i, _mm_setzero_si128() );    // FFFFFFFF if bit set, 00000000 if not set
+    mLo.i = _mm_cmplt_epi32( mLo.i, _mm_setzero_si128() );    // FFFFFFFF if bit set, 00000000 if not set
+    // End mask preparation - Mask bits 0-3 in mLo, 4-7 in mHi
     
-}
+    a = _mm_and_ps( a, mHi.f );                                       // Clear input using the high bits of the mask
+    a = _mm_mul_ps( a, b );
+    
+    a = _mm_hadd_ps( a, a );                            // Horizontally add the 4 values
+    a = _mm_and_ps( a, mLo.f );                                      // Clear output using low bits of the mask
+    return a;   
 
-float ssedot(const float * __restrict u, const float *  __restrict v){  
-    __m128 uv = _mm_mul_ps(_mm_load_ps(u), _mm_load_ps(v));  
-    uv = _mm_hadd_ps(uv, uv); // or shuffle like there's no tomorrow   
-    uv = _mm_hadd_ps(uv, uv); // if there ain't no haddps around.  
-    return __builtin_ia32_vec_ext_v4sf(uv, 0);  
-}  
+//typedef __m128 float4;
+//
+//extern float4 float4_mask_xy; // defined as { 0xFFFFFFFF, 0xFFFFFFFF, 0, 0 }
+//extern float4 float4_mask_xyz; // defined as { 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0 }
+//    
+//inline float4 dot2(float4 a, float4 b) {
+//    float4 temp = _mm_mul_ps(a, b);
+//    temp = _mm_and_ps(temp, float4_mask_xy);
+//    temp = _mm_hadd_ps(temp, temp);
+//    return _mm_hadd_ps(temp, temp);
+//}
+//
+//inline float4 dot3(float4 a, float4 b) {
+//    float4 temp = _mm_mul_ps(a, b);
+//    temp = _mm_and_ps(temp, float4_mask_xyz);
+//    temp = _mm_hadd_ps(temp, temp);
+//    return _mm_hadd_ps(temp, temp);
+//}
+//
+//inline float4 dot4(float4 a, float4 b) {
+//    float4 temp = _mm_mul_ps(a, b);
+//    temp = _mm_hadd_ps(temp, temp);
+//    return _mm_hadd_ps(temp, temp);
+//}
+//    
+//    
+//}
+//
+//float ssedot(const float * __restrict u, const float *  __restrict v){  
+//    __m128 uv = _mm_mul_ps(_mm_load_ps(u), _mm_load_ps(v));  
+//    uv = _mm_hadd_ps(uv, uv); // or shuffle like there's no tomorrow   
+//    uv = _mm_hadd_ps(uv, uv); // if there ain't no haddps around.  
+//    return __builtin_ia32_vec_ext_v4sf(uv, 0);  
+//}  
 
 #endif  
 
