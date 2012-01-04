@@ -26,8 +26,11 @@
 
 #ifndef _OPCONVUTIONFILTER_H
 #define _OPCONVUTIONFILTER_H
+ 
+#if !defined(AMD)
+#include <smmintrin.h> 
+#endif 
 
-#include <smmintrin.h>
 #include <emmintrin.h>
 #include <xmmintrin.h>
 
