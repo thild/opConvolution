@@ -202,7 +202,8 @@
         __m128i i;
     } ssp_m128;
     
-    inline __m128 mm_dp_ps (__m128& __X, __m128& __Y, const int __M)
+    extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+    mm_dp_ps (__m128 a, __m128 b, const int mask)
     {
         //http://sseplus.sourceforge.net/group__emulated___s_s_e3.html
       
@@ -211,7 +212,7 @@
         
         // Begin mask preparation
         ssp_m128 mHi, mLo;
-        mLo.i = _mm_set1_epi32( __M );                                 // Load the mask into register
+        mLo.i = _mm_set1_epi32( mask );                                 // Load the mask into register
         mLo.i = _mm_slli_si128( mLo.i, 3 );                         // Shift into reach of the 16 bit multiply
         
         mHi.i = _mm_mullo_epi16( mLo.i, mulShiftImm_0123 );   // Shift the bits
@@ -221,13 +222,13 @@
         mLo.i = _mm_cmplt_epi32( mLo.i, _mm_setzero_si128() );    // FFFFFFFF if bit set, 00000000 if not set
         // End mask preparation - Mask bits 0-3 in mLo, 4-7 in mHi
         
-        __X = _mm_and_ps( __X, mHi.f );                                       // Clear input using the high bits of the mask
-        __X = _mm_mul_ps( __X, __Y );
+        a = _mm_and_ps( a, mHi.f );                                       // Clear input using the high bits of the mask
+        a = _mm_mul_ps( a, b );
         
-        __X = _mm_hadd_ps( __X, __X );                            // Horizontally add the 4 values
-        __X = _mm_hadd_ps( __X, __X );                            // Horizontally add the 4 values
-        __X = _mm_and_ps( __X, mLo.f );                                      // Clear output using low bits of the mask
-        return __X;   
+        a = _mm_hadd_ps( a, a );                            // Horizontally add the 4 values
+        a = _mm_hadd_ps( a, a );                            // Horizontally add the 4 values
+        a = _mm_and_ps( a, mLo.f );                                      // Clear output using low bits of the mask
+        return a;   
     }  
 
     inline __m128i ssp_movmask_imm8_to_epi32_SSE2( int mask ) {
@@ -252,8 +253,9 @@
         return screen.f;
     }  
 #else  
-    inline __m128 mm_dp_ps (__m128& __X, __m128& __Y, const int __M) {  
-        _mm_dp_ps(__X, __Y, __M);
+    extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+    mm_dp_ps (__m128 a, __m128 b, const int mask)
+        _mm_dp_ps(a, b, mask);
     } 
     inline __m128 mm_blend_ps(__m128 a, __m128 b, const int mask ) {
         _mm_blend_ps(a, b, mask);
