@@ -233,7 +233,7 @@
         a = _mm_mul_ps( a, b );
         
         a = _mm_hadd_ps( a, a );                            // Horizontally add the 4 values
-        a = _mm_hadd_ps( a, a );                            // Horizontally add the 4 values
+//        a = _mm_hadd_ps( a, a );                            // Horizontally add the 4 values
         a = _mm_and_ps( a, mLo.f );                                      // Clear output using low bits of the mask
         return a;   
     }  
