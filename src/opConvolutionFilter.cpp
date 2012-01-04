@@ -31,11 +31,17 @@
 #include <iomanip>
 
 //sse and omp
-#include <omp.h>
-#include <smmintrin.h>
-#include <emmintrin.h>
-#include <xmmintrin.h>
 
+#include <xmmintrin.h>  // SSE  (Required to use the __m128, and __m128d type)
+#include <emmintrin.h>  // SSE2 (Required to use the __m128i type)
+#include <pmmintrin.h>  // SSE3
+ 
+#if !defined(__amd64__)
+#include <smmintrin.h>  
+#endif 
+ 
+
+#include <omp.h>
 #include <cmath>
 
 using namespace std;
