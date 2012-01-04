@@ -27,12 +27,12 @@
 #ifndef _OPCONVUTIONFILTER_H
 #define _OPCONVUTIONFILTER_H
  
+#include <emmintrin.h>
+#include <xmmintrin.h> 
+
 //#if !defined(__amd64__)
 #include <smmintrin.h> 
 //#endif 
-
-#include <emmintrin.h>
-#include <xmmintrin.h>
 
 #include <iostream>
 
@@ -104,10 +104,10 @@
                      
 #define ROTATE_RIGHT_BLEND(vector1, vector2) \
     vector1 = _mm_shuffle_ps(vector1, vector1, _MM_SHUFFLE(2, 1, 0, 3)); PRINT_VECTOR(vector1); \
-    vector2 = _mm_blend_ps(vector2, vector1, 1); PRINT_VECTOR(vector2); 
+    vector2 = mm_blend_ps(vector2, vector1, 1); PRINT_VECTOR(vector2); 
                      
 #define BLEND_ROTATE_LEFT(vector0, vector1) \
-    vector0 = _mm_blend_ps(vector0, vector1, 1); PRINT_VECTOR(vector0); \
+    vector0 = mm_blend_ps(vector0, vector1, 1); PRINT_VECTOR(vector0); \
     ROTATE_LEFT(vector0);
 
 #define BLEND_ROTATE1_LEFT(vector0, vector1) \
@@ -227,10 +227,36 @@
         __X = _mm_and_ps( __X, mLo.f );                                      // Clear output using low bits of the mask
         return __X;   
     }  
+
+    inline __m128i ssp_movmask_imm8_to_epi32_SSE2( int mask ) {
+        __m128i screen;
+        const static __m128i mulShiftImm = _mm_set_epi16( 0x1000, 0x0000, 0x2000, 0x0000, 0x4000, 0x0000, 0x8000, 0x0000 ); // Shift mask multiply moves all bits to left, becomes MSB
+        screen = _mm_set1_epi16 ( mask                );   // Load the mask into register
+        screen = _mm_mullo_epi16( screen, mulShiftImm );   // Shift bits to MSB
+        screen = _mm_srai_epi32 ( screen, 31          );   // Shift bits to obtain all F's or all 0's
+        return screen;
+    } 
+
+    inline __m128  mm_blend_ps( __m128  a, __m128  b, const int mask )               // mm_blend_ps [SSE4.1]
+    {
+
+        ssp_m128 screen, A, B;
+        A.f = a;
+        B.f = b;
+        screen.i = ssp_movmask_imm8_to_epi32_SSE2 ( mask ); 
+        A.i = _mm_and_si128   ( A.i, screen.i);                                 // clear a where mask = 0
+        B.i = _mm_andnot_si128( screen.i, B.i );                                 // clear b where mask = 1
+        screen.i = _mm_or_si128  ( A.i, B.i );                                 // a = a OR b        
+        return screen.f;
+    }  
 #else  
     inline __m128 mm_dp_ps (__m128& __X, __m128& __Y, const int __M) {  
         _mm_dp_ps(__X, __Y, __M);
+    } 
+    inline __m128 mm_blend_ps(__m128 a, __m128 b, const int mask ) {
+        _mm_blend_ps(a, b, mask);
     }
+    
 #endif  
 
 
