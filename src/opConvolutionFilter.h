@@ -27,9 +27,9 @@
 #ifndef _OPCONVUTIONFILTER_H
 #define _OPCONVUTIONFILTER_H
  
-#if !defined(__amd64__)
+//#if !defined(__amd64__)
 #include <smmintrin.h> 
-#endif 
+//#endif 
 
 #include <emmintrin.h>
 #include <xmmintrin.h>
@@ -195,38 +195,45 @@
 
 #if defined(__amd64__)
  
-typedef union 
-{
-    __m128  f;
-    __m128i i;
-} ssp_m128;
+    typedef union 
+    {
+        __m128  f;
+        __m128i i;
+    } ssp_m128;
+    
+    inline __m128 mm_dp_ps (__m128& __X, __m128& __Y, const int __M)
+    {
+        //http://sseplus.sourceforge.net/group__emulated___s_s_e3.html
+      
+        const static __m128i mulShiftImm_0123 = _mm_set_epi32( 0x010000, 0x020000, 0x040000, 0x080000 );   // Shift mask multiply moves 0,1,2,3 bits to left, becomes MSB
+        const static __m128i mulShiftImm_4567 = _mm_set_epi32( 0x100000, 0x200000, 0x400000, 0x800000 );   // Shift mask multiply moves 4,5,6,7 bits to left, becomes MSB
+        
+        // Begin mask preparation
+        ssp_m128 mHi, mLo;
+        mLo.i = _mm_set1_epi32( __M );                                 // Load the mask into register
+        mLo.i = _mm_slli_si128( mLo.i, 3 );                         // Shift into reach of the 16 bit multiply
+        
+        mHi.i = _mm_mullo_epi16( mLo.i, mulShiftImm_0123 );   // Shift the bits
+        mLo.i = _mm_mullo_epi16( mLo.i, mulShiftImm_4567 );   // Shift the bits
+        
+        mHi.i = _mm_cmplt_epi32( mHi.i, _mm_setzero_si128() );    // FFFFFFFF if bit set, 00000000 if not set
+        mLo.i = _mm_cmplt_epi32( mLo.i, _mm_setzero_si128() );    // FFFFFFFF if bit set, 00000000 if not set
+        // End mask preparation - Mask bits 0-3 in mLo, 4-7 in mHi
+        
+        __X = _mm_and_ps( __X, mHi.f );                                       // Clear input using the high bits of the mask
+        __X = _mm_mul_ps( __X, __Y );
+        
+        __X = _mm_hadd_ps( __X, __X );                            // Horizontally add the 4 values
+        __X = _mm_and_ps( __X, mLo.f );                                      // Clear output using low bits of the mask
+        return __X;   
+    }  
+#else  
+    inline __m128 mm_dp_ps (__m128& __X, __m128& __Y, const int __M) {  
+        _mm_dp_ps(__X, __Y, __M);
+    }
+#endif  
 
-inline __m128 _mm_dp_ps (__m128& __X, __m128& __Y, const int __M)
-{
-    //http://sseplus.sourceforge.net/group__emulated___s_s_e3.html
-  
-    const static __m128i mulShiftImm_0123 = _mm_set_epi32( 0x010000, 0x020000, 0x040000, 0x080000 );   // Shift mask multiply moves 0,1,2,3 bits to left, becomes MSB
-    const static __m128i mulShiftImm_4567 = _mm_set_epi32( 0x100000, 0x200000, 0x400000, 0x800000 );   // Shift mask multiply moves 4,5,6,7 bits to left, becomes MSB
-    
-    // Begin mask preparation
-    ssp_m128 mHi, mLo;
-    mLo.i = _mm_set1_epi32( __M );                                 // Load the mask into register
-    mLo.i = _mm_slli_si128( mLo.i, 3 );                         // Shift into reach of the 16 bit multiply
-    
-    mHi.i = _mm_mullo_epi16( mLo.i, mulShiftImm_0123 );   // Shift the bits
-    mLo.i = _mm_mullo_epi16( mLo.i, mulShiftImm_4567 );   // Shift the bits
-    
-    mHi.i = _mm_cmplt_epi32( mHi.i, _mm_setzero_si128() );    // FFFFFFFF if bit set, 00000000 if not set
-    mLo.i = _mm_cmplt_epi32( mLo.i, _mm_setzero_si128() );    // FFFFFFFF if bit set, 00000000 if not set
-    // End mask preparation - Mask bits 0-3 in mLo, 4-7 in mHi
-    
-    __X = _mm_and_ps( __X, mHi.f );                                       // Clear input using the high bits of the mask
-    __X = _mm_mul_ps( __X, __Y );
-    
-    __X = _mm_hadd_ps( __X, __X );                            // Horizontally add the 4 values
-    __X = _mm_and_ps( __X, mLo.f );                                      // Clear output using low bits of the mask
-    return __X;   
-}
+
 //typedef __m128 float4;
 //
 //extern float4 float4_mask_xy; // defined as { 0xFFFFFFFF, 0xFFFFFFFF, 0, 0 }
@@ -262,7 +269,6 @@ inline __m128 _mm_dp_ps (__m128& __X, __m128& __Y, const int __M)
 //    return __builtin_ia32_vec_ext_v4sf(uv, 0);  
 //}  
 
-#endif  
 
 
 
