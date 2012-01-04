@@ -193,7 +193,7 @@
 #endif  
 
 
-#if defined(AMD)
+#if defined(__amd64__)
 
 inline __m128 _mm_dp_ps (__m128& __X, __m128& __Y, const int __M)
 {

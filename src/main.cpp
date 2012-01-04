@@ -1089,7 +1089,7 @@ void naiveConvolveTest( const int iterations, list<int>& kernels,
 
 int main (int argc, char *argv[])
 {
-    #if defined(AMD)
+    #if defined(__amd64__)
         cout << "Running in AMD architecture..." << endl;
     #endif
  
