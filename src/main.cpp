@@ -64,6 +64,12 @@ void loopBlockAlignedSSEConvolveTest();
 static bool assertConvolution(const float* controlOutput, const float* convolveOutput,
                            int imageWidth, int imageHeight, int controlStride, 
                            int convolveStride, int kernelWidth);
+                           
+static void prepareTestBuffers (const int imageStride, const int imageHeight, 
+                                float* inputImage, float* outputImage);
+
+             
+static void clearCache();
                                   
 //inline static float convolution(const float *image, int stride, const float *kernel, int kernelWidth, int x, int y);
 float* gaussianKernel2D(const int kernelWidth, const float sigma);
@@ -79,7 +85,7 @@ void run2DTest(void (*convolutionFunction)(const int imageStride, const int imag
                const string testName, const int iterations, list<int>& kernels,  
                const int minKernelWidth, const int maxKernelWidth,
                const int imageStride, const int imageWidth, const int imageHeight, 
-               const float* inputImage, float* outputImage) { 
+               float* inputImage, float* outputImage) { 
               
     cout.setf(ios::fixed);
     cout.precision(3);  
@@ -95,6 +101,7 @@ void run2DTest(void (*convolutionFunction)(const int imageStride, const int imag
             float m = 0;
             vector<float> iter;
             for (int i = 0; i < iterations; i++) {
+                clearCache();
                 m_Timer.start();    
                 convolutionFunction(imageStride, imageWidth, imageHeight, 
                              kernelStride, kernelWidth, inputImage, 
@@ -124,7 +131,7 @@ void run2DTest(void (*convolutionFunction)(const int imageStride, const int imag
 void runSSETest(const string testName, const int iterations, list<int>& kernels,  
                const int minKernelWidth, const int maxKernelWidth,
                const int imageStride, const int imageWidth, const int imageHeight, 
-               const float* inputImage, float* outputImage) { 
+               float* inputImage, float* outputImage) { 
               
     cout.setf(ios::fixed);
     cout.precision(3); 
@@ -140,6 +147,7 @@ void runSSETest(const string testName, const int iterations, list<int>& kernels,
             float m = 0;
             vector<float> iter;
             for (int i = 0; i < iterations; i++) {
+                clearCache();
                 m_Timer.start();    
                 if(testName == "sse3Convolve"){
                     sse3Convolve(imageStride, imageWidth, imageHeight, 
@@ -199,7 +207,7 @@ void runSSETest(const string testName, const int iterations, list<int>& kernels,
 void runLoopBlockConvolveTest(const string testName, const int iterations, list<int>& kernels,  
                const int minKernelWidth, const int maxKernelWidth,
                const int imageStride, const int imageWidth, const int imageHeight, 
-               const float* inputImage, float* outputImage, const int xBlock, const int yBlock) { 
+               float* inputImage, float* outputImage, const int xBlock, const int yBlock) { 
 
     cout.setf(ios::fixed);
     cout.precision(3); 
@@ -215,6 +223,7 @@ void runLoopBlockConvolveTest(const string testName, const int iterations, list<
             float m = 0;
             vector<float> iter;
             for (int i = 0; i < iterations; i++) {
+                clearCache();
                 if(testName == "loopBlock128x128Convolve") {
                     m_Timer.start();    
                     loopBlockConvolve (imageStride, imageWidth, imageHeight, 
@@ -259,7 +268,7 @@ void runLoopBlockConvolveTest(const string testName, const int iterations, list<
 void runScTest(const string testName, const int iterations, list<int>& kernels,  
                const int minKernelWidth, const int maxKernelWidth,
                const int imageStride, const int imageWidth, const int imageHeight, 
-               const float* inputImage, float* outputImage) { 
+               float* inputImage, float* outputImage) { 
               
     cout.setf(ios::fixed);
     cout.precision(3); 
@@ -276,6 +285,7 @@ void runScTest(const string testName, const int iterations, list<int>& kernels,
             float m = 0;
             vector<float> iter;
             for (int i = 0; i < iterations; i++) {
+                clearCache();
                 m_Timer.start();    
                 if(testName == "separableConvolve"){
                      separableConvolve (imageStride, imageWidth, imageHeight, 
@@ -947,7 +957,9 @@ void loopBlockAlignedSSEConvolveTest() {
     }
     
     cout << "Wait until tests are finished..." << endl << flush;
-    
+//    prepareTestBuffers(imageStride, imageHeight, 
+//                   inputImage, outputImage);
+
     const string& file = "lbTest.csv";
     ofstream outFile;
     outFile.open (file.c_str(), std::ios::out);
@@ -1012,7 +1024,6 @@ void naiveConvolveTest( const int iterations, list<int>& kernels,
                         const int imageWidth, const int imageHeight, 
                         const int kernelWidth, 
                         const float* inputImage, const float* kernel) {
-
     //#if NAIVE
     cout << left << setw(40) << "naiveConvolve";
     float* naiveInputImage = new float[imageWidth * imageHeight];
@@ -1081,7 +1092,61 @@ void naiveConvolveTest( const int iterations, list<int>& kernels,
  
 }
 
+static void prepareTestBuffers (const int imageStride, const int imageHeight, 
+                                float* inputImage, float* outputImage) {
+                                 
+    /* initialize random seed: */
+    srand ( time(NULL) );
+    for (int i = 0; i < imageStride * imageHeight; i++) {
+         inputImage[i] = rand() % 255;
+    }       
+}
 
+static void clearCache() {
+
+    int cacheSize = sysconf (_SC_LEVEL1_DCACHE_SIZE) / 4;
+//    cout << "Cache size " << cacheSize << endl;
+    float* cacheIn;
+    float* cacheOut;
+    if (cacheSize) {
+        cacheIn = new float[cacheSize];
+        cacheOut = new float[cacheSize];
+        clear2DBuffer (cacheIn, cacheSize, 1);
+        for (int i = 0; i < cacheSize; i++) {
+             cacheOut[i] = cacheIn[i];
+        }
+        delete [] cacheIn;
+        delete [] cacheOut;
+    } 
+    
+    cacheSize = sysconf (_SC_LEVEL2_CACHE_SIZE) / 4;
+//    cout << "Cache size " << cacheSize << endl;
+    if (cacheSize) {
+    //    cout << "Cache size " << cacheSize << endl;
+        cacheIn = new float[cacheSize];
+        cacheOut = new float[cacheSize];
+        clear2DBuffer (cacheIn, cacheSize, 1);
+        for (int i = 0; i < cacheSize; i++) {
+             cacheOut[i] = cacheIn[i];
+        }
+        delete [] cacheIn;
+        delete [] cacheOut;
+    }
+  
+    cacheSize = sysconf (_SC_LEVEL3_CACHE_SIZE) / 4;
+//    cout << "Cache size " << cacheSize << endl;
+    if (cacheSize) {
+        cacheIn = new float[cacheSize];
+        cacheOut = new float[cacheSize];
+        clear2DBuffer (cacheIn, cacheSize, 1);
+        for (int i = 0; i < cacheSize; i++) {
+             cacheOut[i] = cacheIn[i];
+        }
+        delete [] cacheIn;
+        delete [] cacheOut;
+    }
+ 
+}
 
 //     #if ALIGNEDSSE2CONVOLVE
 //     loopBlockConvolve(imageStride, imageWidth, imageHeight, 
@@ -1141,15 +1206,6 @@ int main (int argc, char *argv[])
     
     float k = 1;
 
-    for (int i = 0; i < imageStride * imageHeight; i++) {
-         inputImage[i] = 0;
-    }       
-     
-    for (int i = 0; i < imageHeight; i++) {
-        for (int j = 0; j < imageWidth; j++) {
-            inputImage[i * imageStride + j] = k++;//rand() % 5;
-        }
-    }
     
     //printImage(imageWidth, imageHeight, imageStride, kernelWidth - 2, inputImage);
     
@@ -1181,6 +1237,9 @@ int main (int argc, char *argv[])
      //gcc -DCLS=$(getconf LEVEL1_DCACHE_LINESIZE) ...
 
     //#if NAIVECONVOLVE
+    prepareTestBuffers(imageStride, imageHeight, 
+                       inputImage, outputImage);
+    
     naiveConvolveTest (iterations, kernels, imageWidth, imageHeight, 
                        kernelWidth, inputImage, kernel);
     //#endif

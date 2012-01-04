@@ -105,10 +105,10 @@
                      
 #define ROTATE_RIGHT_BLEND(vector1, vector2) \
     vector1 = _mm_shuffle_ps(vector1, vector1, _MM_SHUFFLE(2, 1, 0, 3)); PRINT_VECTOR(vector1); \
-    vector2 = mm_blend_ps(vector2, vector1, 1); PRINT_VECTOR(vector2); 
+    vector2 = _mm_blend_ps(vector2, vector1, 1); PRINT_VECTOR(vector2); 
                      
 #define BLEND_ROTATE_LEFT(vector0, vector1) \
-    vector0 = mm_blend_ps(vector0, vector1, 1); PRINT_VECTOR(vector0); \
+    vector0 = _mm_blend_ps(vector0, vector1, 1); PRINT_VECTOR(vector0); \
     ROTATE_LEFT(vector0);
 
 #define BLEND_ROTATE1_LEFT(vector0, vector1) \
@@ -194,15 +194,15 @@
 #endif  
 
 
-#ifdef __SSE4_1__ 
-    //extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
-    inline __m128 mm_dp_ps (__m128 a, __m128 b, const int mask) {
-        _mm_dp_ps(a, b, mask);
-    } 
-    inline __m128 mm_blend_ps(__m128 a, __m128 b, const int mask ) {
-        _mm_blend_ps(a, b, mask);
-    }
-#else  
+#ifndef __SSE4_1__ 
+//    //extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+//    inline __m128 _mm_dp_ps (__m128 a, __m128 b, const int mask) {
+//        return _mm_dp_ps(a, b, mask);
+//    } 
+//    inline __m128 _mm_blend_ps(__m128 a, __m128 b, const int mask ) {
+//        return _mm_blend_ps(a, b, mask);
+//    }
+//#else  
   
     typedef union 
     {
@@ -211,7 +211,7 @@
     } ssp_m128;
     
 //    extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
-    inline __m128 mm_dp_ps (__m128 a, __m128 b, const int mask) {
+    inline __m128 _mm_dp_ps (__m128 a, __m128 b, const int mask) {
         //http://sseplus.sourceforge.net/group__emulated___s_s_e3.html
       
         const static __m128i mulShiftImm_0123 = _mm_set_epi32( 0x010000, 0x020000, 0x040000, 0x080000 );   // Shift mask multiply moves 0,1,2,3 bits to left, becomes MSB
@@ -247,7 +247,7 @@
         return screen;
     } 
 
-    inline __m128 mm_blend_ps( __m128  a, __m128  b, const int mask )               // mm_blend_ps [SSE4.1]
+    inline __m128 _mm_blend_ps( __m128  a, __m128  b, const int mask )               // _mm_blend_ps [SSE4.1]
     {
 
         ssp_m128 screen, A, B;

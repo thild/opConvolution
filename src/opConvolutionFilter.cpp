@@ -193,28 +193,28 @@ void sseNoReuse1Convolve (const int s, const int w, const int h,
                     
                     //cout << "aqui 2" << flush << endl;
                     PRINT_LABEL("sum0"); 
-                    sum0 += mm_dp_ps(kv, iv0, 241);    PRINT_VECTOR(sum0); 
+                    sum0 += _mm_dp_ps(kv, iv0, 241);    PRINT_VECTOR(sum0); 
                      
                     //cout << "aqui 3" << flush << endl;
                      
                     BLEND_ROTATE1_LEFT(iv0, iv1);
 
                     PRINT_LABEL("sum1"); 
-                    sum0 += mm_dp_ps(kv, iv0, 242);    PRINT_VECTOR(sum0);
+                    sum0 += _mm_dp_ps(kv, iv0, 242);    PRINT_VECTOR(sum0);
                     
                     //cout << "aqui 4" << flush << endl;
                     
                     BLEND_ROTATE1_LEFT(iv0, iv1);
 
                     PRINT_LABEL("sum2"); 
-                    sum0 += mm_dp_ps(kv, iv0, 244);    PRINT_VECTOR(sum0);
+                    sum0 += _mm_dp_ps(kv, iv0, 244);    PRINT_VECTOR(sum0);
                     
                     //cout << "aqui 5" << flush << endl;
                     
                     BLEND_ROTATE1_LEFT(iv0, iv1);
 
                     PRINT_LABEL("sum3"); 
-                    sum0 += mm_dp_ps(kv, iv0, 248);    PRINT_VECTOR(sum0);
+                    sum0 += _mm_dp_ps(kv, iv0, 248);    PRINT_VECTOR(sum0);
                     
                 }
             } //for (int r = 0...
@@ -263,32 +263,32 @@ void sseNoReuse2Convolve (const int s, const int w, const int h,
                     
                     //cout << "aqui 2" << flush << endl;
                     PRINT_LABEL("sum0"); 
-                    sum0 += mm_dp_ps(kv, iv0, 241);    PRINT_VECTOR(sum0); 
-                    sum1 += mm_dp_ps(kv, iv1, 241);    PRINT_VECTOR(sum1);
+                    sum0 += _mm_dp_ps(kv, iv0, 241);    PRINT_VECTOR(sum0); 
+                    sum1 += _mm_dp_ps(kv, iv1, 241);    PRINT_VECTOR(sum1);
                      
                     //cout << "aqui 3" << flush << endl;
                      
                     BLEND_ROTATE2_LEFT(iv0, iv1, iv2);
 
                     PRINT_LABEL("sum1"); 
-                    sum0 += mm_dp_ps(kv, iv0, 242);    PRINT_VECTOR(sum0);
-                    sum1 += mm_dp_ps(kv, iv1, 242);    PRINT_VECTOR(sum1);
+                    sum0 += _mm_dp_ps(kv, iv0, 242);    PRINT_VECTOR(sum0);
+                    sum1 += _mm_dp_ps(kv, iv1, 242);    PRINT_VECTOR(sum1);
                     
                     //cout << "aqui 4" << flush << endl;
                     
                     BLEND_ROTATE2_LEFT(iv0, iv1, iv2);
 
                     PRINT_LABEL("sum2"); 
-                    sum0 += mm_dp_ps(kv, iv0, 244);    PRINT_VECTOR(sum0);
-                    sum1 += mm_dp_ps(kv, iv1, 244);    PRINT_VECTOR(sum1);
+                    sum0 += _mm_dp_ps(kv, iv0, 244);    PRINT_VECTOR(sum0);
+                    sum1 += _mm_dp_ps(kv, iv1, 244);    PRINT_VECTOR(sum1);
                     
                     //cout << "aqui 5" << flush << endl;
                     
                     BLEND_ROTATE2_LEFT(iv0, iv1, iv2);
 
                     PRINT_LABEL("sum3"); 
-                    sum0 += mm_dp_ps(kv, iv0, 248);    PRINT_VECTOR(sum0);
-                    sum1 += mm_dp_ps(kv, iv1, 248);    PRINT_VECTOR(sum1);
+                    sum0 += _mm_dp_ps(kv, iv0, 248);    PRINT_VECTOR(sum0);
+                    sum1 += _mm_dp_ps(kv, iv1, 248);    PRINT_VECTOR(sum1);
                     
                 }
             } //for (int r = 0...
@@ -338,36 +338,36 @@ void sseNoReuse3Convolve (const int s, const int w, const int h,
                     
                     //cout << "aqui 2" << flush << endl;
                     PRINT_LABEL("sum0"); 
-                    sum0 += mm_dp_ps(kv, iv0, 241);    PRINT_VECTOR(sum0); 
-                    sum1 += mm_dp_ps(kv, iv1, 241);    PRINT_VECTOR(sum1);
-                    sum2 += mm_dp_ps(kv, iv2, 241);    PRINT_VECTOR(sum2);
+                    sum0 += _mm_dp_ps(kv, iv0, 241);    PRINT_VECTOR(sum0); 
+                    sum1 += _mm_dp_ps(kv, iv1, 241);    PRINT_VECTOR(sum1);
+                    sum2 += _mm_dp_ps(kv, iv2, 241);    PRINT_VECTOR(sum2);
                      
                     //cout << "aqui 3" << flush << endl;
                      
                     BLEND_ROTATE3_LEFT(iv0, iv1, iv2, iv3);
 
                     PRINT_LABEL("sum1"); 
-                    sum0 += mm_dp_ps(kv, iv0, 242);    PRINT_VECTOR(sum0);
-                    sum1 += mm_dp_ps(kv, iv1, 242);    PRINT_VECTOR(sum1);
-                    sum2 += mm_dp_ps(kv, iv2, 242);    PRINT_VECTOR(sum2);
+                    sum0 += _mm_dp_ps(kv, iv0, 242);    PRINT_VECTOR(sum0);
+                    sum1 += _mm_dp_ps(kv, iv1, 242);    PRINT_VECTOR(sum1);
+                    sum2 += _mm_dp_ps(kv, iv2, 242);    PRINT_VECTOR(sum2);
                     
                     //cout << "aqui 4" << flush << endl;
                     
                     BLEND_ROTATE3_LEFT(iv0, iv1, iv2, iv3);
 
                     PRINT_LABEL("sum2"); 
-                    sum0 += mm_dp_ps(kv, iv0, 244);    PRINT_VECTOR(sum0);
-                    sum1 += mm_dp_ps(kv, iv1, 244);    PRINT_VECTOR(sum1);
-                    sum2 += mm_dp_ps(kv, iv2, 244);    PRINT_VECTOR(sum2);
+                    sum0 += _mm_dp_ps(kv, iv0, 244);    PRINT_VECTOR(sum0);
+                    sum1 += _mm_dp_ps(kv, iv1, 244);    PRINT_VECTOR(sum1);
+                    sum2 += _mm_dp_ps(kv, iv2, 244);    PRINT_VECTOR(sum2);
                     
                     //cout << "aqui 5" << flush << endl;
                     
                     BLEND_ROTATE3_LEFT(iv0, iv1, iv2, iv3);
 
                     PRINT_LABEL("sum3"); 
-                    sum0 += mm_dp_ps(kv, iv0, 248);    PRINT_VECTOR(sum0);
-                    sum1 += mm_dp_ps(kv, iv1, 248);    PRINT_VECTOR(sum1);
-                    sum2 += mm_dp_ps(kv, iv2, 248);    PRINT_VECTOR(sum2);
+                    sum0 += _mm_dp_ps(kv, iv0, 248);    PRINT_VECTOR(sum0);
+                    sum1 += _mm_dp_ps(kv, iv1, 248);    PRINT_VECTOR(sum1);
+                    sum2 += _mm_dp_ps(kv, iv2, 248);    PRINT_VECTOR(sum2);
                     
                 }
             } //for (int r = 0...
@@ -425,40 +425,40 @@ void sseNoReuse3Convolve (const int s, const int w, const int h,
 //                    
 //                    //cout << "aqui 2" << flush << endl;
 //                    PRINT_LABEL("sum0"); 
-//                    sum0 += mm_dp_ps(kv, iv0, 241);    PRINT_VECTOR(sum0); 
-//                    sum1 += mm_dp_ps(kv, iv1, 241);    PRINT_VECTOR(sum1);
-//                    sum2 += mm_dp_ps(kv, iv2, 241);    PRINT_VECTOR(sum2);
-//                    sum3 += mm_dp_ps(kv, iv3, 241);    PRINT_VECTOR(sum3);
+//                    sum0 += _mm_dp_ps(kv, iv0, 241);    PRINT_VECTOR(sum0); 
+//                    sum1 += _mm_dp_ps(kv, iv1, 241);    PRINT_VECTOR(sum1);
+//                    sum2 += _mm_dp_ps(kv, iv2, 241);    PRINT_VECTOR(sum2);
+//                    sum3 += _mm_dp_ps(kv, iv3, 241);    PRINT_VECTOR(sum3);
 //                     
 //                    //cout << "aqui 3" << flush << endl;
 //                     
 //                    BLEND_ROTATE4_LEFT(iv0, iv1, iv2, iv3, iv4);
 //
 //                    PRINT_LABEL("sum1"); 
-//                    sum0 += mm_dp_ps(kv, iv0, 242);    PRINT_VECTOR(sum0);
-//                    sum1 += mm_dp_ps(kv, iv1, 242);    PRINT_VECTOR(sum1);
-//                    sum2 += mm_dp_ps(kv, iv2, 242);    PRINT_VECTOR(sum2);
-//                    sum3 += mm_dp_ps(kv, iv3, 242);    PRINT_VECTOR(sum3);
+//                    sum0 += _mm_dp_ps(kv, iv0, 242);    PRINT_VECTOR(sum0);
+//                    sum1 += _mm_dp_ps(kv, iv1, 242);    PRINT_VECTOR(sum1);
+//                    sum2 += _mm_dp_ps(kv, iv2, 242);    PRINT_VECTOR(sum2);
+//                    sum3 += _mm_dp_ps(kv, iv3, 242);    PRINT_VECTOR(sum3);
 //                    
 //                    //cout << "aqui 4" << flush << endl;
 //                    
 //                    BLEND_ROTATE4_LEFT(iv0, iv1, iv2, iv3, iv4);
 //
 //                    PRINT_LABEL("sum2"); 
-//                    sum0 += mm_dp_ps(kv, iv0, 244);    PRINT_VECTOR(sum0);
-//                    sum1 += mm_dp_ps(kv, iv1, 244);    PRINT_VECTOR(sum1);
-//                    sum2 += mm_dp_ps(kv, iv2, 244);    PRINT_VECTOR(sum2);
-//                    sum3 += mm_dp_ps(kv, iv3, 244);    PRINT_VECTOR(sum3);
+//                    sum0 += _mm_dp_ps(kv, iv0, 244);    PRINT_VECTOR(sum0);
+//                    sum1 += _mm_dp_ps(kv, iv1, 244);    PRINT_VECTOR(sum1);
+//                    sum2 += _mm_dp_ps(kv, iv2, 244);    PRINT_VECTOR(sum2);
+//                    sum3 += _mm_dp_ps(kv, iv3, 244);    PRINT_VECTOR(sum3);
 //                    
 //                    //cout << "aqui 5" << flush << endl;
 //                    
 //                    BLEND_ROTATE4_LEFT(iv0, iv1, iv2, iv3, iv4);
 //
 //                    PRINT_LABEL("sum3"); 
-//                    sum0 += mm_dp_ps(kv, iv0, 248);    PRINT_VECTOR(sum0);
-//                    sum1 += mm_dp_ps(kv, iv1, 248);    PRINT_VECTOR(sum1);
-//                    sum2 += mm_dp_ps(kv, iv2, 248);    PRINT_VECTOR(sum2);
-//                    sum3 += mm_dp_ps(kv, iv3, 248);    PRINT_VECTOR(sum3);
+//                    sum0 += _mm_dp_ps(kv, iv0, 248);    PRINT_VECTOR(sum0);
+//                    sum1 += _mm_dp_ps(kv, iv1, 248);    PRINT_VECTOR(sum1);
+//                    sum2 += _mm_dp_ps(kv, iv2, 248);    PRINT_VECTOR(sum2);
+//                    sum3 += _mm_dp_ps(kv, iv3, 248);    PRINT_VECTOR(sum3);
 //                     
 //                    
 //                    //cout << "aqui 1" << flush << endl;
@@ -470,40 +470,40 @@ void sseNoReuse3Convolve (const int s, const int w, const int h,
 //                    
 //                    //cout << "aqui 2" << flush << endl;
 //                    PRINT_LABEL("sum0"); 
-//                    sum4 += mm_dp_ps(kv, iv0, 241);    PRINT_VECTOR(sum4); 
-//                    sum5 += mm_dp_ps(kv, iv1, 241);    PRINT_VECTOR(sum5);
-//                    sum6 += mm_dp_ps(kv, iv2, 241);    PRINT_VECTOR(sum6);
-//                    sum7 += mm_dp_ps(kv, iv3, 241);    PRINT_VECTOR(sum7);
+//                    sum4 += _mm_dp_ps(kv, iv0, 241);    PRINT_VECTOR(sum4); 
+//                    sum5 += _mm_dp_ps(kv, iv1, 241);    PRINT_VECTOR(sum5);
+//                    sum6 += _mm_dp_ps(kv, iv2, 241);    PRINT_VECTOR(sum6);
+//                    sum7 += _mm_dp_ps(kv, iv3, 241);    PRINT_VECTOR(sum7);
 //                     
 //                    //cout << "aqui 3" << flush << endl;
 //                     
 //                    BLEND_ROTATE4_LEFT(iv0, iv1, iv2, iv3, iv4);
 //
 //                    PRINT_LABEL("sum1"); 
-//                    sum4 += mm_dp_ps(kv, iv0, 242);    PRINT_VECTOR(sum4);
-//                    sum5 += mm_dp_ps(kv, iv1, 242);    PRINT_VECTOR(sum5);
-//                    sum6 += mm_dp_ps(kv, iv2, 242);    PRINT_VECTOR(sum6);
-//                    sum7 += mm_dp_ps(kv, iv3, 242);    PRINT_VECTOR(sum7);
+//                    sum4 += _mm_dp_ps(kv, iv0, 242);    PRINT_VECTOR(sum4);
+//                    sum5 += _mm_dp_ps(kv, iv1, 242);    PRINT_VECTOR(sum5);
+//                    sum6 += _mm_dp_ps(kv, iv2, 242);    PRINT_VECTOR(sum6);
+//                    sum7 += _mm_dp_ps(kv, iv3, 242);    PRINT_VECTOR(sum7);
 //                    
 //                    //cout << "aqui 4" << flush << endl;
 //                    
 //                    BLEND_ROTATE4_LEFT(iv0, iv1, iv2, iv3, iv4);
 //
 //                    PRINT_LABEL("sum2"); 
-//                    sum4 += mm_dp_ps(kv, iv0, 244);    PRINT_VECTOR(sum4);
-//                    sum5 += mm_dp_ps(kv, iv1, 244);    PRINT_VECTOR(sum5);
-//                    sum6 += mm_dp_ps(kv, iv2, 244);    PRINT_VECTOR(sum6);
-//                    sum7 += mm_dp_ps(kv, iv3, 244);    PRINT_VECTOR(sum7);
+//                    sum4 += _mm_dp_ps(kv, iv0, 244);    PRINT_VECTOR(sum4);
+//                    sum5 += _mm_dp_ps(kv, iv1, 244);    PRINT_VECTOR(sum5);
+//                    sum6 += _mm_dp_ps(kv, iv2, 244);    PRINT_VECTOR(sum6);
+//                    sum7 += _mm_dp_ps(kv, iv3, 244);    PRINT_VECTOR(sum7);
 //                    
 //                    //cout << "aqui 5" << flush << endl;
 //                    
 //                    BLEND_ROTATE4_LEFT(iv0, iv1, iv2, iv3, iv4);
 //
 //                    PRINT_LABEL("sum3"); 
-//                    sum4 += mm_dp_ps(kv, iv0, 248);    PRINT_VECTOR(sum4);
-//                    sum5 += mm_dp_ps(kv, iv1, 248);    PRINT_VECTOR(sum5);
-//                    sum6 += mm_dp_ps(kv, iv2, 248);    PRINT_VECTOR(sum6);
-//                    sum7 += mm_dp_ps(kv, iv3, 248);    PRINT_VECTOR(sum7);
+//                    sum4 += _mm_dp_ps(kv, iv0, 248);    PRINT_VECTOR(sum4);
+//                    sum5 += _mm_dp_ps(kv, iv1, 248);    PRINT_VECTOR(sum5);
+//                    sum6 += _mm_dp_ps(kv, iv2, 248);    PRINT_VECTOR(sum6);
+//                    sum7 += _mm_dp_ps(kv, iv3, 248);    PRINT_VECTOR(sum7);
 //                    
 //                }
 //            } //for (int r = 0...
@@ -576,40 +576,40 @@ void sseNoReuse4Convolve (const int s, const int w, const int h,
                     
                     //cout << "aqui 2" << flush << endl;
                     PRINT_LABEL("sum0"); 
-                    sum0 += mm_dp_ps(kv, iv0, 241);    PRINT_VECTOR(sum0); 
-                    sum1 += mm_dp_ps(kv, iv1, 241);    PRINT_VECTOR(sum1);
-                    sum2 += mm_dp_ps(kv, iv2, 241);    PRINT_VECTOR(sum2);
-                    sum3 += mm_dp_ps(kv, iv3, 241);    PRINT_VECTOR(sum3);
+                    sum0 += _mm_dp_ps(kv, iv0, 241);    PRINT_VECTOR(sum0); 
+                    sum1 += _mm_dp_ps(kv, iv1, 241);    PRINT_VECTOR(sum1);
+                    sum2 += _mm_dp_ps(kv, iv2, 241);    PRINT_VECTOR(sum2);
+                    sum3 += _mm_dp_ps(kv, iv3, 241);    PRINT_VECTOR(sum3);
                      
                     //cout << "aqui 3" << flush << endl;
                      
                     BLEND_ROTATE4_LEFT(iv0, iv1, iv2, iv3, iv4);
 
                     PRINT_LABEL("sum1"); 
-                    sum0 += mm_dp_ps(kv, iv0, 242);    PRINT_VECTOR(sum0);
-                    sum1 += mm_dp_ps(kv, iv1, 242);    PRINT_VECTOR(sum1);
-                    sum2 += mm_dp_ps(kv, iv2, 242);    PRINT_VECTOR(sum2);
-                    sum3 += mm_dp_ps(kv, iv3, 242);    PRINT_VECTOR(sum3);
+                    sum0 += _mm_dp_ps(kv, iv0, 242);    PRINT_VECTOR(sum0);
+                    sum1 += _mm_dp_ps(kv, iv1, 242);    PRINT_VECTOR(sum1);
+                    sum2 += _mm_dp_ps(kv, iv2, 242);    PRINT_VECTOR(sum2);
+                    sum3 += _mm_dp_ps(kv, iv3, 242);    PRINT_VECTOR(sum3);
                     
                     //cout << "aqui 4" << flush << endl;
                     
                     BLEND_ROTATE4_LEFT(iv0, iv1, iv2, iv3, iv4);
 
                     PRINT_LABEL("sum2"); 
-                    sum0 += mm_dp_ps(kv, iv0, 244);    PRINT_VECTOR(sum0);
-                    sum1 += mm_dp_ps(kv, iv1, 244);    PRINT_VECTOR(sum1);
-                    sum2 += mm_dp_ps(kv, iv2, 244);    PRINT_VECTOR(sum2);
-                    sum3 += mm_dp_ps(kv, iv3, 244);    PRINT_VECTOR(sum3);
+                    sum0 += _mm_dp_ps(kv, iv0, 244);    PRINT_VECTOR(sum0);
+                    sum1 += _mm_dp_ps(kv, iv1, 244);    PRINT_VECTOR(sum1);
+                    sum2 += _mm_dp_ps(kv, iv2, 244);    PRINT_VECTOR(sum2);
+                    sum3 += _mm_dp_ps(kv, iv3, 244);    PRINT_VECTOR(sum3);
                     
                     //cout << "aqui 5" << flush << endl;
                     
                     BLEND_ROTATE4_LEFT(iv0, iv1, iv2, iv3, iv4);
 
                     PRINT_LABEL("sum3"); 
-                    sum0 += mm_dp_ps(kv, iv0, 248);    PRINT_VECTOR(sum0);
-                    sum1 += mm_dp_ps(kv, iv1, 248);    PRINT_VECTOR(sum1);
-                    sum2 += mm_dp_ps(kv, iv2, 248);    PRINT_VECTOR(sum2);
-                    sum3 += mm_dp_ps(kv, iv3, 248);    PRINT_VECTOR(sum3);
+                    sum0 += _mm_dp_ps(kv, iv0, 248);    PRINT_VECTOR(sum0);
+                    sum1 += _mm_dp_ps(kv, iv1, 248);    PRINT_VECTOR(sum1);
+                    sum2 += _mm_dp_ps(kv, iv2, 248);    PRINT_VECTOR(sum2);
+                    sum3 += _mm_dp_ps(kv, iv3, 248);    PRINT_VECTOR(sum3);
                     
                 }
             } //for (int r = 0...
@@ -625,7 +625,7 @@ void sseNoReuse4Convolve (const int s, const int w, const int h,
                        ks, kw, 
                        input, output, kernel);
     
-    //printImage(w, h, s, output);
+//    printImage(w, h, s, output);
     
 }
 
@@ -666,44 +666,44 @@ void sseNoReuse5Convolve (const int s, const int w, const int h,
                     
                     //cout << "aqui 2" << flush << endl;
                     PRINT_LABEL("sum0"); 
-                    sum0 += mm_dp_ps(kv, iv0, 241);    PRINT_VECTOR(sum0); 
-                    sum1 += mm_dp_ps(kv, iv1, 241);    PRINT_VECTOR(sum1);
-                    sum2 += mm_dp_ps(kv, iv2, 241);    PRINT_VECTOR(sum2);
-                    sum3 += mm_dp_ps(kv, iv3, 241);    PRINT_VECTOR(sum3);
-                    sum4 += mm_dp_ps(kv, iv4, 241);    PRINT_VECTOR(sum4);
+                    sum0 += _mm_dp_ps(kv, iv0, 241);    PRINT_VECTOR(sum0); 
+                    sum1 += _mm_dp_ps(kv, iv1, 241);    PRINT_VECTOR(sum1);
+                    sum2 += _mm_dp_ps(kv, iv2, 241);    PRINT_VECTOR(sum2);
+                    sum3 += _mm_dp_ps(kv, iv3, 241);    PRINT_VECTOR(sum3);
+                    sum4 += _mm_dp_ps(kv, iv4, 241);    PRINT_VECTOR(sum4);
                      
                     //cout << "aqui 3" << flush << endl;
                      
                     BLEND_ROTATE5_LEFT(iv0, iv1, iv2, iv3, iv4, iv5);
 
                     PRINT_LABEL("sum1"); 
-                    sum0 += mm_dp_ps(kv, iv0, 242);    PRINT_VECTOR(sum0);
-                    sum1 += mm_dp_ps(kv, iv1, 242);    PRINT_VECTOR(sum1);
-                    sum2 += mm_dp_ps(kv, iv2, 242);    PRINT_VECTOR(sum2);
-                    sum3 += mm_dp_ps(kv, iv3, 242);    PRINT_VECTOR(sum3);
-                    sum4 += mm_dp_ps(kv, iv4, 242);    PRINT_VECTOR(sum4);
+                    sum0 += _mm_dp_ps(kv, iv0, 242);    PRINT_VECTOR(sum0);
+                    sum1 += _mm_dp_ps(kv, iv1, 242);    PRINT_VECTOR(sum1);
+                    sum2 += _mm_dp_ps(kv, iv2, 242);    PRINT_VECTOR(sum2);
+                    sum3 += _mm_dp_ps(kv, iv3, 242);    PRINT_VECTOR(sum3);
+                    sum4 += _mm_dp_ps(kv, iv4, 242);    PRINT_VECTOR(sum4);
                     
                     //cout << "aqui 4" << flush << endl;
                     
                     BLEND_ROTATE5_LEFT(iv0, iv1, iv2, iv3, iv4, iv5);
 
                     PRINT_LABEL("sum2"); 
-                    sum0 += mm_dp_ps(kv, iv0, 244);    PRINT_VECTOR(sum0);
-                    sum1 += mm_dp_ps(kv, iv1, 244);    PRINT_VECTOR(sum1);
-                    sum2 += mm_dp_ps(kv, iv2, 244);    PRINT_VECTOR(sum2);
-                    sum3 += mm_dp_ps(kv, iv3, 244);    PRINT_VECTOR(sum3);
-                    sum4 += mm_dp_ps(kv, iv4, 244);    PRINT_VECTOR(sum4);
+                    sum0 += _mm_dp_ps(kv, iv0, 244);    PRINT_VECTOR(sum0);
+                    sum1 += _mm_dp_ps(kv, iv1, 244);    PRINT_VECTOR(sum1);
+                    sum2 += _mm_dp_ps(kv, iv2, 244);    PRINT_VECTOR(sum2);
+                    sum3 += _mm_dp_ps(kv, iv3, 244);    PRINT_VECTOR(sum3);
+                    sum4 += _mm_dp_ps(kv, iv4, 244);    PRINT_VECTOR(sum4);
                     
                     //cout << "aqui 5" << flush << endl;
                     
                     BLEND_ROTATE5_LEFT(iv0, iv1, iv2, iv3, iv4, iv5);
 
                     PRINT_LABEL("sum3"); 
-                    sum0 += mm_dp_ps(kv, iv0, 248);    PRINT_VECTOR(sum0);
-                    sum1 += mm_dp_ps(kv, iv1, 248);    PRINT_VECTOR(sum1);
-                    sum2 += mm_dp_ps(kv, iv2, 248);    PRINT_VECTOR(sum2);
-                    sum3 += mm_dp_ps(kv, iv3, 248);    PRINT_VECTOR(sum3);
-                    sum4 += mm_dp_ps(kv, iv4, 248);    PRINT_VECTOR(sum4);
+                    sum0 += _mm_dp_ps(kv, iv0, 248);    PRINT_VECTOR(sum0);
+                    sum1 += _mm_dp_ps(kv, iv1, 248);    PRINT_VECTOR(sum1);
+                    sum2 += _mm_dp_ps(kv, iv2, 248);    PRINT_VECTOR(sum2);
+                    sum3 += _mm_dp_ps(kv, iv3, 248);    PRINT_VECTOR(sum3);
+                    sum4 += _mm_dp_ps(kv, iv4, 248);    PRINT_VECTOR(sum4);
                     
                 }
             } //for (int r = 0...
@@ -761,48 +761,48 @@ void sseNoReuse6Convolve (const int s, const int w, const int h,
                     
                     //cout << "aqui 2" << flush << endl;
                     PRINT_LABEL("sum0"); 
-                    sum0 += mm_dp_ps(kv, iv0, 241);    PRINT_VECTOR(sum0); 
-                    sum1 += mm_dp_ps(kv, iv1, 241);    PRINT_VECTOR(sum1);
-                    sum2 += mm_dp_ps(kv, iv2, 241);    PRINT_VECTOR(sum2);
-                    sum3 += mm_dp_ps(kv, iv3, 241);    PRINT_VECTOR(sum3);
-                    sum4 += mm_dp_ps(kv, iv4, 241);    PRINT_VECTOR(sum4);
-                    sum5 += mm_dp_ps(kv, iv5, 241);    PRINT_VECTOR(sum5);
+                    sum0 += _mm_dp_ps(kv, iv0, 241);    PRINT_VECTOR(sum0); 
+                    sum1 += _mm_dp_ps(kv, iv1, 241);    PRINT_VECTOR(sum1);
+                    sum2 += _mm_dp_ps(kv, iv2, 241);    PRINT_VECTOR(sum2);
+                    sum3 += _mm_dp_ps(kv, iv3, 241);    PRINT_VECTOR(sum3);
+                    sum4 += _mm_dp_ps(kv, iv4, 241);    PRINT_VECTOR(sum4);
+                    sum5 += _mm_dp_ps(kv, iv5, 241);    PRINT_VECTOR(sum5);
                      
                     //cout << "aqui 3" << flush << endl;
                      
                     BLEND_ROTATE6_LEFT(iv0, iv1, iv2, iv3, iv4, iv5, iv6);
 
                     PRINT_LABEL("sum1"); 
-                    sum0 += mm_dp_ps(kv, iv0, 242);    PRINT_VECTOR(sum0);
-                    sum1 += mm_dp_ps(kv, iv1, 242);    PRINT_VECTOR(sum1);
-                    sum2 += mm_dp_ps(kv, iv2, 242);    PRINT_VECTOR(sum2);
-                    sum3 += mm_dp_ps(kv, iv3, 242);    PRINT_VECTOR(sum3);
-                    sum4 += mm_dp_ps(kv, iv4, 242);    PRINT_VECTOR(sum4);
-                    sum5 += mm_dp_ps(kv, iv5, 242);    PRINT_VECTOR(sum5);
+                    sum0 += _mm_dp_ps(kv, iv0, 242);    PRINT_VECTOR(sum0);
+                    sum1 += _mm_dp_ps(kv, iv1, 242);    PRINT_VECTOR(sum1);
+                    sum2 += _mm_dp_ps(kv, iv2, 242);    PRINT_VECTOR(sum2);
+                    sum3 += _mm_dp_ps(kv, iv3, 242);    PRINT_VECTOR(sum3);
+                    sum4 += _mm_dp_ps(kv, iv4, 242);    PRINT_VECTOR(sum4);
+                    sum5 += _mm_dp_ps(kv, iv5, 242);    PRINT_VECTOR(sum5);
                     
                     //cout << "aqui 4" << flush << endl;
                     
                     BLEND_ROTATE6_LEFT(iv0, iv1, iv2, iv3, iv4, iv5, iv6);
 
                     PRINT_LABEL("sum2"); 
-                    sum0 += mm_dp_ps(kv, iv0, 244);    PRINT_VECTOR(sum0);
-                    sum1 += mm_dp_ps(kv, iv1, 244);    PRINT_VECTOR(sum1);
-                    sum2 += mm_dp_ps(kv, iv2, 244);    PRINT_VECTOR(sum2);
-                    sum3 += mm_dp_ps(kv, iv3, 244);    PRINT_VECTOR(sum3);
-                    sum4 += mm_dp_ps(kv, iv4, 244);    PRINT_VECTOR(sum4);
-                    sum5 += mm_dp_ps(kv, iv5, 244);    PRINT_VECTOR(sum5);
+                    sum0 += _mm_dp_ps(kv, iv0, 244);    PRINT_VECTOR(sum0);
+                    sum1 += _mm_dp_ps(kv, iv1, 244);    PRINT_VECTOR(sum1);
+                    sum2 += _mm_dp_ps(kv, iv2, 244);    PRINT_VECTOR(sum2);
+                    sum3 += _mm_dp_ps(kv, iv3, 244);    PRINT_VECTOR(sum3);
+                    sum4 += _mm_dp_ps(kv, iv4, 244);    PRINT_VECTOR(sum4);
+                    sum5 += _mm_dp_ps(kv, iv5, 244);    PRINT_VECTOR(sum5);
                     
                     //cout << "aqui 5" << flush << endl;
                     
                     BLEND_ROTATE6_LEFT(iv0, iv1, iv2, iv3, iv4, iv5, iv6);
 
                     PRINT_LABEL("sum3"); 
-                    sum0 += mm_dp_ps(kv, iv0, 248);    PRINT_VECTOR(sum0);
-                    sum1 += mm_dp_ps(kv, iv1, 248);    PRINT_VECTOR(sum1);
-                    sum2 += mm_dp_ps(kv, iv2, 248);    PRINT_VECTOR(sum2);
-                    sum3 += mm_dp_ps(kv, iv3, 248);    PRINT_VECTOR(sum3);
-                    sum4 += mm_dp_ps(kv, iv4, 248);    PRINT_VECTOR(sum4);
-                    sum5 += mm_dp_ps(kv, iv5, 248);    PRINT_VECTOR(sum5);
+                    sum0 += _mm_dp_ps(kv, iv0, 248);    PRINT_VECTOR(sum0);
+                    sum1 += _mm_dp_ps(kv, iv1, 248);    PRINT_VECTOR(sum1);
+                    sum2 += _mm_dp_ps(kv, iv2, 248);    PRINT_VECTOR(sum2);
+                    sum3 += _mm_dp_ps(kv, iv3, 248);    PRINT_VECTOR(sum3);
+                    sum4 += _mm_dp_ps(kv, iv4, 248);    PRINT_VECTOR(sum4);
+                    sum5 += _mm_dp_ps(kv, iv5, 248);    PRINT_VECTOR(sum5);
                     
                 }
             } //for (int r = 0...
@@ -860,52 +860,52 @@ void sseNoReuse7Convolve (const int s, const int w, const int h,
                     
                     //cout << "aqui 2" << flush << endl;
                     PRINT_LABEL("sum0"); 
-                    sum0 += mm_dp_ps(kv, iv0, 241);    PRINT_VECTOR(sum0); 
-                    sum1 += mm_dp_ps(kv, iv1, 241);    PRINT_VECTOR(sum1);
-                    sum2 += mm_dp_ps(kv, iv2, 241);    PRINT_VECTOR(sum2);
-                    sum3 += mm_dp_ps(kv, iv3, 241);    PRINT_VECTOR(sum3);
-                    sum4 += mm_dp_ps(kv, iv4, 241);    PRINT_VECTOR(sum4);
-                    sum5 += mm_dp_ps(kv, iv5, 241);    PRINT_VECTOR(sum5);
-                    sum6 += mm_dp_ps(kv, iv6, 241);    PRINT_VECTOR(sum6);
+                    sum0 += _mm_dp_ps(kv, iv0, 241);    PRINT_VECTOR(sum0); 
+                    sum1 += _mm_dp_ps(kv, iv1, 241);    PRINT_VECTOR(sum1);
+                    sum2 += _mm_dp_ps(kv, iv2, 241);    PRINT_VECTOR(sum2);
+                    sum3 += _mm_dp_ps(kv, iv3, 241);    PRINT_VECTOR(sum3);
+                    sum4 += _mm_dp_ps(kv, iv4, 241);    PRINT_VECTOR(sum4);
+                    sum5 += _mm_dp_ps(kv, iv5, 241);    PRINT_VECTOR(sum5);
+                    sum6 += _mm_dp_ps(kv, iv6, 241);    PRINT_VECTOR(sum6);
                      
                     //cout << "aqui 3" << flush << endl;
                      
                     BLEND_ROTATE7_LEFT(iv0, iv1, iv2, iv3, iv4, iv5, iv6, iv7);
 
                     PRINT_LABEL("sum1"); 
-                    sum0 += mm_dp_ps(kv, iv0, 242);    PRINT_VECTOR(sum0);
-                    sum1 += mm_dp_ps(kv, iv1, 242);    PRINT_VECTOR(sum1);
-                    sum2 += mm_dp_ps(kv, iv2, 242);    PRINT_VECTOR(sum2);
-                    sum3 += mm_dp_ps(kv, iv3, 242);    PRINT_VECTOR(sum3);
-                    sum4 += mm_dp_ps(kv, iv4, 242);    PRINT_VECTOR(sum4);
-                    sum5 += mm_dp_ps(kv, iv5, 242);    PRINT_VECTOR(sum5);
-                    sum6 += mm_dp_ps(kv, iv6, 242);    PRINT_VECTOR(sum6);
+                    sum0 += _mm_dp_ps(kv, iv0, 242);    PRINT_VECTOR(sum0);
+                    sum1 += _mm_dp_ps(kv, iv1, 242);    PRINT_VECTOR(sum1);
+                    sum2 += _mm_dp_ps(kv, iv2, 242);    PRINT_VECTOR(sum2);
+                    sum3 += _mm_dp_ps(kv, iv3, 242);    PRINT_VECTOR(sum3);
+                    sum4 += _mm_dp_ps(kv, iv4, 242);    PRINT_VECTOR(sum4);
+                    sum5 += _mm_dp_ps(kv, iv5, 242);    PRINT_VECTOR(sum5);
+                    sum6 += _mm_dp_ps(kv, iv6, 242);    PRINT_VECTOR(sum6);
                     
                     //cout << "aqui 4" << flush << endl;
                     
                     BLEND_ROTATE7_LEFT(iv0, iv1, iv2, iv3, iv4, iv5, iv6, iv7);
 
                     PRINT_LABEL("sum2"); 
-                    sum0 += mm_dp_ps(kv, iv0, 244);    PRINT_VECTOR(sum0);
-                    sum1 += mm_dp_ps(kv, iv1, 244);    PRINT_VECTOR(sum1);
-                    sum2 += mm_dp_ps(kv, iv2, 244);    PRINT_VECTOR(sum2);
-                    sum3 += mm_dp_ps(kv, iv3, 244);    PRINT_VECTOR(sum3);
-                    sum4 += mm_dp_ps(kv, iv4, 244);    PRINT_VECTOR(sum4);
-                    sum5 += mm_dp_ps(kv, iv5, 244);    PRINT_VECTOR(sum5);
-                    sum6 += mm_dp_ps(kv, iv6, 244);    PRINT_VECTOR(sum6);
+                    sum0 += _mm_dp_ps(kv, iv0, 244);    PRINT_VECTOR(sum0);
+                    sum1 += _mm_dp_ps(kv, iv1, 244);    PRINT_VECTOR(sum1);
+                    sum2 += _mm_dp_ps(kv, iv2, 244);    PRINT_VECTOR(sum2);
+                    sum3 += _mm_dp_ps(kv, iv3, 244);    PRINT_VECTOR(sum3);
+                    sum4 += _mm_dp_ps(kv, iv4, 244);    PRINT_VECTOR(sum4);
+                    sum5 += _mm_dp_ps(kv, iv5, 244);    PRINT_VECTOR(sum5);
+                    sum6 += _mm_dp_ps(kv, iv6, 244);    PRINT_VECTOR(sum6);
                     
                     //cout << "aqui 5" << flush << endl;
                     
                     BLEND_ROTATE7_LEFT(iv0, iv1, iv2, iv3, iv4, iv5, iv6, iv7);
 
                     PRINT_LABEL("sum3"); 
-                    sum0 += mm_dp_ps(kv, iv0, 248);    PRINT_VECTOR(sum0);
-                    sum1 += mm_dp_ps(kv, iv1, 248);    PRINT_VECTOR(sum1);
-                    sum2 += mm_dp_ps(kv, iv2, 248);    PRINT_VECTOR(sum2);
-                    sum3 += mm_dp_ps(kv, iv3, 248);    PRINT_VECTOR(sum3);
-                    sum4 += mm_dp_ps(kv, iv4, 248);    PRINT_VECTOR(sum4);
-                    sum5 += mm_dp_ps(kv, iv5, 248);    PRINT_VECTOR(sum5);
-                    sum6 += mm_dp_ps(kv, iv6, 248);    PRINT_VECTOR(sum6);
+                    sum0 += _mm_dp_ps(kv, iv0, 248);    PRINT_VECTOR(sum0);
+                    sum1 += _mm_dp_ps(kv, iv1, 248);    PRINT_VECTOR(sum1);
+                    sum2 += _mm_dp_ps(kv, iv2, 248);    PRINT_VECTOR(sum2);
+                    sum3 += _mm_dp_ps(kv, iv3, 248);    PRINT_VECTOR(sum3);
+                    sum4 += _mm_dp_ps(kv, iv4, 248);    PRINT_VECTOR(sum4);
+                    sum5 += _mm_dp_ps(kv, iv5, 248);    PRINT_VECTOR(sum5);
+                    sum6 += _mm_dp_ps(kv, iv6, 248);    PRINT_VECTOR(sum6);
                     
                 }
             } //for (int r = 0...
@@ -959,26 +959,26 @@ void sseReuse1Convolve (const int s, const int w, const int h,
                     register const __m128 kv = _mm_load_ps(&kernel[idxFtmp + c]);   PRINT_VECTOR(kv);
                     iv1 = _mm_load_ps(&input[idxIntmp + c + 4]);              PRINT_VECTOR(iv1);
                     PRINT_LABEL("sum0"); 
-                    sum0 += mm_dp_ps(kv, iv0, 241);    PRINT_VECTOR(sum0); 
+                    sum0 += _mm_dp_ps(kv, iv0, 241);    PRINT_VECTOR(sum0); 
                      
 
                     PRINT_LABEL("sum1"); 
                     BLEND_ROTATE1_LEFT(iv0, iv1);
-                    sum0 += mm_dp_ps(kv, iv0, 242);    PRINT_VECTOR(sum0);
+                    sum0 += _mm_dp_ps(kv, iv0, 242);    PRINT_VECTOR(sum0);
                     
                     //cout << "aqui 4" << flush << endl;
                     
 
                     PRINT_LABEL("sum2"); 
                     BLEND_ROTATE1_LEFT(iv0, iv1);
-                    sum0 += mm_dp_ps(kv, iv0, 244);    PRINT_VECTOR(sum0);
+                    sum0 += _mm_dp_ps(kv, iv0, 244);    PRINT_VECTOR(sum0);
                     
                     //cout << "aqui 5" << flush << endl;
                     
 
                     PRINT_LABEL("sum3"); 
                     BLEND_ROTATE1_LEFT(iv0, iv1);
-                    sum0 += mm_dp_ps(kv, iv0, 248);    PRINT_VECTOR(sum0);
+                    sum0 += _mm_dp_ps(kv, iv0, 248);    PRINT_VECTOR(sum0);
                     
                     PRINT_LABEL("trocando"); 
                     BLEND_ROTATE1_LEFT(iv0, iv1);
@@ -1035,32 +1035,32 @@ void sseReuse2Convolve (const int s, const int w, const int h,
                     register const __m128 kv = _mm_load_ps(&kernel[idxFtmp + c]);   PRINT_VECTOR(kv);
                     iv2 = _mm_load_ps(&input[idxIntmp + c + 8]);              PRINT_VECTOR(iv2);
                     PRINT_LABEL("sum0"); 
-                    sum0 += mm_dp_ps(kv, iv0, 241);    PRINT_VECTOR(sum0); 
-                    sum1 += mm_dp_ps(kv, iv1, 241);    PRINT_VECTOR(sum1);
+                    sum0 += _mm_dp_ps(kv, iv0, 241);    PRINT_VECTOR(sum0); 
+                    sum1 += _mm_dp_ps(kv, iv1, 241);    PRINT_VECTOR(sum1);
                      
                     //cout << "aqui 3" << flush << endl;
                      
 
                     PRINT_LABEL("sum1"); 
                     BLEND_ROTATE2_LEFT(iv0, iv1, iv2);
-                    sum0 += mm_dp_ps(kv, iv0, 242);    PRINT_VECTOR(sum0);
-                    sum1 += mm_dp_ps(kv, iv1, 242);    PRINT_VECTOR(sum1);
+                    sum0 += _mm_dp_ps(kv, iv0, 242);    PRINT_VECTOR(sum0);
+                    sum1 += _mm_dp_ps(kv, iv1, 242);    PRINT_VECTOR(sum1);
                     
                     //cout << "aqui 4" << flush << endl;
                     
 
                     PRINT_LABEL("sum2"); 
                     BLEND_ROTATE2_LEFT(iv0, iv1, iv2);
-                    sum0 += mm_dp_ps(kv, iv0, 244);    PRINT_VECTOR(sum0);
-                    sum1 += mm_dp_ps(kv, iv1, 244);    PRINT_VECTOR(sum1);
+                    sum0 += _mm_dp_ps(kv, iv0, 244);    PRINT_VECTOR(sum0);
+                    sum1 += _mm_dp_ps(kv, iv1, 244);    PRINT_VECTOR(sum1);
                     
                     //cout << "aqui 5" << flush << endl;
                     
 
                     PRINT_LABEL("sum3"); 
                     BLEND_ROTATE2_LEFT(iv0, iv1, iv2);
-                    sum0 += mm_dp_ps(kv, iv0, 248);    PRINT_VECTOR(sum0);
-                    sum1 += mm_dp_ps(kv, iv1, 248);    PRINT_VECTOR(sum1);
+                    sum0 += _mm_dp_ps(kv, iv0, 248);    PRINT_VECTOR(sum0);
+                    sum1 += _mm_dp_ps(kv, iv1, 248);    PRINT_VECTOR(sum1);
                     
                     PRINT_LABEL("trocando"); 
                     BLEND_ROTATE2_LEFT(iv0, iv1, iv2);
@@ -1118,36 +1118,36 @@ void sseReuse3Convolve (const int s, const int w, const int h,
                     register const __m128 kv = _mm_load_ps(&kernel[idxFtmp + c]);   PRINT_VECTOR(kv);
                     iv3 = _mm_load_ps(&input[idxIntmp + c + 12]);              PRINT_VECTOR(iv3);
                     PRINT_LABEL("sum0"); 
-                    sum0 += mm_dp_ps(kv, iv0, 241);    PRINT_VECTOR(sum0); 
-                    sum1 += mm_dp_ps(kv, iv1, 241);    PRINT_VECTOR(sum1);
-                    sum2 += mm_dp_ps(kv, iv2, 241);    PRINT_VECTOR(sum2);
+                    sum0 += _mm_dp_ps(kv, iv0, 241);    PRINT_VECTOR(sum0); 
+                    sum1 += _mm_dp_ps(kv, iv1, 241);    PRINT_VECTOR(sum1);
+                    sum2 += _mm_dp_ps(kv, iv2, 241);    PRINT_VECTOR(sum2);
                      
                     //cout << "aqui 3" << flush << endl;
                      
 
                     PRINT_LABEL("sum1"); 
                     BLEND_ROTATE3_LEFT(iv0, iv1, iv2, iv3);
-                    sum0 += mm_dp_ps(kv, iv0, 242);    PRINT_VECTOR(sum0);
-                    sum1 += mm_dp_ps(kv, iv1, 242);    PRINT_VECTOR(sum1);
-                    sum2 += mm_dp_ps(kv, iv2, 242);    PRINT_VECTOR(sum2);
+                    sum0 += _mm_dp_ps(kv, iv0, 242);    PRINT_VECTOR(sum0);
+                    sum1 += _mm_dp_ps(kv, iv1, 242);    PRINT_VECTOR(sum1);
+                    sum2 += _mm_dp_ps(kv, iv2, 242);    PRINT_VECTOR(sum2);
                     
                     //cout << "aqui 4" << flush << endl;
                     
 
                     PRINT_LABEL("sum2"); 
                     BLEND_ROTATE3_LEFT(iv0, iv1, iv2, iv3);
-                    sum0 += mm_dp_ps(kv, iv0, 244);    PRINT_VECTOR(sum0);
-                    sum1 += mm_dp_ps(kv, iv1, 244);    PRINT_VECTOR(sum1);
-                    sum2 += mm_dp_ps(kv, iv2, 244);    PRINT_VECTOR(sum2);
+                    sum0 += _mm_dp_ps(kv, iv0, 244);    PRINT_VECTOR(sum0);
+                    sum1 += _mm_dp_ps(kv, iv1, 244);    PRINT_VECTOR(sum1);
+                    sum2 += _mm_dp_ps(kv, iv2, 244);    PRINT_VECTOR(sum2);
                     
                     //cout << "aqui 5" << flush << endl;
                     
 
                     PRINT_LABEL("sum3"); 
                     BLEND_ROTATE3_LEFT(iv0, iv1, iv2, iv3);
-                    sum0 += mm_dp_ps(kv, iv0, 248);    PRINT_VECTOR(sum0);
-                    sum1 += mm_dp_ps(kv, iv1, 248);    PRINT_VECTOR(sum1);
-                    sum2 += mm_dp_ps(kv, iv2, 248);    PRINT_VECTOR(sum2);
+                    sum0 += _mm_dp_ps(kv, iv0, 248);    PRINT_VECTOR(sum0);
+                    sum1 += _mm_dp_ps(kv, iv1, 248);    PRINT_VECTOR(sum1);
+                    sum2 += _mm_dp_ps(kv, iv2, 248);    PRINT_VECTOR(sum2);
                     
                     PRINT_LABEL("trocando"); 
                     BLEND_ROTATE3_LEFT(iv0, iv1, iv2, iv3);
@@ -1208,40 +1208,40 @@ void sseReuse4Convolve (const int s, const int w, const int h,
                     register const __m128 kv = _mm_load_ps(&kernel[idxFtmp + c]);   PRINT_VECTOR(kv);
                     iv4 = _mm_load_ps(&input[idxIntmp + c + 16]);              PRINT_VECTOR(iv4);
                     PRINT_LABEL("sum0"); 
-                    sum0 += mm_dp_ps(kv, iv0, 241);    PRINT_VECTOR(sum0); 
-                    sum1 += mm_dp_ps(kv, iv1, 241);    PRINT_VECTOR(sum1);
-                    sum2 += mm_dp_ps(kv, iv2, 241);    PRINT_VECTOR(sum2);
-                    sum3 += mm_dp_ps(kv, iv3, 241);    PRINT_VECTOR(sum3);
+                    sum0 += _mm_dp_ps(kv, iv0, 241);    PRINT_VECTOR(sum0); 
+                    sum1 += _mm_dp_ps(kv, iv1, 241);    PRINT_VECTOR(sum1);
+                    sum2 += _mm_dp_ps(kv, iv2, 241);    PRINT_VECTOR(sum2);
+                    sum3 += _mm_dp_ps(kv, iv3, 241);    PRINT_VECTOR(sum3);
                      
                     //cout << "aqui 3" << flush << endl;
                      
 
                     PRINT_LABEL("sum1"); 
                     BLEND_ROTATE4_LEFT(iv0, iv1, iv2, iv3, iv4);
-                    sum0 += mm_dp_ps(kv, iv0, 242);    PRINT_VECTOR(sum0);
-                    sum1 += mm_dp_ps(kv, iv1, 242);    PRINT_VECTOR(sum1);
-                    sum2 += mm_dp_ps(kv, iv2, 242);    PRINT_VECTOR(sum2);
-                    sum3 += mm_dp_ps(kv, iv3, 242);    PRINT_VECTOR(sum3);
+                    sum0 += _mm_dp_ps(kv, iv0, 242);    PRINT_VECTOR(sum0);
+                    sum1 += _mm_dp_ps(kv, iv1, 242);    PRINT_VECTOR(sum1);
+                    sum2 += _mm_dp_ps(kv, iv2, 242);    PRINT_VECTOR(sum2);
+                    sum3 += _mm_dp_ps(kv, iv3, 242);    PRINT_VECTOR(sum3);
                     
                     //cout << "aqui 4" << flush << endl;
                     
 
                     PRINT_LABEL("sum2"); 
                     BLEND_ROTATE4_LEFT(iv0, iv1, iv2, iv3, iv4);
-                    sum0 += mm_dp_ps(kv, iv0, 244);    PRINT_VECTOR(sum0);
-                    sum1 += mm_dp_ps(kv, iv1, 244);    PRINT_VECTOR(sum1);
-                    sum2 += mm_dp_ps(kv, iv2, 244);    PRINT_VECTOR(sum2);
-                    sum3 += mm_dp_ps(kv, iv3, 244);    PRINT_VECTOR(sum3);
+                    sum0 += _mm_dp_ps(kv, iv0, 244);    PRINT_VECTOR(sum0);
+                    sum1 += _mm_dp_ps(kv, iv1, 244);    PRINT_VECTOR(sum1);
+                    sum2 += _mm_dp_ps(kv, iv2, 244);    PRINT_VECTOR(sum2);
+                    sum3 += _mm_dp_ps(kv, iv3, 244);    PRINT_VECTOR(sum3);
                     
                     //cout << "aqui 5" << flush << endl;
                     
 
                     PRINT_LABEL("sum3"); 
                     BLEND_ROTATE4_LEFT(iv0, iv1, iv2, iv3, iv4);
-                    sum0 += mm_dp_ps(kv, iv0, 248);    PRINT_VECTOR(sum0);
-                    sum1 += mm_dp_ps(kv, iv1, 248);    PRINT_VECTOR(sum1);
-                    sum2 += mm_dp_ps(kv, iv2, 248);    PRINT_VECTOR(sum2);
-                    sum3 += mm_dp_ps(kv, iv3, 248);    PRINT_VECTOR(sum3);
+                    sum0 += _mm_dp_ps(kv, iv0, 248);    PRINT_VECTOR(sum0);
+                    sum1 += _mm_dp_ps(kv, iv1, 248);    PRINT_VECTOR(sum1);
+                    sum2 += _mm_dp_ps(kv, iv2, 248);    PRINT_VECTOR(sum2);
+                    sum3 += _mm_dp_ps(kv, iv3, 248);    PRINT_VECTOR(sum3);
                     
                     PRINT_LABEL("trocando"); 
                     BLEND_ROTATE4_LEFT(iv0, iv1, iv2, iv3, iv4);
@@ -1303,44 +1303,44 @@ void sseReuse5Convolve (const int s, const int w, const int h,
                     register const __m128 kv = _mm_load_ps(&kernel[idxFtmp + c]);   PRINT_VECTOR(kv);
                     iv5 = _mm_load_ps(&input[idxIntmp + c + 20]);              PRINT_VECTOR(iv5);
                     PRINT_LABEL("sum0"); 
-                    sum0 += mm_dp_ps(kv, iv0, 241);    PRINT_VECTOR(sum0); 
-                    sum1 += mm_dp_ps(kv, iv1, 241);    PRINT_VECTOR(sum1);
-                    sum2 += mm_dp_ps(kv, iv2, 241);    PRINT_VECTOR(sum2);
-                    sum3 += mm_dp_ps(kv, iv3, 241);    PRINT_VECTOR(sum3);
-                    sum4 += mm_dp_ps(kv, iv4, 241);    PRINT_VECTOR(sum4);
+                    sum0 += _mm_dp_ps(kv, iv0, 241);    PRINT_VECTOR(sum0); 
+                    sum1 += _mm_dp_ps(kv, iv1, 241);    PRINT_VECTOR(sum1);
+                    sum2 += _mm_dp_ps(kv, iv2, 241);    PRINT_VECTOR(sum2);
+                    sum3 += _mm_dp_ps(kv, iv3, 241);    PRINT_VECTOR(sum3);
+                    sum4 += _mm_dp_ps(kv, iv4, 241);    PRINT_VECTOR(sum4);
                      
                     //cout << "aqui 3" << flush << endl;
                      
 
                     PRINT_LABEL("sum1"); 
                     BLEND_ROTATE5_LEFT(iv0, iv1, iv2, iv3, iv4, iv5);
-                    sum0 += mm_dp_ps(kv, iv0, 242);    PRINT_VECTOR(sum0);
-                    sum1 += mm_dp_ps(kv, iv1, 242);    PRINT_VECTOR(sum1);
-                    sum2 += mm_dp_ps(kv, iv2, 242);    PRINT_VECTOR(sum2);
-                    sum3 += mm_dp_ps(kv, iv3, 242);    PRINT_VECTOR(sum3);
-                    sum4 += mm_dp_ps(kv, iv4, 242);    PRINT_VECTOR(sum4);
+                    sum0 += _mm_dp_ps(kv, iv0, 242);    PRINT_VECTOR(sum0);
+                    sum1 += _mm_dp_ps(kv, iv1, 242);    PRINT_VECTOR(sum1);
+                    sum2 += _mm_dp_ps(kv, iv2, 242);    PRINT_VECTOR(sum2);
+                    sum3 += _mm_dp_ps(kv, iv3, 242);    PRINT_VECTOR(sum3);
+                    sum4 += _mm_dp_ps(kv, iv4, 242);    PRINT_VECTOR(sum4);
                     
                     //cout << "aqui 4" << flush << endl;
                     
 
                     PRINT_LABEL("sum2"); 
                     BLEND_ROTATE5_LEFT(iv0, iv1, iv2, iv3, iv4, iv5);
-                    sum0 += mm_dp_ps(kv, iv0, 244);    PRINT_VECTOR(sum0);
-                    sum1 += mm_dp_ps(kv, iv1, 244);    PRINT_VECTOR(sum1);
-                    sum2 += mm_dp_ps(kv, iv2, 244);    PRINT_VECTOR(sum2);
-                    sum3 += mm_dp_ps(kv, iv3, 244);    PRINT_VECTOR(sum3);
-                    sum4 += mm_dp_ps(kv, iv4, 244);    PRINT_VECTOR(sum4);
+                    sum0 += _mm_dp_ps(kv, iv0, 244);    PRINT_VECTOR(sum0);
+                    sum1 += _mm_dp_ps(kv, iv1, 244);    PRINT_VECTOR(sum1);
+                    sum2 += _mm_dp_ps(kv, iv2, 244);    PRINT_VECTOR(sum2);
+                    sum3 += _mm_dp_ps(kv, iv3, 244);    PRINT_VECTOR(sum3);
+                    sum4 += _mm_dp_ps(kv, iv4, 244);    PRINT_VECTOR(sum4);
                     
                     //cout << "aqui 5" << flush << endl;
                     
 
                     PRINT_LABEL("sum3"); 
                     BLEND_ROTATE5_LEFT(iv0, iv1, iv2, iv3, iv4, iv5);
-                    sum0 += mm_dp_ps(kv, iv0, 248);    PRINT_VECTOR(sum0);
-                    sum1 += mm_dp_ps(kv, iv1, 248);    PRINT_VECTOR(sum1);
-                    sum2 += mm_dp_ps(kv, iv2, 248);    PRINT_VECTOR(sum2);
-                    sum3 += mm_dp_ps(kv, iv3, 248);    PRINT_VECTOR(sum3);
-                    sum4 += mm_dp_ps(kv, iv4, 248);    PRINT_VECTOR(sum4);
+                    sum0 += _mm_dp_ps(kv, iv0, 248);    PRINT_VECTOR(sum0);
+                    sum1 += _mm_dp_ps(kv, iv1, 248);    PRINT_VECTOR(sum1);
+                    sum2 += _mm_dp_ps(kv, iv2, 248);    PRINT_VECTOR(sum2);
+                    sum3 += _mm_dp_ps(kv, iv3, 248);    PRINT_VECTOR(sum3);
+                    sum4 += _mm_dp_ps(kv, iv4, 248);    PRINT_VECTOR(sum4);
                     
                     PRINT_LABEL("trocando"); 
                     BLEND_ROTATE5_LEFT(iv0, iv1, iv2, iv3, iv4, iv5);
@@ -1403,48 +1403,48 @@ void sseReuse6Convolve (const int s, const int w, const int h,
                     register const __m128 kv = _mm_load_ps(&kernel[idxFtmp + c]);   PRINT_VECTOR(kv);
                     iv6 = _mm_load_ps(&input[idxIntmp + c + 24]);              PRINT_VECTOR(iv6);
                     PRINT_LABEL("sum0"); 
-                    sum0 += mm_dp_ps(kv, iv0, 241);    PRINT_VECTOR(sum0); 
-                    sum1 += mm_dp_ps(kv, iv1, 241);    PRINT_VECTOR(sum1);
-                    sum2 += mm_dp_ps(kv, iv2, 241);    PRINT_VECTOR(sum2);
-                    sum3 += mm_dp_ps(kv, iv3, 241);    PRINT_VECTOR(sum3);
-                    sum4 += mm_dp_ps(kv, iv4, 241);    PRINT_VECTOR(sum4);
-                    sum5 += mm_dp_ps(kv, iv5, 241);    PRINT_VECTOR(sum5);
+                    sum0 += _mm_dp_ps(kv, iv0, 241);    PRINT_VECTOR(sum0); 
+                    sum1 += _mm_dp_ps(kv, iv1, 241);    PRINT_VECTOR(sum1);
+                    sum2 += _mm_dp_ps(kv, iv2, 241);    PRINT_VECTOR(sum2);
+                    sum3 += _mm_dp_ps(kv, iv3, 241);    PRINT_VECTOR(sum3);
+                    sum4 += _mm_dp_ps(kv, iv4, 241);    PRINT_VECTOR(sum4);
+                    sum5 += _mm_dp_ps(kv, iv5, 241);    PRINT_VECTOR(sum5);
                      
                     //cout << "aqui 3" << flush << endl;
                      
 
                     PRINT_LABEL("sum1"); 
                     BLEND_ROTATE6_LEFT(iv0, iv1, iv2, iv3, iv4, iv5, iv6);
-                    sum0 += mm_dp_ps(kv, iv0, 242);    PRINT_VECTOR(sum0);
-                    sum1 += mm_dp_ps(kv, iv1, 242);    PRINT_VECTOR(sum1);
-                    sum2 += mm_dp_ps(kv, iv2, 242);    PRINT_VECTOR(sum2);
-                    sum3 += mm_dp_ps(kv, iv3, 242);    PRINT_VECTOR(sum3);
-                    sum4 += mm_dp_ps(kv, iv4, 242);    PRINT_VECTOR(sum4);
-                    sum5 += mm_dp_ps(kv, iv5, 242);    PRINT_VECTOR(sum5);
+                    sum0 += _mm_dp_ps(kv, iv0, 242);    PRINT_VECTOR(sum0);
+                    sum1 += _mm_dp_ps(kv, iv1, 242);    PRINT_VECTOR(sum1);
+                    sum2 += _mm_dp_ps(kv, iv2, 242);    PRINT_VECTOR(sum2);
+                    sum3 += _mm_dp_ps(kv, iv3, 242);    PRINT_VECTOR(sum3);
+                    sum4 += _mm_dp_ps(kv, iv4, 242);    PRINT_VECTOR(sum4);
+                    sum5 += _mm_dp_ps(kv, iv5, 242);    PRINT_VECTOR(sum5);
                     
                     //cout << "aqui 4" << flush << endl;
                     
 
                     PRINT_LABEL("sum2"); 
                     BLEND_ROTATE6_LEFT(iv0, iv1, iv2, iv3, iv4, iv5, iv6);
-                    sum0 += mm_dp_ps(kv, iv0, 244);    PRINT_VECTOR(sum0);
-                    sum1 += mm_dp_ps(kv, iv1, 244);    PRINT_VECTOR(sum1);
-                    sum2 += mm_dp_ps(kv, iv2, 244);    PRINT_VECTOR(sum2);
-                    sum3 += mm_dp_ps(kv, iv3, 244);    PRINT_VECTOR(sum3);
-                    sum4 += mm_dp_ps(kv, iv4, 244);    PRINT_VECTOR(sum4);
-                    sum5 += mm_dp_ps(kv, iv5, 244);    PRINT_VECTOR(sum5);
+                    sum0 += _mm_dp_ps(kv, iv0, 244);    PRINT_VECTOR(sum0);
+                    sum1 += _mm_dp_ps(kv, iv1, 244);    PRINT_VECTOR(sum1);
+                    sum2 += _mm_dp_ps(kv, iv2, 244);    PRINT_VECTOR(sum2);
+                    sum3 += _mm_dp_ps(kv, iv3, 244);    PRINT_VECTOR(sum3);
+                    sum4 += _mm_dp_ps(kv, iv4, 244);    PRINT_VECTOR(sum4);
+                    sum5 += _mm_dp_ps(kv, iv5, 244);    PRINT_VECTOR(sum5);
                     
                     //cout << "aqui 5" << flush << endl;
                     
 
                     PRINT_LABEL("sum3"); 
                     BLEND_ROTATE6_LEFT(iv0, iv1, iv2, iv3, iv4, iv5, iv6);
-                    sum0 += mm_dp_ps(kv, iv0, 248);    PRINT_VECTOR(sum0);
-                    sum1 += mm_dp_ps(kv, iv1, 248);    PRINT_VECTOR(sum1);
-                    sum2 += mm_dp_ps(kv, iv2, 248);    PRINT_VECTOR(sum2);
-                    sum3 += mm_dp_ps(kv, iv3, 248);    PRINT_VECTOR(sum3);
-                    sum4 += mm_dp_ps(kv, iv4, 248);    PRINT_VECTOR(sum4);
-                    sum5 += mm_dp_ps(kv, iv5, 248);    PRINT_VECTOR(sum5);
+                    sum0 += _mm_dp_ps(kv, iv0, 248);    PRINT_VECTOR(sum0);
+                    sum1 += _mm_dp_ps(kv, iv1, 248);    PRINT_VECTOR(sum1);
+                    sum2 += _mm_dp_ps(kv, iv2, 248);    PRINT_VECTOR(sum2);
+                    sum3 += _mm_dp_ps(kv, iv3, 248);    PRINT_VECTOR(sum3);
+                    sum4 += _mm_dp_ps(kv, iv4, 248);    PRINT_VECTOR(sum4);
+                    sum5 += _mm_dp_ps(kv, iv5, 248);    PRINT_VECTOR(sum5);
                     
                     PRINT_LABEL("trocando"); 
                     BLEND_ROTATE6_LEFT(iv0, iv1, iv2, iv3, iv4, iv5, iv6);
@@ -1504,52 +1504,52 @@ void sseReuse7Convolve (const int s, const int w, const int h,
                     register const __m128 kv = _mm_load_ps(&kernel[idxFtmp + c]);   PRINT_VECTOR(kv);
                     iv7 = _mm_load_ps(&input[idxIntmp + c + 28]);              PRINT_VECTOR(iv7);
                     PRINT_LABEL("sum0"); 
-                    sum0 += mm_dp_ps(kv, iv0, 241);    PRINT_VECTOR(sum0); 
-                    sum1 += mm_dp_ps(kv, iv1, 241);    PRINT_VECTOR(sum1);
-                    sum2 += mm_dp_ps(kv, iv2, 241);    PRINT_VECTOR(sum2);
-                    sum3 += mm_dp_ps(kv, iv3, 241);    PRINT_VECTOR(sum3);
-                    sum4 += mm_dp_ps(kv, iv4, 241);    PRINT_VECTOR(sum4);
-                    sum5 += mm_dp_ps(kv, iv5, 241);    PRINT_VECTOR(sum5);
-                    sum6 += mm_dp_ps(kv, iv6, 241);    PRINT_VECTOR(sum6);
+                    sum0 += _mm_dp_ps(kv, iv0, 241);    PRINT_VECTOR(sum0); 
+                    sum1 += _mm_dp_ps(kv, iv1, 241);    PRINT_VECTOR(sum1);
+                    sum2 += _mm_dp_ps(kv, iv2, 241);    PRINT_VECTOR(sum2);
+                    sum3 += _mm_dp_ps(kv, iv3, 241);    PRINT_VECTOR(sum3);
+                    sum4 += _mm_dp_ps(kv, iv4, 241);    PRINT_VECTOR(sum4);
+                    sum5 += _mm_dp_ps(kv, iv5, 241);    PRINT_VECTOR(sum5);
+                    sum6 += _mm_dp_ps(kv, iv6, 241);    PRINT_VECTOR(sum6);
                      
                     //cout << "aqui 3" << flush << endl;
                      
 
                     PRINT_LABEL("sum1"); 
                     BLEND_ROTATE7_LEFT(iv0, iv1, iv2, iv3, iv4, iv5, iv6, iv7);
-                    sum0 += mm_dp_ps(kv, iv0, 242);    PRINT_VECTOR(sum0);
-                    sum1 += mm_dp_ps(kv, iv1, 242);    PRINT_VECTOR(sum1);
-                    sum2 += mm_dp_ps(kv, iv2, 242);    PRINT_VECTOR(sum2);
-                    sum3 += mm_dp_ps(kv, iv3, 242);    PRINT_VECTOR(sum3);
-                    sum4 += mm_dp_ps(kv, iv4, 242);    PRINT_VECTOR(sum4);
-                    sum5 += mm_dp_ps(kv, iv5, 242);    PRINT_VECTOR(sum5);
-                    sum6 += mm_dp_ps(kv, iv6, 242);    PRINT_VECTOR(sum6);
+                    sum0 += _mm_dp_ps(kv, iv0, 242);    PRINT_VECTOR(sum0);
+                    sum1 += _mm_dp_ps(kv, iv1, 242);    PRINT_VECTOR(sum1);
+                    sum2 += _mm_dp_ps(kv, iv2, 242);    PRINT_VECTOR(sum2);
+                    sum3 += _mm_dp_ps(kv, iv3, 242);    PRINT_VECTOR(sum3);
+                    sum4 += _mm_dp_ps(kv, iv4, 242);    PRINT_VECTOR(sum4);
+                    sum5 += _mm_dp_ps(kv, iv5, 242);    PRINT_VECTOR(sum5);
+                    sum6 += _mm_dp_ps(kv, iv6, 242);    PRINT_VECTOR(sum6);
                     
                     //cout << "aqui 4" << flush << endl;
                     
 
                     PRINT_LABEL("sum2"); 
                     BLEND_ROTATE7_LEFT(iv0, iv1, iv2, iv3, iv4, iv5, iv6, iv7);
-                    sum0 += mm_dp_ps(kv, iv0, 244);    PRINT_VECTOR(sum0);
-                    sum1 += mm_dp_ps(kv, iv1, 244);    PRINT_VECTOR(sum1);
-                    sum2 += mm_dp_ps(kv, iv2, 244);    PRINT_VECTOR(sum2);
-                    sum3 += mm_dp_ps(kv, iv3, 244);    PRINT_VECTOR(sum3);
-                    sum4 += mm_dp_ps(kv, iv4, 244);    PRINT_VECTOR(sum4);
-                    sum5 += mm_dp_ps(kv, iv5, 244);    PRINT_VECTOR(sum5);
-                    sum6 += mm_dp_ps(kv, iv6, 244);    PRINT_VECTOR(sum6);
+                    sum0 += _mm_dp_ps(kv, iv0, 244);    PRINT_VECTOR(sum0);
+                    sum1 += _mm_dp_ps(kv, iv1, 244);    PRINT_VECTOR(sum1);
+                    sum2 += _mm_dp_ps(kv, iv2, 244);    PRINT_VECTOR(sum2);
+                    sum3 += _mm_dp_ps(kv, iv3, 244);    PRINT_VECTOR(sum3);
+                    sum4 += _mm_dp_ps(kv, iv4, 244);    PRINT_VECTOR(sum4);
+                    sum5 += _mm_dp_ps(kv, iv5, 244);    PRINT_VECTOR(sum5);
+                    sum6 += _mm_dp_ps(kv, iv6, 244);    PRINT_VECTOR(sum6);
                     
                     //cout << "aqui 5" << flush << endl;
                     
 
                     PRINT_LABEL("sum3"); 
                     BLEND_ROTATE7_LEFT(iv0, iv1, iv2, iv3, iv4, iv5, iv6, iv7);
-                    sum0 += mm_dp_ps(kv, iv0, 248);    PRINT_VECTOR(sum0);
-                    sum1 += mm_dp_ps(kv, iv1, 248);    PRINT_VECTOR(sum1);
-                    sum2 += mm_dp_ps(kv, iv2, 248);    PRINT_VECTOR(sum2);
-                    sum3 += mm_dp_ps(kv, iv3, 248);    PRINT_VECTOR(sum3);
-                    sum4 += mm_dp_ps(kv, iv4, 248);    PRINT_VECTOR(sum4);
-                    sum5 += mm_dp_ps(kv, iv5, 248);    PRINT_VECTOR(sum5);
-                    sum6 += mm_dp_ps(kv, iv6, 248);    PRINT_VECTOR(sum6);
+                    sum0 += _mm_dp_ps(kv, iv0, 248);    PRINT_VECTOR(sum0);
+                    sum1 += _mm_dp_ps(kv, iv1, 248);    PRINT_VECTOR(sum1);
+                    sum2 += _mm_dp_ps(kv, iv2, 248);    PRINT_VECTOR(sum2);
+                    sum3 += _mm_dp_ps(kv, iv3, 248);    PRINT_VECTOR(sum3);
+                    sum4 += _mm_dp_ps(kv, iv4, 248);    PRINT_VECTOR(sum4);
+                    sum5 += _mm_dp_ps(kv, iv5, 248);    PRINT_VECTOR(sum5);
+                    sum6 += _mm_dp_ps(kv, iv6, 248);    PRINT_VECTOR(sum6);
                     
                     PRINT_LABEL("trocando"); 
                     BLEND_ROTATE7_LEFT(iv0, iv1, iv2, iv3, iv4, iv5, iv6, iv7);
@@ -1629,10 +1629,10 @@ void unalignedSSEConvolve (const int s, const int w, const int h,
                 int idxIntmp = (y + r) * s + x;
                 for (int c = 0; c < kw; c += 4) {
                     kv = _mm_load_ps(&kernel[idxFtmp + c]);
-                    sum += mm_dp_ps(kv, _mm_loadu_ps(&input[idxIntmp + c]), 241);
-                    sum += mm_dp_ps(kv, _mm_loadu_ps(&input[idxIntmp + c + 1]), 242);
-                    sum += mm_dp_ps(kv, _mm_loadu_ps(&input[idxIntmp + c + 2]), 244);
-                    sum += mm_dp_ps(kv, _mm_loadu_ps(&input[idxIntmp + c + 3]), 248);
+                    sum += _mm_dp_ps(kv, _mm_loadu_ps(&input[idxIntmp + c]), 241);
+                    sum += _mm_dp_ps(kv, _mm_loadu_ps(&input[idxIntmp + c + 1]), 242);
+                    sum += _mm_dp_ps(kv, _mm_loadu_ps(&input[idxIntmp + c + 2]), 244);
+                    sum += _mm_dp_ps(kv, _mm_loadu_ps(&input[idxIntmp + c + 3]), 248);
                 }
             } //for (int r = 0...
             _mm_storeu_ps(&output[(y + hk) * s + (x + hk)], sum);
@@ -1752,40 +1752,40 @@ void loopBlockAlignedSSEConvolve (const int s, const int w, const int h,
                             
                             //cout << "aqui 2" << flush << endl;
                             PRINT_LABEL("sum0"); 
-                            sum0 += mm_dp_ps(kv, iv0, 241);    PRINT_VECTOR(sum0); 
-                            sum1 += mm_dp_ps(kv, iv1, 241);    PRINT_VECTOR(sum1);
-                            sum2 += mm_dp_ps(kv, iv2, 241);    PRINT_VECTOR(sum2);
-                            sum3 += mm_dp_ps(kv, iv3, 241);    PRINT_VECTOR(sum3);
+                            sum0 += _mm_dp_ps(kv, iv0, 241);    PRINT_VECTOR(sum0); 
+                            sum1 += _mm_dp_ps(kv, iv1, 241);    PRINT_VECTOR(sum1);
+                            sum2 += _mm_dp_ps(kv, iv2, 241);    PRINT_VECTOR(sum2);
+                            sum3 += _mm_dp_ps(kv, iv3, 241);    PRINT_VECTOR(sum3);
                              
                             //cout << "aqui 3" << flush << endl;
                              
                             BLEND_ROTATE4_LEFT(iv0, iv1, iv2, iv3, iv4);
         
                             PRINT_LABEL("sum1"); 
-                            sum0 += mm_dp_ps(kv, iv0, 242);    PRINT_VECTOR(sum0);
-                            sum1 += mm_dp_ps(kv, iv1, 242);    PRINT_VECTOR(sum1);
-                            sum2 += mm_dp_ps(kv, iv2, 242);    PRINT_VECTOR(sum2);
-                            sum3 += mm_dp_ps(kv, iv3, 242);    PRINT_VECTOR(sum3);
+                            sum0 += _mm_dp_ps(kv, iv0, 242);    PRINT_VECTOR(sum0);
+                            sum1 += _mm_dp_ps(kv, iv1, 242);    PRINT_VECTOR(sum1);
+                            sum2 += _mm_dp_ps(kv, iv2, 242);    PRINT_VECTOR(sum2);
+                            sum3 += _mm_dp_ps(kv, iv3, 242);    PRINT_VECTOR(sum3);
                             
                             //cout << "aqui 4" << flush << endl;
                             
                             BLEND_ROTATE4_LEFT(iv0, iv1, iv2, iv3, iv4);
         
                             PRINT_LABEL("sum2"); 
-                            sum0 += mm_dp_ps(kv, iv0, 244);    PRINT_VECTOR(sum0);
-                            sum1 += mm_dp_ps(kv, iv1, 244);    PRINT_VECTOR(sum1);
-                            sum2 += mm_dp_ps(kv, iv2, 244);    PRINT_VECTOR(sum2);
-                            sum3 += mm_dp_ps(kv, iv3, 244);    PRINT_VECTOR(sum3);
+                            sum0 += _mm_dp_ps(kv, iv0, 244);    PRINT_VECTOR(sum0);
+                            sum1 += _mm_dp_ps(kv, iv1, 244);    PRINT_VECTOR(sum1);
+                            sum2 += _mm_dp_ps(kv, iv2, 244);    PRINT_VECTOR(sum2);
+                            sum3 += _mm_dp_ps(kv, iv3, 244);    PRINT_VECTOR(sum3);
                             
                             //cout << "aqui 5" << flush << endl;
                             
                             BLEND_ROTATE4_LEFT(iv0, iv1, iv2, iv3, iv4);
         
                             PRINT_LABEL("sum3"); 
-                            sum0 += mm_dp_ps(kv, iv0, 248);    PRINT_VECTOR(sum0);
-                            sum1 += mm_dp_ps(kv, iv1, 248);    PRINT_VECTOR(sum1);
-                            sum2 += mm_dp_ps(kv, iv2, 248);    PRINT_VECTOR(sum2);
-                            sum3 += mm_dp_ps(kv, iv3, 248);    PRINT_VECTOR(sum3);
+                            sum0 += _mm_dp_ps(kv, iv0, 248);    PRINT_VECTOR(sum0);
+                            sum1 += _mm_dp_ps(kv, iv1, 248);    PRINT_VECTOR(sum1);
+                            sum2 += _mm_dp_ps(kv, iv2, 248);    PRINT_VECTOR(sum2);
+                            sum3 += _mm_dp_ps(kv, iv3, 248);    PRINT_VECTOR(sum3);
                             
                         }
                     } //for (int r = 0...
@@ -1839,52 +1839,52 @@ void loopBlockAlignedSSEConvolve2 (const int s, const int w, const int h,
                             
                             //cout << "aqui 2" << flush << endl;
                             PRINT_LABEL("sum0"); 
-                            sum0 += mm_dp_ps(kv, iv0, 241);    PRINT_VECTOR(sum0); 
-                            sum1 += mm_dp_ps(kv, iv1, 241);    PRINT_VECTOR(sum1);
-                            sum2 += mm_dp_ps(kv, iv2, 241);    PRINT_VECTOR(sum2);
-                            sum3 += mm_dp_ps(kv, iv3, 241);    PRINT_VECTOR(sum3);
-                            sum4 += mm_dp_ps(kv, iv4, 241);    PRINT_VECTOR(sum4);
-                            sum5 += mm_dp_ps(kv, iv5, 241);    PRINT_VECTOR(sum5);
-                            sum6 += mm_dp_ps(kv, iv6, 241);    PRINT_VECTOR(sum6);
+                            sum0 += _mm_dp_ps(kv, iv0, 241);    PRINT_VECTOR(sum0); 
+                            sum1 += _mm_dp_ps(kv, iv1, 241);    PRINT_VECTOR(sum1);
+                            sum2 += _mm_dp_ps(kv, iv2, 241);    PRINT_VECTOR(sum2);
+                            sum3 += _mm_dp_ps(kv, iv3, 241);    PRINT_VECTOR(sum3);
+                            sum4 += _mm_dp_ps(kv, iv4, 241);    PRINT_VECTOR(sum4);
+                            sum5 += _mm_dp_ps(kv, iv5, 241);    PRINT_VECTOR(sum5);
+                            sum6 += _mm_dp_ps(kv, iv6, 241);    PRINT_VECTOR(sum6);
                              
                             //cout << "aqui 3" << flush << endl;
                              
                             BLEND_ROTATE7_LEFT(iv0, iv1, iv2, iv3, iv4, iv5, iv6, iv7);
         
                             PRINT_LABEL("sum1"); 
-                            sum0 += mm_dp_ps(kv, iv0, 242);    PRINT_VECTOR(sum0);
-                            sum1 += mm_dp_ps(kv, iv1, 242);    PRINT_VECTOR(sum1);
-                            sum2 += mm_dp_ps(kv, iv2, 242);    PRINT_VECTOR(sum2);
-                            sum3 += mm_dp_ps(kv, iv3, 242);    PRINT_VECTOR(sum3);
-                            sum4 += mm_dp_ps(kv, iv4, 242);    PRINT_VECTOR(sum4);
-                            sum5 += mm_dp_ps(kv, iv5, 242);    PRINT_VECTOR(sum5);
-                            sum6 += mm_dp_ps(kv, iv6, 242);    PRINT_VECTOR(sum6);
+                            sum0 += _mm_dp_ps(kv, iv0, 242);    PRINT_VECTOR(sum0);
+                            sum1 += _mm_dp_ps(kv, iv1, 242);    PRINT_VECTOR(sum1);
+                            sum2 += _mm_dp_ps(kv, iv2, 242);    PRINT_VECTOR(sum2);
+                            sum3 += _mm_dp_ps(kv, iv3, 242);    PRINT_VECTOR(sum3);
+                            sum4 += _mm_dp_ps(kv, iv4, 242);    PRINT_VECTOR(sum4);
+                            sum5 += _mm_dp_ps(kv, iv5, 242);    PRINT_VECTOR(sum5);
+                            sum6 += _mm_dp_ps(kv, iv6, 242);    PRINT_VECTOR(sum6);
                             
                             //cout << "aqui 4" << flush << endl;
                             
                             BLEND_ROTATE7_LEFT(iv0, iv1, iv2, iv3, iv4, iv5, iv6, iv7);
         
                             PRINT_LABEL("sum2"); 
-                            sum0 += mm_dp_ps(kv, iv0, 244);    PRINT_VECTOR(sum0);
-                            sum1 += mm_dp_ps(kv, iv1, 244);    PRINT_VECTOR(sum1);
-                            sum2 += mm_dp_ps(kv, iv2, 244);    PRINT_VECTOR(sum2);
-                            sum3 += mm_dp_ps(kv, iv3, 244);    PRINT_VECTOR(sum3);
-                            sum4 += mm_dp_ps(kv, iv4, 244);    PRINT_VECTOR(sum4);
-                            sum5 += mm_dp_ps(kv, iv5, 244);    PRINT_VECTOR(sum5);
-                            sum6 += mm_dp_ps(kv, iv6, 244);    PRINT_VECTOR(sum6);
+                            sum0 += _mm_dp_ps(kv, iv0, 244);    PRINT_VECTOR(sum0);
+                            sum1 += _mm_dp_ps(kv, iv1, 244);    PRINT_VECTOR(sum1);
+                            sum2 += _mm_dp_ps(kv, iv2, 244);    PRINT_VECTOR(sum2);
+                            sum3 += _mm_dp_ps(kv, iv3, 244);    PRINT_VECTOR(sum3);
+                            sum4 += _mm_dp_ps(kv, iv4, 244);    PRINT_VECTOR(sum4);
+                            sum5 += _mm_dp_ps(kv, iv5, 244);    PRINT_VECTOR(sum5);
+                            sum6 += _mm_dp_ps(kv, iv6, 244);    PRINT_VECTOR(sum6);
                             
                             //cout << "aqui 5" << flush << endl;
                             
                             BLEND_ROTATE7_LEFT(iv0, iv1, iv2, iv3, iv4, iv5, iv6, iv7);
         
                             PRINT_LABEL("sum3"); 
-                            sum0 += mm_dp_ps(kv, iv0, 248);    PRINT_VECTOR(sum0);
-                            sum1 += mm_dp_ps(kv, iv1, 248);    PRINT_VECTOR(sum1);
-                            sum2 += mm_dp_ps(kv, iv2, 248);    PRINT_VECTOR(sum2);
-                            sum3 += mm_dp_ps(kv, iv3, 248);    PRINT_VECTOR(sum3);
-                            sum4 += mm_dp_ps(kv, iv4, 248);    PRINT_VECTOR(sum4);
-                            sum5 += mm_dp_ps(kv, iv5, 248);    PRINT_VECTOR(sum5);
-                            sum6 += mm_dp_ps(kv, iv6, 248);    PRINT_VECTOR(sum6);
+                            sum0 += _mm_dp_ps(kv, iv0, 248);    PRINT_VECTOR(sum0);
+                            sum1 += _mm_dp_ps(kv, iv1, 248);    PRINT_VECTOR(sum1);
+                            sum2 += _mm_dp_ps(kv, iv2, 248);    PRINT_VECTOR(sum2);
+                            sum3 += _mm_dp_ps(kv, iv3, 248);    PRINT_VECTOR(sum3);
+                            sum4 += _mm_dp_ps(kv, iv4, 248);    PRINT_VECTOR(sum4);
+                            sum5 += _mm_dp_ps(kv, iv5, 248);    PRINT_VECTOR(sum5);
+                            sum6 += _mm_dp_ps(kv, iv6, 248);    PRINT_VECTOR(sum6);
 
                         }
                     } //for (int r = 0...
@@ -1969,17 +1969,17 @@ void sse3LbConvolve (const int s, const int w, const int h, const int ks,
                  PRINT_VECTOR(inv0); \
                  PRINT_VECTOR(inv1); \
                  /* 0 */ \
-                 sum += mm_dp_ps(kv, inv0, 113); PRINT_VECTOR(sum);     /*{68,0,0,0}*/ \
+                 sum += _mm_dp_ps(kv, inv0, 113); PRINT_VECTOR(sum);     /*{68,0,0,0}*/ \
                  /* 1 */ \
                  ROTATE_LEFT(inv0);                                      /*{11,12,13,10}*/ \
-                 sum += mm_dp_ps(kv, inv0, 114); PRINT_VECTOR(sum);     /*{68,74,0,0}*/ \
+                 sum += _mm_dp_ps(kv, inv0, 114); PRINT_VECTOR(sum);     /*{68,74,0,0}*/ \
                  /* 2 */ \
                  ROTATE_LEFT(inv0);                                      /*{12,13,10,11}*/ \
                  inv0 = _mm_movelh_ps(inv0, inv1); PRINT_VECTOR(inv0);   /*{12,13,14,15}*/ \
-                 sum += mm_dp_ps(kv, inv0, 116); PRINT_VECTOR(sum);     /*{68,74,80,0}*/ \
+                 sum += _mm_dp_ps(kv, inv0, 116); PRINT_VECTOR(sum);     /*{68,74,80,0}*/ \
                  /* 3 */ \
                  ROTATE_LEFT(inv0);                                      /*{13,14,15,12}*/ \
-                 sum += mm_dp_ps(kv, inv0, 120); PRINT_VECTOR(sum);     /*{68,74,80,86}*/ 
+                 sum += _mm_dp_ps(kv, inv0, 120); PRINT_VECTOR(sum);     /*{68,74,80,86}*/ 
             
             #define CONVOLVE3LB_LINE(ipX, kv) \
                  CONVOLVE3LB_LOAD(ipX); \
@@ -2296,17 +2296,17 @@ void sse3CmConvolve (const int s, const int w, const int h, const int ks,
                 PRINT_VECTOR(inv0); \
                 PRINT_VECTOR(inv1); \
                 /* 0 */ \
-                sum += mm_dp_ps(kv, inv0, 113); PRINT_VECTOR(sum);     /*{68,0,0,0}*/ \
+                sum += _mm_dp_ps(kv, inv0, 113); PRINT_VECTOR(sum);     /*{68,0,0,0}*/ \
                 /* 1 */ \
                 ROTATE_LEFT(inv0);                                      /*{11,12,13,10}*/ \
-                sum += mm_dp_ps(kv, inv0, 114); PRINT_VECTOR(sum);     /*{68,74,0,0}*/ \
+                sum += _mm_dp_ps(kv, inv0, 114); PRINT_VECTOR(sum);     /*{68,74,0,0}*/ \
                 /* 2 */ \
                 ROTATE_LEFT(inv0);                                      /*{12,13,10,11}*/ \
                 inv0 = _mm_movelh_ps(inv0, inv1); PRINT_VECTOR(inv0);   /*{12,13,14,15}*/ \
-                sum += mm_dp_ps(kv, inv0, 116); PRINT_VECTOR(sum);     /*{68,74,80,0}*/ \
+                sum += _mm_dp_ps(kv, inv0, 116); PRINT_VECTOR(sum);     /*{68,74,80,0}*/ \
                 /* 3 */ \
                 ROTATE_LEFT(inv0);                                      /*{13,14,15,12}*/ \
-                sum += mm_dp_ps(kv, inv0, 120); PRINT_VECTOR(sum);     /*{68,74,80,86}*/ 
+                sum += _mm_dp_ps(kv, inv0, 120); PRINT_VECTOR(sum);     /*{68,74,80,86}*/ 
             
             #define CONVOLVE3CM2_LOOPUNROLL(ip, kv) \
                 CONVOLVE3CM2_LOAD(ip); \
@@ -2396,17 +2396,17 @@ void sse3Convolve (const int s, const int w, const int h, const int ks,
             PRINT_VECTOR(inv0); \
             PRINT_VECTOR(inv1); \
             /* 0 */ \
-            sum += mm_dp_ps(kv, inv0, 113); PRINT_VECTOR(sum);     /*{68,0,0,0}*/ \
+            sum += _mm_dp_ps(kv, inv0, 113); PRINT_VECTOR(sum);     /*{68,0,0,0}*/ \
             /* 1 */ \
             ROTATE_LEFT(inv0);                                      /*{11,12,13,10}*/ \
-            sum += mm_dp_ps(kv, inv0, 114); PRINT_VECTOR(sum);     /*{68,74,0,0}*/ \
+            sum += _mm_dp_ps(kv, inv0, 114); PRINT_VECTOR(sum);     /*{68,74,0,0}*/ \
             /* 2 */ \
             ROTATE_LEFT(inv0);                                      /*{12,13,10,11}*/ \
             inv0 = _mm_movelh_ps(inv0, inv1); PRINT_VECTOR(inv0);   /*{12,13,14,15}*/ \
-            sum += mm_dp_ps(kv, inv0, 116); PRINT_VECTOR(sum);     /*{68,74,80,0}*/ \
+            sum += _mm_dp_ps(kv, inv0, 116); PRINT_VECTOR(sum);     /*{68,74,80,0}*/ \
             /* 3 */ \
             ROTATE_LEFT(inv0);                                      /*{13,14,15,12}*/ \
-            sum += mm_dp_ps(kv, inv0, 120); PRINT_VECTOR(sum);     /*{68,74,80,86}*/ 
+            sum += _mm_dp_ps(kv, inv0, 120); PRINT_VECTOR(sum);     /*{68,74,80,86}*/ 
             
             PRINT_LABEL("krow 0");
             CONVOLVE3_LOAD(ipX)
@@ -2497,18 +2497,18 @@ void sse5Convolve (const int s, const int w, const int h, const int ks,
             #define CONVOLVE0(kp, ipX, dp1, dp2) \
             kv0 = _mm_load_ps(kp); PRINT_VECTOR(kv0); \
             kv1 = _mm_load_ps(kp + 4); PRINT_VECTOR(kv1); \
-            kv1 = mm_blend_ps(kv1, kv0, 14); PRINT_VECTOR(kv1); \
+            kv1 = _mm_blend_ps(kv1, kv0, 14); PRINT_VECTOR(kv1); \
             inv0 = _mm_load_ps(ipX); PRINT_VECTOR(inv0); \
             inv1 = _mm_load_ps(ipX + 4); PRINT_VECTOR(inv1); \
             inv2 = _mm_load_ps(ipX + 8); PRINT_VECTOR(inv2); \
-            sum0 += mm_dp_ps(kv0, inv0, dp1) + mm_dp_ps (kv1, inv1, dp2); PRINT_VECTOR(sum0); 
+            sum0 += _mm_dp_ps(kv0, inv0, dp1) + _mm_dp_ps (kv1, inv1, dp2); PRINT_VECTOR(sum0); 
             
             #define CONVOLVE1(sum, inv0, inv1, dpm1, dpm2) \
             ROTATE_RIGHT(kv0); \
             ROTATE_RIGHT(kv1); \
             PRINT_VECTOR(kv0); PRINT_VECTOR(kv1); \
             PRINT_VECTOR(inv0); PRINT_VECTOR(inv1); \
-            sum += mm_dp_ps (kv0, inv0, dpm1) + mm_dp_ps (kv1, inv1, dpm2); PRINT_VECTOR(sum);
+            sum += _mm_dp_ps (kv0, inv0, dpm1) + _mm_dp_ps (kv1, inv1, dpm2); PRINT_VECTOR(sum);
             
             
             _mm_prefetch ( ipX + 128, _MM_HINT_NTA );
@@ -2605,23 +2605,23 @@ void sse7Convolve (const int s, const int w, const int h, const int ks,
                  kv1 = _mm_load_ps(kp + 4); PRINT_VECTOR(kv1); \
                  kv2 = kv1; \
                  kv2 = _mm_shuffle_ps(kv2, kv2, _MM_SHUFFLE(1,0,3,2)); PRINT_VECTOR(kv2); \
-                 sum += mm_dp_ps(kv0, inv0, 241) + mm_dp_ps (kv1, inv1, 113); PRINT_VECTOR(sum); \
+                 sum += _mm_dp_ps(kv0, inv0, 241) + _mm_dp_ps (kv1, inv1, 113); PRINT_VECTOR(sum); \
                  /* 1 */ \
                  ROTATE_RIGHT(kv0); \
                  ROTATE_RIGHT(kv1); \
-                 kv1 = mm_blend_ps(kv1, kv0, 1); PRINT_VECTOR(kv1); \
-                 sum += mm_dp_ps(kv0, inv0, 226) + mm_dp_ps (kv1, inv1, 242); PRINT_VECTOR(sum); \
+                 kv1 = _mm_blend_ps(kv1, kv0, 1); PRINT_VECTOR(kv1); \
+                 sum += _mm_dp_ps(kv0, inv0, 226) + _mm_dp_ps (kv1, inv1, 242); PRINT_VECTOR(sum); \
                  /* 2 */ \
                  ROTATE_RIGHT(kv0); \
                  ROTATE_RIGHT(kv1); \
-                 kv1 = mm_blend_ps(kv1, kv0, 1); PRINT_VECTOR(kv1); \
-                 sum += mm_dp_ps(kv0, inv0, 196) + mm_dp_ps (kv1, inv1, 244) + mm_dp_ps (kv2, inv2, 20);  PRINT_VECTOR(sum); \
+                 kv1 = _mm_blend_ps(kv1, kv0, 1); PRINT_VECTOR(kv1); \
+                 sum += _mm_dp_ps(kv0, inv0, 196) + _mm_dp_ps (kv1, inv1, 244) + _mm_dp_ps (kv2, inv2, 20);  PRINT_VECTOR(sum); \
                  /* 3 */ \
                  ROTATE_RIGHT(kv0); \
                  ROTATE_RIGHT(kv1); \
-                 kv1 = mm_blend_ps(kv1, kv0, 1); PRINT_VECTOR(kv1); \
+                 kv1 = _mm_blend_ps(kv1, kv0, 1); PRINT_VECTOR(kv1); \
                  ROTATE_RIGHT(kv2); \
-                 sum += mm_dp_ps(kv0, inv0, 136) + mm_dp_ps (kv1, inv1, 248) + mm_dp_ps (kv2, inv2, 56); PRINT_VECTOR(sum);
+                 sum += _mm_dp_ps(kv0, inv0, 136) + _mm_dp_ps (kv1, inv1, 248) + _mm_dp_ps (kv2, inv2, 56); PRINT_VECTOR(sum);
              
              
              //------------------------------------
@@ -2633,23 +2633,23 @@ void sse7Convolve (const int s, const int w, const int h, const int ks,
                  ROTATE_RIGHT(kv0); \
                  kv1 = _mm_shuffle_ps(kv2, kv2, _MM_SHUFFLE(2,1,0,3)); PRINT_VECTOR(kv1); \
                  ROTATE_LEFT(kv2); \
-                 sum += mm_dp_ps(kv0, inv0, 241) + mm_dp_ps (kv1, inv1, 113); PRINT_VECTOR(sum); \
+                 sum += _mm_dp_ps(kv0, inv0, 241) + _mm_dp_ps (kv1, inv1, 113); PRINT_VECTOR(sum); \
                  /* 1 */ \
                  ROTATE_RIGHT(kv0); \
                  ROTATE_RIGHT(kv1); \
-                 kv1 = mm_blend_ps(kv1, kv0, 1); PRINT_VECTOR(kv1); \
-                 sum += mm_dp_ps(kv0, inv0, 226) + mm_dp_ps (kv1, inv1, 242); PRINT_VECTOR(sum); \
+                 kv1 = _mm_blend_ps(kv1, kv0, 1); PRINT_VECTOR(kv1); \
+                 sum += _mm_dp_ps(kv0, inv0, 226) + _mm_dp_ps (kv1, inv1, 242); PRINT_VECTOR(sum); \
                  /* 2 */ \
                  ROTATE_RIGHT(kv0); \
                  ROTATE_RIGHT(kv1); \
-                 kv1 = mm_blend_ps(kv1, kv0, 1); PRINT_VECTOR(kv1); \
-                 sum += mm_dp_ps(kv0, inv0, 196) + mm_dp_ps (kv1, inv1, 244) + mm_dp_ps (kv2, inv2, 20);  PRINT_VECTOR(sum);  \
+                 kv1 = _mm_blend_ps(kv1, kv0, 1); PRINT_VECTOR(kv1); \
+                 sum += _mm_dp_ps(kv0, inv0, 196) + _mm_dp_ps (kv1, inv1, 244) + _mm_dp_ps (kv2, inv2, 20);  PRINT_VECTOR(sum);  \
                  /* 3 */ \
                  ROTATE_RIGHT(kv0); \
                  ROTATE_RIGHT(kv1); \
-                 kv1 = mm_blend_ps(kv1, kv0, 1); PRINT_VECTOR(kv1); \
+                 kv1 = _mm_blend_ps(kv1, kv0, 1); PRINT_VECTOR(kv1); \
                  ROTATE_RIGHT(kv2); \
-                 sum += mm_dp_ps(kv0, inv0, 136) + mm_dp_ps (kv1, inv1, 248) + mm_dp_ps (kv2, inv2, 56); PRINT_VECTOR(sum); 
+                 sum += _mm_dp_ps(kv0, inv0, 136) + _mm_dp_ps (kv1, inv1, 248) + _mm_dp_ps (kv2, inv2, 56); PRINT_VECTOR(sum); 
              
 
              #define CONVOLVE7_CHUNK(kp, ipX) \
@@ -2754,27 +2754,27 @@ void sse9Convolve (const int s, const int w, const int h, const int ks,
                 kv0 = _mm_load_ps(kp); PRINT_VECTOR(kv0); \
                 kv1 = _mm_load_ps(kp + 4); PRINT_VECTOR(kv1); \
                 kv2 = _mm_load_ps(kp + 8); PRINT_VECTOR(kv2); \
-                kv2 = mm_blend_ps(kv2, kv1, 14); PRINT_VECTOR(kv2); \
+                kv2 = _mm_blend_ps(kv2, kv1, 14); PRINT_VECTOR(kv2); \
                 kv3 = kv2; PRINT_VECTOR(kv3); \
-                sum += mm_dp_ps(kv0, inv0, 241) + mm_dp_ps (kv1, inv1, 241) + mm_dp_ps (kv2, inv2, 17); PRINT_VECTOR(sum); \
+                sum += _mm_dp_ps(kv0, inv0, 241) + _mm_dp_ps (kv1, inv1, 241) + _mm_dp_ps (kv2, inv2, 17); PRINT_VECTOR(sum); \
                 /* 1 */ \
                 ROTATE_RIGHT(kv0); \
                 ROTATE_RIGHT(kv1); \
-                kv1 = mm_blend_ps(kv1, kv0, 1); PRINT_VECTOR(kv1); \
+                kv1 = _mm_blend_ps(kv1, kv0, 1); PRINT_VECTOR(kv1); \
                 ROTATE_RIGHT(kv2); \
-                sum += mm_dp_ps(kv0, inv0, 226) + mm_dp_ps (kv1, inv1, 242) + mm_dp_ps (kv2, inv2, 50); PRINT_VECTOR(sum); \
+                sum += _mm_dp_ps(kv0, inv0, 226) + _mm_dp_ps (kv1, inv1, 242) + _mm_dp_ps (kv2, inv2, 50); PRINT_VECTOR(sum); \
                 /* 2 */ \
                 ROTATE_RIGHT(kv0); \
                 ROTATE_RIGHT(kv1); \
-                kv1 = mm_blend_ps(kv1, kv0, 1); PRINT_VECTOR(kv1); \
+                kv1 = _mm_blend_ps(kv1, kv0, 1); PRINT_VECTOR(kv1); \
                 ROTATE_RIGHT(kv2); \
-                sum += mm_dp_ps(kv0, inv0, 196) + mm_dp_ps (kv1, inv1, 244) + mm_dp_ps (kv2, inv2, 116);    PRINT_VECTOR(sum); \
+                sum += _mm_dp_ps(kv0, inv0, 196) + _mm_dp_ps (kv1, inv1, 244) + _mm_dp_ps (kv2, inv2, 116);    PRINT_VECTOR(sum); \
                 /* 3 */ \
                 ROTATE_RIGHT(kv0); \
                 ROTATE_RIGHT(kv1); \
-                kv1 = mm_blend_ps(kv1, kv0, 1); PRINT_VECTOR(kv1); \
+                kv1 = _mm_blend_ps(kv1, kv0, 1); PRINT_VECTOR(kv1); \
                 ROTATE_RIGHT(kv2); \
-                sum += mm_dp_ps(kv0, inv0, 136) + mm_dp_ps (kv1, inv1, 248) + mm_dp_ps (kv2, inv2, 248); PRINT_VECTOR(sum);
+                sum += _mm_dp_ps(kv0, inv0, 136) + _mm_dp_ps (kv1, inv1, 248) + _mm_dp_ps (kv2, inv2, 248); PRINT_VECTOR(sum);
             
             
             //------------------------------------
@@ -2784,28 +2784,28 @@ void sse9Convolve (const int s, const int w, const int h, const int ks,
                 inv1 = inv2; PRINT_VECTOR(inv1); \
                 inv2 = _mm_load_ps(ipX + 12); PRINT_VECTOR(inv2); \
                 ROTATE_RIGHT(kv0); \
-                kv1 = mm_blend_ps(kv2, kv1, 8); PRINT_VECTOR(kv1); \
+                kv1 = _mm_blend_ps(kv2, kv1, 8); PRINT_VECTOR(kv1); \
                 ROTATE_RIGHT(kv1); \
                 kv2 = kv3; PRINT_VECTOR(kv2); \
-                sum += mm_dp_ps(kv0, inv0, 241) + mm_dp_ps (kv1, inv1, 241) + mm_dp_ps (kv2, inv2, 17); PRINT_VECTOR(sum); \
+                sum += _mm_dp_ps(kv0, inv0, 241) + _mm_dp_ps (kv1, inv1, 241) + _mm_dp_ps (kv2, inv2, 17); PRINT_VECTOR(sum); \
                 /* 1 */ \
                 ROTATE_RIGHT(kv0); \
                 ROTATE_RIGHT(kv1); \
-                kv1 = mm_blend_ps(kv1, kv0, 1); PRINT_VECTOR(kv1); \
+                kv1 = _mm_blend_ps(kv1, kv0, 1); PRINT_VECTOR(kv1); \
                 ROTATE_RIGHT(kv2); \
-                sum += mm_dp_ps(kv0, inv0, 226) + mm_dp_ps (kv1, inv1, 242) + mm_dp_ps (kv2, inv2, 50); PRINT_VECTOR(sum); \
+                sum += _mm_dp_ps(kv0, inv0, 226) + _mm_dp_ps (kv1, inv1, 242) + _mm_dp_ps (kv2, inv2, 50); PRINT_VECTOR(sum); \
                 /* 2 */ \
                 ROTATE_RIGHT(kv0); \
                 ROTATE_RIGHT(kv1); \
-                kv1 = mm_blend_ps(kv1, kv0, 1); PRINT_VECTOR(kv1); \
+                kv1 = _mm_blend_ps(kv1, kv0, 1); PRINT_VECTOR(kv1); \
                 ROTATE_RIGHT(kv2); \
-                sum += mm_dp_ps(kv0, inv0, 196) + mm_dp_ps (kv1, inv1, 244) + mm_dp_ps (kv2, inv2, 116);    PRINT_VECTOR(sum); \
+                sum += _mm_dp_ps(kv0, inv0, 196) + _mm_dp_ps (kv1, inv1, 244) + _mm_dp_ps (kv2, inv2, 116);    PRINT_VECTOR(sum); \
                 /* 3 */ \
                 ROTATE_RIGHT(kv0); \
                 ROTATE_RIGHT(kv1); \
-                kv1 = mm_blend_ps(kv1, kv0, 1); PRINT_VECTOR(kv1); \
+                kv1 = _mm_blend_ps(kv1, kv0, 1); PRINT_VECTOR(kv1); \
                 ROTATE_RIGHT(kv2); \
-                sum += mm_dp_ps(kv0, inv0, 136) + mm_dp_ps (kv1, inv1, 248) + mm_dp_ps (kv2, inv2, 248); PRINT_VECTOR(sum);
+                sum += _mm_dp_ps(kv0, inv0, 136) + _mm_dp_ps (kv1, inv1, 248) + _mm_dp_ps (kv2, inv2, 248); PRINT_VECTOR(sum);
             
 
             #define CONVOLVE9_CHUNK(kp, ipX) \
@@ -2913,34 +2913,34 @@ void sse11Convolve (const int s, const int w, const int h, const int ks,
                 kv0 = _mm_load_ps(kp); PRINT_VECTOR(kv0); \
                 kv1 = _mm_load_ps(kp + 4); PRINT_VECTOR(kv1); \
                 kv2 = _mm_load_ps(kp + 8); PRINT_VECTOR(kv2); \
-                kv2 = mm_blend_ps(kv2, kv1, 8); PRINT_VECTOR(kv2); \
+                kv2 = _mm_blend_ps(kv2, kv1, 8); PRINT_VECTOR(kv2); \
                 kv3 = _mm_shuffle_ps(kv2, kv2, _MM_SHUFFLE(1,0,3,2)); PRINT_VECTOR(kv3); \
-                sum += mm_dp_ps(kv0, inv0, 241) + mm_dp_ps (kv1, inv1, 241) + mm_dp_ps (kv2, inv2, 113); PRINT_VECTOR(sum); \
+                sum += _mm_dp_ps(kv0, inv0, 241) + _mm_dp_ps (kv1, inv1, 241) + _mm_dp_ps (kv2, inv2, 113); PRINT_VECTOR(sum); \
                 /* 1 */ \
                 ROTATE_RIGHT(kv0); \
                 ROTATE_RIGHT(kv1); \
-                kv1 = mm_blend_ps(kv1, kv0, 1); PRINT_VECTOR(kv1); \
+                kv1 = _mm_blend_ps(kv1, kv0, 1); PRINT_VECTOR(kv1); \
                 ROTATE_RIGHT(kv2); \
-                sum += mm_dp_ps(kv0, inv0, 226) + mm_dp_ps (kv1, inv1, 242) + mm_dp_ps (kv2, inv2, 242); PRINT_VECTOR(sum); \
+                sum += _mm_dp_ps(kv0, inv0, 226) + _mm_dp_ps (kv1, inv1, 242) + _mm_dp_ps (kv2, inv2, 242); PRINT_VECTOR(sum); \
                 /* 2 */ \
                 ROTATE_RIGHT(kv0); \
                 ROTATE_RIGHT(kv1); \
                 ROTATE_RIGHT(kv2); \
-                kv2 = mm_blend_ps(kv2, kv1, 1); PRINT_VECTOR(kv2); \
-                kv1 = mm_blend_ps(kv1, kv0, 1); PRINT_VECTOR(kv1); \
+                kv2 = _mm_blend_ps(kv2, kv1, 1); PRINT_VECTOR(kv2); \
+                kv1 = _mm_blend_ps(kv1, kv0, 1); PRINT_VECTOR(kv1); \
                 PRINT_VECTOR(kv0); \
                 PRINT_VECTOR(kv1); \
                 PRINT_VECTOR(kv2); \
                 PRINT_VECTOR(kv3); \
-                sum += mm_dp_ps(kv0, inv0, 196) + mm_dp_ps (kv1, inv1, 244) + mm_dp_ps (kv2, inv2, 244) + mm_dp_ps (kv3, inv3, 20); PRINT_VECTOR(sum); \
+                sum += _mm_dp_ps(kv0, inv0, 196) + _mm_dp_ps (kv1, inv1, 244) + _mm_dp_ps (kv2, inv2, 244) + _mm_dp_ps (kv3, inv3, 20); PRINT_VECTOR(sum); \
                 /* 3 */ \
                 ROTATE_RIGHT(kv0); \
                 ROTATE_RIGHT(kv1); \
                 ROTATE_RIGHT(kv2); \
                 ROTATE_RIGHT(kv3); \
-                kv2 = mm_blend_ps(kv2, kv1, 1); PRINT_VECTOR(kv2); \
-                kv1 = mm_blend_ps(kv1, kv0, 1); PRINT_VECTOR(kv1); \
-                sum += mm_dp_ps(kv0, inv0, 136) + mm_dp_ps (kv1, inv1, 248) + mm_dp_ps (kv2, inv2, 248) + mm_dp_ps (kv3, inv3, 56); PRINT_VECTOR(sum); 
+                kv2 = _mm_blend_ps(kv2, kv1, 1); PRINT_VECTOR(kv2); \
+                kv1 = _mm_blend_ps(kv1, kv0, 1); PRINT_VECTOR(kv1); \
+                sum += _mm_dp_ps(kv0, inv0, 136) + _mm_dp_ps (kv1, inv1, 248) + _mm_dp_ps (kv2, inv2, 248) + _mm_dp_ps (kv3, inv3, 56); PRINT_VECTOR(sum); 
             
             
             //------------------------------------
@@ -2951,37 +2951,37 @@ void sse11Convolve (const int s, const int w, const int h, const int ks,
                 inv2 = inv3; \
                 inv3 = _mm_load_ps(ipX + 16); PRINT_VECTOR(inv3); \
                 ROTATE_RIGHT(kv0); \
-                kv1 = mm_blend_ps(kv2, kv1, 8); PRINT_VECTOR(kv1); \
+                kv1 = _mm_blend_ps(kv2, kv1, 8); PRINT_VECTOR(kv1); \
                 ROTATE_RIGHT(kv1); \
                 kv2 = kv3; PRINT_VECTOR(kv2); \
                 ROTATE_RIGHT(kv2); \
                 ROTATE_LEFT(kv3); \
-                sum += mm_dp_ps(kv0, inv0, 241) + mm_dp_ps (kv1, inv1, 241) + mm_dp_ps (kv2, inv2, 113); PRINT_VECTOR(sum); \
+                sum += _mm_dp_ps(kv0, inv0, 241) + _mm_dp_ps (kv1, inv1, 241) + _mm_dp_ps (kv2, inv2, 113); PRINT_VECTOR(sum); \
                 /* 1 */ \
                 ROTATE_RIGHT(kv0); \
                 ROTATE_RIGHT(kv1); \
-                kv1 = mm_blend_ps(kv1, kv0, 1); PRINT_VECTOR(kv1); \
+                kv1 = _mm_blend_ps(kv1, kv0, 1); PRINT_VECTOR(kv1); \
                 ROTATE_RIGHT(kv2); \
-                sum += mm_dp_ps(kv0, inv0, 226) + mm_dp_ps (kv1, inv1, 242) + mm_dp_ps (kv2, inv2, 242); PRINT_VECTOR(sum); \
+                sum += _mm_dp_ps(kv0, inv0, 226) + _mm_dp_ps (kv1, inv1, 242) + _mm_dp_ps (kv2, inv2, 242); PRINT_VECTOR(sum); \
                 /* 2 */ \
                 ROTATE_RIGHT(kv0); \
                 ROTATE_RIGHT(kv1); \
                 ROTATE_RIGHT(kv2); \
-                kv2 = mm_blend_ps(kv2, kv1, 1); PRINT_VECTOR(kv2); \
-                kv1 = mm_blend_ps(kv1, kv0, 1); PRINT_VECTOR(kv1); \
+                kv2 = _mm_blend_ps(kv2, kv1, 1); PRINT_VECTOR(kv2); \
+                kv1 = _mm_blend_ps(kv1, kv0, 1); PRINT_VECTOR(kv1); \
                 PRINT_VECTOR(kv0); \
                 PRINT_VECTOR(kv1); \
                 PRINT_VECTOR(kv2); \
                 PRINT_VECTOR(kv3); \
-                sum += mm_dp_ps(kv0, inv0, 196) + mm_dp_ps (kv1, inv1, 244) + mm_dp_ps (kv2, inv2, 244) + mm_dp_ps (kv3, inv3, 20); PRINT_VECTOR(sum); \
+                sum += _mm_dp_ps(kv0, inv0, 196) + _mm_dp_ps (kv1, inv1, 244) + _mm_dp_ps (kv2, inv2, 244) + _mm_dp_ps (kv3, inv3, 20); PRINT_VECTOR(sum); \
                 /* 3 */ \
                 ROTATE_RIGHT(kv0); \
                 ROTATE_RIGHT(kv1); \
                 ROTATE_RIGHT(kv2); \
                 ROTATE_RIGHT(kv3); \
-                kv2 = mm_blend_ps(kv2, kv1, 1); PRINT_VECTOR(kv2); \
-                kv1 = mm_blend_ps(kv1, kv0, 1); PRINT_VECTOR(kv1); \
-                sum += mm_dp_ps(kv0, inv0, 136) + mm_dp_ps (kv1, inv1, 248) + mm_dp_ps (kv2, inv2, 248) + mm_dp_ps (kv3, inv3, 56); PRINT_VECTOR(sum); 
+                kv2 = _mm_blend_ps(kv2, kv1, 1); PRINT_VECTOR(kv2); \
+                kv1 = _mm_blend_ps(kv1, kv0, 1); PRINT_VECTOR(kv1); \
+                sum += _mm_dp_ps(kv0, inv0, 136) + _mm_dp_ps (kv1, inv1, 248) + _mm_dp_ps (kv2, inv2, 248) + _mm_dp_ps (kv3, inv3, 56); PRINT_VECTOR(sum); 
             
             
             #define CONVOLVE11_CHUNK(kp, ipX) \
@@ -3105,36 +3105,36 @@ void sseWideKernelConvolve (const int s, const int w, const int h,
                     kv2 = _mm_load_ps(kpX + 8); PRINT_VECTOR(kv2); 
                     kv3 = _mm_setzero_ps();//_mm_load_ps(kpX + 12); PRINT_VECTOR(kv3); 
                     
-                    sum0 += mm_dp_ps(kv0, inv0, 241); PRINT_VECTOR(sum0);  
-                    sum0 += mm_dp_ps(kv1, inv1, 241); PRINT_VECTOR(sum0);  
-                    sum0 += mm_dp_ps(kv2, inv2, 241); PRINT_VECTOR(sum0);  
+                    sum0 += _mm_dp_ps(kv0, inv0, 241); PRINT_VECTOR(sum0);  
+                    sum0 += _mm_dp_ps(kv1, inv1, 241); PRINT_VECTOR(sum0);  
+                    sum0 += _mm_dp_ps(kv2, inv2, 241); PRINT_VECTOR(sum0);  
                     
                     ROTATE_RIGHT_BLEND(kv2, kv3); 
                     ROTATE_RIGHT_BLEND(kv1, kv2); 
                     ROTATE_RIGHT_BLEND(kv0, kv1); 
-                    sum0 += mm_dp_ps(kv0, inv0, 226); PRINT_VECTOR(sum0);  
-                    sum0 += mm_dp_ps(kv1, inv1, 242); PRINT_VECTOR(sum0);  
-                    sum0 += mm_dp_ps(kv2, inv2, 242); PRINT_VECTOR(sum0);  
-                    sum0 += mm_dp_ps(kv3, inv3, 18); PRINT_VECTOR(sum0);   
+                    sum0 += _mm_dp_ps(kv0, inv0, 226); PRINT_VECTOR(sum0);  
+                    sum0 += _mm_dp_ps(kv1, inv1, 242); PRINT_VECTOR(sum0);  
+                    sum0 += _mm_dp_ps(kv2, inv2, 242); PRINT_VECTOR(sum0);  
+                    sum0 += _mm_dp_ps(kv3, inv3, 18); PRINT_VECTOR(sum0);   
                     
                     ROTATE_RIGHT(kv3); 
                     ROTATE_RIGHT_BLEND(kv2, kv3); 
                     ROTATE_RIGHT_BLEND(kv1, kv2); 
                     ROTATE_RIGHT_BLEND(kv0, kv1); 
-                    sum0 += mm_dp_ps(kv0, inv0, 196); PRINT_VECTOR(sum0);  
-                    sum0 += mm_dp_ps(kv1, inv1, 244); PRINT_VECTOR(sum0);  
-                    sum0 += mm_dp_ps(kv2, inv2, 244); PRINT_VECTOR(sum0);  
-                    sum0 += mm_dp_ps(kv3, inv3, 52); PRINT_VECTOR(sum0);   
+                    sum0 += _mm_dp_ps(kv0, inv0, 196); PRINT_VECTOR(sum0);  
+                    sum0 += _mm_dp_ps(kv1, inv1, 244); PRINT_VECTOR(sum0);  
+                    sum0 += _mm_dp_ps(kv2, inv2, 244); PRINT_VECTOR(sum0);  
+                    sum0 += _mm_dp_ps(kv3, inv3, 52); PRINT_VECTOR(sum0);   
                     
                     
                     ROTATE_RIGHT(kv3); 
                     ROTATE_RIGHT_BLEND(kv2, kv3); 
                     ROTATE_RIGHT_BLEND(kv1, kv2); 
                     ROTATE_RIGHT_BLEND(kv0, kv1); 
-                    sum0 += mm_dp_ps(kv0, inv0, 136); PRINT_VECTOR(sum0);  /*{68,0,0,0}*/
-                    sum0 += mm_dp_ps(kv1, inv1, 248); PRINT_VECTOR(sum0);  /*{68,0,0,0}*/
-                    sum0 += mm_dp_ps(kv2, inv2, 248); PRINT_VECTOR(sum0);  /*{68,0,0,0}*/
-                    sum0 += mm_dp_ps(kv3, inv3, 120); PRINT_VECTOR(sum0);  /*{68,0,0,0}*/
+                    sum0 += _mm_dp_ps(kv0, inv0, 136); PRINT_VECTOR(sum0);  /*{68,0,0,0}*/
+                    sum0 += _mm_dp_ps(kv1, inv1, 248); PRINT_VECTOR(sum0);  /*{68,0,0,0}*/
+                    sum0 += _mm_dp_ps(kv2, inv2, 248); PRINT_VECTOR(sum0);  /*{68,0,0,0}*/
+                    sum0 += _mm_dp_ps(kv3, inv3, 120); PRINT_VECTOR(sum0);  /*{68,0,0,0}*/
                     
                     kx += 12;
                 }
@@ -3144,27 +3144,27 @@ void sseWideKernelConvolve (const int s, const int w, const int h,
                 
                 #define REMAINING1() \
                     PRINT("kremaining 1"); \
-                    sum0 += mm_dp_ps(kv0, inv0, 17);   PRINT_VECTOR(sum0); \
+                    sum0 += _mm_dp_ps(kv0, inv0, 17);   PRINT_VECTOR(sum0); \
                     ROTATE_RIGHT(kv0); \
-                    sum0 += mm_dp_ps(kv0, inv0, 34);   PRINT_VECTOR(sum0); \
+                    sum0 += _mm_dp_ps(kv0, inv0, 34);   PRINT_VECTOR(sum0); \
                     ROTATE_RIGHT(kv0); \
-                    sum0 += mm_dp_ps(kv0, inv0, 68);   PRINT_VECTOR(sum0); \
+                    sum0 += _mm_dp_ps(kv0, inv0, 68);   PRINT_VECTOR(sum0); \
                     ROTATE_RIGHT(kv0); \
-                    sum0 += mm_dp_ps(kv0, inv0, 136);  PRINT_VECTOR(sum0);  
+                    sum0 += _mm_dp_ps(kv0, inv0, 136);  PRINT_VECTOR(sum0);  
                 
                 
                 #define REMAINING3() \
                     PRINT("kremaining 3"); \
-                    sum0 += mm_dp_ps(kv0, inv0, 113);          PRINT_VECTOR(sum0); \
+                    sum0 += _mm_dp_ps(kv0, inv0, 113);          PRINT_VECTOR(sum0); \
                     ROTATE_RIGHT(kv0); \
-                    sum0 += mm_dp_ps(kv0, inv0, 226);          PRINT_VECTOR(sum0); \
+                    sum0 += _mm_dp_ps(kv0, inv0, 226);          PRINT_VECTOR(sum0); \
                     ROTATE_RIGHT_BLEND(kv0, kv1); \
-                    sum0 += mm_dp_ps(kv0, inv0, 196);          PRINT_VECTOR(sum0); \
-                    sum0 += mm_dp_ps(kv1, inv1, 20);           PRINT_VECTOR(sum0); \
+                    sum0 += _mm_dp_ps(kv0, inv0, 196);          PRINT_VECTOR(sum0); \
+                    sum0 += _mm_dp_ps(kv1, inv1, 20);           PRINT_VECTOR(sum0); \
                     ROTATE_RIGHT(kv1); \
                     ROTATE_RIGHT_BLEND(kv0, kv1); \
-                    sum0 += mm_dp_ps(kv0, inv0, 136);          PRINT_VECTOR(sum0); \
-                    sum0 += mm_dp_ps(kv1, inv1, 56);           PRINT_VECTOR(sum0);  
+                    sum0 += _mm_dp_ps(kv0, inv0, 136);          PRINT_VECTOR(sum0); \
+                    sum0 += _mm_dp_ps(kv1, inv1, 56);           PRINT_VECTOR(sum0);  
 
                 switch(remaining) {
                 case 0: 
@@ -3188,19 +3188,19 @@ void sseWideKernelConvolve (const int s, const int w, const int h,
                     inv1 = _mm_load_ps(ipX + ijump + kx + 4);       PRINT_VECTOR(inv1); 
                     kv0 = _mm_load_ps(kpX);                         PRINT_VECTOR(kv0); 
                     kv1 = _mm_setzero_ps();
-                    sum0 += mm_dp_ps(kv0, inv0, 241);              PRINT_VECTOR(sum0);  
+                    sum0 += _mm_dp_ps(kv0, inv0, 241);              PRINT_VECTOR(sum0);  
                     //ROTATE_RIGHT(kv1); 
                     ROTATE_RIGHT_BLEND(kv0, kv1); 
-                    sum0 += mm_dp_ps(kv0, inv0, 226);              PRINT_VECTOR(sum0);  
-                    sum0 += mm_dp_ps(kv1, inv1, 18);               PRINT_VECTOR(sum0);  
+                    sum0 += _mm_dp_ps(kv0, inv0, 226);              PRINT_VECTOR(sum0);  
+                    sum0 += _mm_dp_ps(kv1, inv1, 18);               PRINT_VECTOR(sum0);  
                     ROTATE_RIGHT(kv1); 
                     ROTATE_RIGHT_BLEND(kv0, kv1); 
-                    sum0 += mm_dp_ps(kv0, inv0, 196);              PRINT_VECTOR(sum0);  
-                    sum0 += mm_dp_ps(kv1, inv1, 52);               PRINT_VECTOR(sum0);  
+                    sum0 += _mm_dp_ps(kv0, inv0, 196);              PRINT_VECTOR(sum0);  
+                    sum0 += _mm_dp_ps(kv1, inv1, 52);               PRINT_VECTOR(sum0);  
                     ROTATE_RIGHT(kv1); 
                     ROTATE_RIGHT_BLEND(kv0, kv1); 
-                    sum0 += mm_dp_ps(kv0, inv0, 136);              PRINT_VECTOR(sum0);  
-                    sum0 += mm_dp_ps(kv1, inv1, 120);              PRINT_VECTOR(sum0);   
+                    sum0 += _mm_dp_ps(kv0, inv0, 136);              PRINT_VECTOR(sum0);  
+                    sum0 += _mm_dp_ps(kv1, inv1, 120);              PRINT_VECTOR(sum0);   
                     
                     if (kremaining == 1) {
                         inv0 = inv1;                                PRINT_VECTOR(inv0); 
@@ -3227,29 +3227,29 @@ void sseWideKernelConvolve (const int s, const int w, const int h,
                     kv1 = _mm_load_ps(kpX + 4);                 PRINT_VECTOR(kv1); 
                     kv2 = _mm_setzero_ps(); //_mm_load_ps(kpX + 8); PRINT_VECTOR(kv2); 
                     
-                    sum0 += mm_dp_ps(kv0, inv0, 241);          PRINT_VECTOR(sum0);  
-                    sum0 += mm_dp_ps(kv1, inv1, 241);          PRINT_VECTOR(sum0);  
+                    sum0 += _mm_dp_ps(kv0, inv0, 241);          PRINT_VECTOR(sum0);  
+                    sum0 += _mm_dp_ps(kv1, inv1, 241);          PRINT_VECTOR(sum0);  
                     
                     ROTATE_RIGHT_BLEND(kv1, kv2); 
                     ROTATE_RIGHT_BLEND(kv0, kv1); 
-                    sum0 += mm_dp_ps(kv0, inv0, 226);          PRINT_VECTOR(sum0);  
-                    sum0 += mm_dp_ps(kv1, inv1, 242);          PRINT_VECTOR(sum0);  
-                    sum0 += mm_dp_ps(kv2, inv2, 18);           PRINT_VECTOR(sum0);  
+                    sum0 += _mm_dp_ps(kv0, inv0, 226);          PRINT_VECTOR(sum0);  
+                    sum0 += _mm_dp_ps(kv1, inv1, 242);          PRINT_VECTOR(sum0);  
+                    sum0 += _mm_dp_ps(kv2, inv2, 18);           PRINT_VECTOR(sum0);  
                     
                     ROTATE_RIGHT(kv2); 
                     ROTATE_RIGHT_BLEND(kv1, kv2); 
                     ROTATE_RIGHT_BLEND(kv0, kv1); 
-                    sum0 += mm_dp_ps(kv0, inv0, 196);          PRINT_VECTOR(sum0);  
-                    sum0 += mm_dp_ps(kv1, inv1, 244);          PRINT_VECTOR(sum0);  
-                    sum0 += mm_dp_ps(kv2, inv2, 52);           PRINT_VECTOR(sum0);  
+                    sum0 += _mm_dp_ps(kv0, inv0, 196);          PRINT_VECTOR(sum0);  
+                    sum0 += _mm_dp_ps(kv1, inv1, 244);          PRINT_VECTOR(sum0);  
+                    sum0 += _mm_dp_ps(kv2, inv2, 52);           PRINT_VECTOR(sum0);  
                     
                     
                     ROTATE_RIGHT(kv2); 
                     ROTATE_RIGHT_BLEND(kv1, kv2); 
                     ROTATE_RIGHT_BLEND(kv0, kv1); 
-                    sum0 += mm_dp_ps(kv0, inv0, 136);          PRINT_VECTOR(sum0);  
-                    sum0 += mm_dp_ps(kv1, inv1, 248);          PRINT_VECTOR(sum0);  
-                    sum0 += mm_dp_ps(kv2, inv2, 120);          PRINT_VECTOR(sum0);  
+                    sum0 += _mm_dp_ps(kv0, inv0, 136);          PRINT_VECTOR(sum0);  
+                    sum0 += _mm_dp_ps(kv1, inv1, 248);          PRINT_VECTOR(sum0);  
+                    sum0 += _mm_dp_ps(kv2, inv2, 120);          PRINT_VECTOR(sum0);  
                     
                     if (kremaining == 1) {
                         inv0 = inv2;                                PRINT_VECTOR(inv0); 
@@ -3916,40 +3916,40 @@ void separableLoopBlockConvolve (const int s, const int w, const int h, const in
 //                
 //                //cout << "aqui 2" << flush << endl;
 //                PRINT_LABEL("sum0"); 
-//                sum0 += mm_dp_ps(kvx, iv0, 241);    PRINT_VECTOR(sum0); 
-//                sum1 += mm_dp_ps(kvx, iv1, 241);    PRINT_VECTOR(sum1);
-//                sum2 += mm_dp_ps(kvx, iv2, 241);    PRINT_VECTOR(sum2);
-//                sum3 += mm_dp_ps(kvx, iv3, 241);    PRINT_VECTOR(sum3);
+//                sum0 += _mm_dp_ps(kvx, iv0, 241);    PRINT_VECTOR(sum0); 
+//                sum1 += _mm_dp_ps(kvx, iv1, 241);    PRINT_VECTOR(sum1);
+//                sum2 += _mm_dp_ps(kvx, iv2, 241);    PRINT_VECTOR(sum2);
+//                sum3 += _mm_dp_ps(kvx, iv3, 241);    PRINT_VECTOR(sum3);
 //                 
 //                //cout << "aqui 3" << flush << endl;
 //                 
 //                BLEND_ROTATE4_LEFT(iv0, iv1, iv2, iv3, iv4);
 //
 //                PRINT_LABEL("sum1"); 
-//                sum0 += mm_dp_ps(kvx, iv0, 242);    PRINT_VECTOR(sum0);
-//                sum1 += mm_dp_ps(kvx, iv1, 242);    PRINT_VECTOR(sum1);
-//                sum2 += mm_dp_ps(kvx, iv2, 242);    PRINT_VECTOR(sum2);
-//                sum3 += mm_dp_ps(kvx, iv3, 242);    PRINT_VECTOR(sum3);
+//                sum0 += _mm_dp_ps(kvx, iv0, 242);    PRINT_VECTOR(sum0);
+//                sum1 += _mm_dp_ps(kvx, iv1, 242);    PRINT_VECTOR(sum1);
+//                sum2 += _mm_dp_ps(kvx, iv2, 242);    PRINT_VECTOR(sum2);
+//                sum3 += _mm_dp_ps(kvx, iv3, 242);    PRINT_VECTOR(sum3);
 //                
 //                //cout << "aqui 4" << flush << endl;
 //                
 //                BLEND_ROTATE4_LEFT(iv0, iv1, iv2, iv3, iv4);
 //
 //                PRINT_LABEL("sum2"); 
-//                sum0 += mm_dp_ps(kvx, iv0, 244);    PRINT_VECTOR(sum0);
-//                sum1 += mm_dp_ps(kvx, iv1, 244);    PRINT_VECTOR(sum1);
-//                sum2 += mm_dp_ps(kvx, iv2, 244);    PRINT_VECTOR(sum2);
-//                sum3 += mm_dp_ps(kvx, iv3, 244);    PRINT_VECTOR(sum3);
+//                sum0 += _mm_dp_ps(kvx, iv0, 244);    PRINT_VECTOR(sum0);
+//                sum1 += _mm_dp_ps(kvx, iv1, 244);    PRINT_VECTOR(sum1);
+//                sum2 += _mm_dp_ps(kvx, iv2, 244);    PRINT_VECTOR(sum2);
+//                sum3 += _mm_dp_ps(kvx, iv3, 244);    PRINT_VECTOR(sum3);
 //                
 //                //cout << "aqui 5" << flush << endl;
 //                
 //                BLEND_ROTATE4_LEFT(iv0, iv1, iv2, iv3, iv4);
 //
 //                PRINT_LABEL("sum3"); 
-//                sum0 += mm_dp_ps(kvx, iv0, 248);    PRINT_VECTOR(sum0);
-//                sum1 += mm_dp_ps(kvx, iv1, 248);    PRINT_VECTOR(sum1);
-//                sum2 += mm_dp_ps(kvx, iv2, 248);    PRINT_VECTOR(sum2);
-//                sum3 += mm_dp_ps(kvx, iv3, 248);    PRINT_VECTOR(sum3);
+//                sum0 += _mm_dp_ps(kvx, iv0, 248);    PRINT_VECTOR(sum0);
+//                sum1 += _mm_dp_ps(kvx, iv1, 248);    PRINT_VECTOR(sum1);
+//                sum2 += _mm_dp_ps(kvx, iv2, 248);    PRINT_VECTOR(sum2);
+//                sum3 += _mm_dp_ps(kvx, iv3, 248);    PRINT_VECTOR(sum3);
 //                
 //                sumy0 = sumy1;
 //                sumy1 = sumy2;
@@ -4179,40 +4179,40 @@ void separableLoopBlockConvolve (const int s, const int w, const int h, const in
 //                
 //                //cout << "aqui 2" << flush << endl;
 //                PRINT_LABEL("sum0"); 
-//                sum0 += mm_dp_ps(kvx, iv0, 241);    PRINT_VECTOR(sum0); 
-//                sum1 += mm_dp_ps(kvx, iv1, 241);    PRINT_VECTOR(sum1);
-//                sum2 += mm_dp_ps(kvx, iv2, 241);    PRINT_VECTOR(sum2);
-//                sum3 += mm_dp_ps(kvx, iv3, 241);    PRINT_VECTOR(sum3);
+//                sum0 += _mm_dp_ps(kvx, iv0, 241);    PRINT_VECTOR(sum0); 
+//                sum1 += _mm_dp_ps(kvx, iv1, 241);    PRINT_VECTOR(sum1);
+//                sum2 += _mm_dp_ps(kvx, iv2, 241);    PRINT_VECTOR(sum2);
+//                sum3 += _mm_dp_ps(kvx, iv3, 241);    PRINT_VECTOR(sum3);
 //                 
 //                //cout << "aqui 3" << flush << endl;
 //                 
 //                BLEND_ROTATE4_LEFT(iv0, iv1, iv2, iv3, iv4);
 //
 //                PRINT_LABEL("sum1"); 
-//                sum0 += mm_dp_ps(kvx, iv0, 242);    PRINT_VECTOR(sum0);
-//                sum1 += mm_dp_ps(kvx, iv1, 242);    PRINT_VECTOR(sum1);
-//                sum2 += mm_dp_ps(kvx, iv2, 242);    PRINT_VECTOR(sum2);
-//                sum3 += mm_dp_ps(kvx, iv3, 242);    PRINT_VECTOR(sum3);
+//                sum0 += _mm_dp_ps(kvx, iv0, 242);    PRINT_VECTOR(sum0);
+//                sum1 += _mm_dp_ps(kvx, iv1, 242);    PRINT_VECTOR(sum1);
+//                sum2 += _mm_dp_ps(kvx, iv2, 242);    PRINT_VECTOR(sum2);
+//                sum3 += _mm_dp_ps(kvx, iv3, 242);    PRINT_VECTOR(sum3);
 //                
 //                //cout << "aqui 4" << flush << endl;
 //                
 //                BLEND_ROTATE4_LEFT(iv0, iv1, iv2, iv3, iv4);
 //
 //                PRINT_LABEL("sum2"); 
-//                sum0 += mm_dp_ps(kvx, iv0, 244);    PRINT_VECTOR(sum0);
-//                sum1 += mm_dp_ps(kvx, iv1, 244);    PRINT_VECTOR(sum1);
-//                sum2 += mm_dp_ps(kvx, iv2, 244);    PRINT_VECTOR(sum2);
-//                sum3 += mm_dp_ps(kvx, iv3, 244);    PRINT_VECTOR(sum3);
+//                sum0 += _mm_dp_ps(kvx, iv0, 244);    PRINT_VECTOR(sum0);
+//                sum1 += _mm_dp_ps(kvx, iv1, 244);    PRINT_VECTOR(sum1);
+//                sum2 += _mm_dp_ps(kvx, iv2, 244);    PRINT_VECTOR(sum2);
+//                sum3 += _mm_dp_ps(kvx, iv3, 244);    PRINT_VECTOR(sum3);
 //                
 //                //cout << "aqui 5" << flush << endl;
 //                
 //                BLEND_ROTATE4_LEFT(iv0, iv1, iv2, iv3, iv4);
 //
 //                PRINT_LABEL("sum3"); 
-//                sum0 += mm_dp_ps(kvx, iv0, 248);    PRINT_VECTOR(sum0);
-//                sum1 += mm_dp_ps(kvx, iv1, 248);    PRINT_VECTOR(sum1);
-//                sum2 += mm_dp_ps(kvx, iv2, 248);    PRINT_VECTOR(sum2);
-//                sum3 += mm_dp_ps(kvx, iv3, 248);    PRINT_VECTOR(sum3);
+//                sum0 += _mm_dp_ps(kvx, iv0, 248);    PRINT_VECTOR(sum0);
+//                sum1 += _mm_dp_ps(kvx, iv1, 248);    PRINT_VECTOR(sum1);
+//                sum2 += _mm_dp_ps(kvx, iv2, 248);    PRINT_VECTOR(sum2);
+//                sum3 += _mm_dp_ps(kvx, iv3, 248);    PRINT_VECTOR(sum3);
 //                
 //                BLEND_ROTATE4_LEFT(iv0, iv1, iv2, iv3, iv4);
 //                
@@ -4358,34 +4358,34 @@ void scSSE (const int s, const int w, const int h, int kw,
                 iv4 = sumy4;                                                             PRINT_VECTOR(iv4);
                 
                 PRINT_LABEL("sum0"); 
-                sum0 += mm_dp_ps(kvx, iv0, 241);    PRINT_VECTOR(sum0); 
-                sum1 += mm_dp_ps(kvx, iv1, 241);    PRINT_VECTOR(sum1);
-                sum2 += mm_dp_ps(kvx, iv2, 241);    PRINT_VECTOR(sum2);
-                sum3 += mm_dp_ps(kvx, iv3, 241);    PRINT_VECTOR(sum3);
+                sum0 += _mm_dp_ps(kvx, iv0, 241);    PRINT_VECTOR(sum0); 
+                sum1 += _mm_dp_ps(kvx, iv1, 241);    PRINT_VECTOR(sum1);
+                sum2 += _mm_dp_ps(kvx, iv2, 241);    PRINT_VECTOR(sum2);
+                sum3 += _mm_dp_ps(kvx, iv3, 241);    PRINT_VECTOR(sum3);
                  
                 BLEND_ROTATE4_LEFT(iv0, iv1, iv2, iv3, iv4);
 
                 PRINT_LABEL("sum1"); 
-                sum0 += mm_dp_ps(kvx, iv0, 242);    PRINT_VECTOR(sum0);
-                sum1 += mm_dp_ps(kvx, iv1, 242);    PRINT_VECTOR(sum1);
-                sum2 += mm_dp_ps(kvx, iv2, 242);    PRINT_VECTOR(sum2);
-                sum3 += mm_dp_ps(kvx, iv3, 242);    PRINT_VECTOR(sum3);
+                sum0 += _mm_dp_ps(kvx, iv0, 242);    PRINT_VECTOR(sum0);
+                sum1 += _mm_dp_ps(kvx, iv1, 242);    PRINT_VECTOR(sum1);
+                sum2 += _mm_dp_ps(kvx, iv2, 242);    PRINT_VECTOR(sum2);
+                sum3 += _mm_dp_ps(kvx, iv3, 242);    PRINT_VECTOR(sum3);
                 
                 BLEND_ROTATE4_LEFT(iv0, iv1, iv2, iv3, iv4);
 
                 PRINT_LABEL("sum2"); 
-                sum0 += mm_dp_ps(kvx, iv0, 244);    PRINT_VECTOR(sum0);
-                sum1 += mm_dp_ps(kvx, iv1, 244);    PRINT_VECTOR(sum1);
-                sum2 += mm_dp_ps(kvx, iv2, 244);    PRINT_VECTOR(sum2);
-                sum3 += mm_dp_ps(kvx, iv3, 244);    PRINT_VECTOR(sum3);
+                sum0 += _mm_dp_ps(kvx, iv0, 244);    PRINT_VECTOR(sum0);
+                sum1 += _mm_dp_ps(kvx, iv1, 244);    PRINT_VECTOR(sum1);
+                sum2 += _mm_dp_ps(kvx, iv2, 244);    PRINT_VECTOR(sum2);
+                sum3 += _mm_dp_ps(kvx, iv3, 244);    PRINT_VECTOR(sum3);
                 
                 BLEND_ROTATE4_LEFT(iv0, iv1, iv2, iv3, iv4);
 
                 PRINT_LABEL("sum3"); 
-                sum0 += mm_dp_ps(kvx, iv0, 248);    PRINT_VECTOR(sum0);
-                sum1 += mm_dp_ps(kvx, iv1, 248);    PRINT_VECTOR(sum1);
-                sum2 += mm_dp_ps(kvx, iv2, 248);    PRINT_VECTOR(sum2);
-                sum3 += mm_dp_ps(kvx, iv3, 248);    PRINT_VECTOR(sum3);
+                sum0 += _mm_dp_ps(kvx, iv0, 248);    PRINT_VECTOR(sum0);
+                sum1 += _mm_dp_ps(kvx, iv1, 248);    PRINT_VECTOR(sum1);
+                sum2 += _mm_dp_ps(kvx, iv2, 248);    PRINT_VECTOR(sum2);
+                sum3 += _mm_dp_ps(kvx, iv3, 248);    PRINT_VECTOR(sum3);
                 
                 BLEND_ROTATE4_LEFT(iv0, iv1, iv2, iv3, iv4);
                 
@@ -4458,14 +4458,14 @@ void sc3SSE (const int s, const int w, const int h,
             
             kvx1 = _mm_setzero_ps();
             
-            inv0 = mm_dp_ps(sum0, kvx0, 113);                                      PRINT_VECTOR(inv0);
+            inv0 = _mm_dp_ps(sum0, kvx0, 113);                                      PRINT_VECTOR(inv0);
             ROTATE_RIGHT(kvx0);                                                     
-            inv0 += mm_dp_ps(sum0, kvx0, 226);                                     PRINT_VECTOR(inv0);
+            inv0 += _mm_dp_ps(sum0, kvx0, 226);                                     PRINT_VECTOR(inv0);
             ROTATE_RIGHT_BLEND(kvx0, kvx1);                                         
-            inv0 += mm_dp_ps(sum0, kvx0, 196) + mm_dp_ps(sum1, kvx1, 20);         PRINT_VECTOR(inv0);
+            inv0 += _mm_dp_ps(sum0, kvx0, 196) + _mm_dp_ps(sum1, kvx1, 20);         PRINT_VECTOR(inv0);
             ROTATE_RIGHT(kvx1);                                                     
             ROTATE_RIGHT_BLEND(kvx0, kvx1);                                         
-            inv0 += mm_dp_ps(sum0, kvx0, 136) + mm_dp_ps(sum1, kvx1, 56);         PRINT_VECTOR(inv0);
+            inv0 += _mm_dp_ps(sum0, kvx0, 136) + _mm_dp_ps(sum1, kvx1, 56);         PRINT_VECTOR(inv0);
             ROTATE_RIGHT(kvx0);                                                     
             
             PRINT_LABEL("sum"); 
@@ -4560,19 +4560,19 @@ void sc5SSE (const int s, const int w, const int h,
             
             //TODO parei aqui, fazer para no x agora.
             
-            inv0 = mm_dp_ps(sum0, kvx0, 241) + mm_dp_ps(sum1, kvx1, 17);          PRINT_VECTOR(inv0);
+            inv0 = _mm_dp_ps(sum0, kvx0, 241) + _mm_dp_ps(sum1, kvx1, 17);          PRINT_VECTOR(inv0);
             
             ROTATE_RIGHT(kvx1);                                                     
             ROTATE_RIGHT_BLEND(kvx0, kvx1);                                         
-            inv0 += mm_dp_ps(sum0, kvx0, 226) + mm_dp_ps(sum1, kvx1, 50);         PRINT_VECTOR(inv0);
+            inv0 += _mm_dp_ps(sum0, kvx0, 226) + _mm_dp_ps(sum1, kvx1, 50);         PRINT_VECTOR(inv0);
             
             ROTATE_RIGHT(kvx1);                                                     
             ROTATE_RIGHT_BLEND(kvx0, kvx1);                                         
-            inv0 += mm_dp_ps(sum0, kvx0, 196) + mm_dp_ps(sum1, kvx1, 116);         PRINT_VECTOR(inv0);
+            inv0 += _mm_dp_ps(sum0, kvx0, 196) + _mm_dp_ps(sum1, kvx1, 116);         PRINT_VECTOR(inv0);
             
             ROTATE_RIGHT(kvx1);                                                     
             ROTATE_RIGHT_BLEND(kvx0, kvx1);                                         
-            inv0 += mm_dp_ps(sum0, kvx0, 136) + mm_dp_ps(sum1, kvx1, 248);         PRINT_VECTOR(inv0);
+            inv0 += _mm_dp_ps(sum0, kvx0, 136) + _mm_dp_ps(sum1, kvx1, 248);         PRINT_VECTOR(inv0);
             
             ROTATE_RIGHT(kvx0);
             ROTATE_RIGHT(kvx1);
@@ -4698,18 +4698,18 @@ void sc7SSE (const int s, const int w, const int h,
             
             //TODO parei aqui, fazer para no x agora.
             
-            inv0 = mm_dp_ps(sum0, kvx0, 241) + mm_dp_ps(sum1, kvx1, 113);          PRINT_VECTOR(inv0);
+            inv0 = _mm_dp_ps(sum0, kvx0, 241) + _mm_dp_ps(sum1, kvx1, 113);          PRINT_VECTOR(inv0);
             inv1 = _mm_setzero_ps(); // kvx2
             
             
             ROTATE_RIGHT(kvx1);                                                     
             ROTATE_RIGHT_BLEND(kvx0, kvx1);                                         
-            inv0 += mm_dp_ps(sum0, kvx0, 226) + mm_dp_ps(sum1, kvx1, 242);  PRINT_VECTOR(inv0);
+            inv0 += _mm_dp_ps(sum0, kvx0, 226) + _mm_dp_ps(sum1, kvx1, 242);  PRINT_VECTOR(inv0);
             
             PRINT_LABEL("Terceiro"); 
             ROTATE_RIGHT_BLEND(kvx1, /*kvx2*/ inv1 ); 
             ROTATE_RIGHT_BLEND(kvx0, kvx1);                                         
-            inv0 += mm_dp_ps(sum0, kvx0, 196) + mm_dp_ps(sum1, kvx1, 244) + mm_dp_ps(sum2, /*kvx2*/ inv1, 20);    PRINT_VECTOR(inv0);
+            inv0 += _mm_dp_ps(sum0, kvx0, 196) + _mm_dp_ps(sum1, kvx1, 244) + _mm_dp_ps(sum2, /*kvx2*/ inv1, 20);    PRINT_VECTOR(inv0);
             
             PRINT_LABEL("Quarto"); 
             PRINT_VECTOR(sum0);
@@ -4719,7 +4719,7 @@ void sc7SSE (const int s, const int w, const int h,
             ROTATE_RIGHT(/*kvx2*/ inv1);
             ROTATE_RIGHT_BLEND(kvx1, /*kvx2*/ inv1 );
             ROTATE_RIGHT_BLEND(kvx0, kvx1);                                         
-            inv0 += mm_dp_ps(sum0, kvx0, 136) + mm_dp_ps(sum1, kvx1, 248) + mm_dp_ps(sum2, /*kvx2*/ inv1, 56);    PRINT_VECTOR(inv0);
+            inv0 += _mm_dp_ps(sum0, kvx0, 136) + _mm_dp_ps(sum1, kvx1, 248) + _mm_dp_ps(sum2, /*kvx2*/ inv1, 56);    PRINT_VECTOR(inv0);
             
             PRINT_LABEL("Rotate"); 
             
@@ -4727,7 +4727,7 @@ void sc7SSE (const int s, const int w, const int h,
             
             
             //FIXME O erro está aqui. kvx1 não está carregado de forma correta. Dar um shuffle com inv1 para pegar de volta os elementos.
-            kvx1 = mm_blend_ps(kvx1, inv1, 7);
+            kvx1 = _mm_blend_ps(kvx1, inv1, 7);
             ROTATE_RIGHT(kvx1);
             
             PRINT_LABEL("sum"); 
@@ -4876,9 +4876,9 @@ void sc9SSE (const int s, const int w, const int h,
             // ---------   ---------   ---------
             // |0|1|2|3|   |4|5|6|7|   |8|-|-|-|
             // ---------   ---------   ---------
-            inv0 = mm_dp_ps(sum0, kvx0, 241) + 
-                   mm_dp_ps(sum1,  /*kvx1*/ inv1 , 241) + 
-                   mm_dp_ps(sum2,  /*kvx2*/ inv2 , 17);          PRINT_VECTOR(inv0);
+            inv0 = _mm_dp_ps(sum0, kvx0, 241) + 
+                   _mm_dp_ps(sum1,  /*kvx1*/ inv1 , 241) + 
+                   _mm_dp_ps(sum2,  /*kvx2*/ inv2 , 17);          PRINT_VECTOR(inv0);
                    
             // ---------   ---------   ---------
             // |3|0|1|2|   |3|4|5|6|   |7|8|-|-|
@@ -4886,9 +4886,9 @@ void sc9SSE (const int s, const int w, const int h,
             ROTATE_RIGHT( /*kvx2*/ inv2 );
             ROTATE_RIGHT_BLEND(/*kvx1*/ inv1, /*kvx2*/ inv2);
             ROTATE_RIGHT_BLEND(kvx0,  /*kvx1*/ inv1 );
-            inv0 += mm_dp_ps(sum0, kvx0, 226) + 
-                   mm_dp_ps(sum1,  /*kvx1*/ inv1 , 242) + 
-                   mm_dp_ps(sum2,  /*kvx2*/ inv2 , 50);          PRINT_VECTOR(inv0);
+            inv0 += _mm_dp_ps(sum0, kvx0, 226) + 
+                   _mm_dp_ps(sum1,  /*kvx1*/ inv1 , 242) + 
+                   _mm_dp_ps(sum2,  /*kvx2*/ inv2 , 50);          PRINT_VECTOR(inv0);
             
             PRINT_LABEL("Terceiro"); 
             // ---------   ---------   ---------
@@ -4897,9 +4897,9 @@ void sc9SSE (const int s, const int w, const int h,
             ROTATE_RIGHT( /*kvx2*/ inv2 );
             ROTATE_RIGHT_BLEND(/*kvx1*/ inv1, /*kvx2*/ inv2);
             ROTATE_RIGHT_BLEND(kvx0,  /*kvx1*/ inv1 );
-            inv0 += mm_dp_ps(sum0, kvx0, 196) + 
-                   mm_dp_ps(sum1,  /*kvx1*/ inv1 , 244) + 
-                   mm_dp_ps(sum2,  /*kvx2*/ inv2 , 116);          PRINT_VECTOR(inv0);
+            inv0 += _mm_dp_ps(sum0, kvx0, 196) + 
+                   _mm_dp_ps(sum1,  /*kvx1*/ inv1 , 244) + 
+                   _mm_dp_ps(sum2,  /*kvx2*/ inv2 , 116);          PRINT_VECTOR(inv0);
             
             PRINT_LABEL("Quarto"); 
             PRINT_VECTOR(sum0);
@@ -4912,9 +4912,9 @@ void sc9SSE (const int s, const int w, const int h,
             ROTATE_RIGHT( /*kvx2*/ inv2 );
             ROTATE_RIGHT_BLEND(/*kvx1*/ inv1, /*kvx2*/ inv2);
             ROTATE_RIGHT_BLEND(kvx0,  /*kvx1*/ inv1 );
-            inv0 += mm_dp_ps(sum0, kvx0, 136) + 
-                   mm_dp_ps(sum1,  /*kvx1*/ inv1 , 248) + 
-                   mm_dp_ps(sum2,  /*kvx2*/ inv2 , 120);          PRINT_VECTOR(inv0);
+            inv0 += _mm_dp_ps(sum0, kvx0, 136) + 
+                   _mm_dp_ps(sum1,  /*kvx1*/ inv1 , 248) + 
+                   _mm_dp_ps(sum2,  /*kvx2*/ inv2 , 120);          PRINT_VECTOR(inv0);
             
             PRINT_LABEL("Rotate"); 
             
@@ -5009,19 +5009,19 @@ void scGaussian5SSE (const int s, const int w, const int h,
             
             //TODO parei aqui, fazer para no x agora.
             
-            inv0 = mm_dp_ps(sum0, kvx0, 241) + mm_dp_ps(sum1, kvx1, 17);          PRINT_VECTOR(inv0);
+            inv0 = _mm_dp_ps(sum0, kvx0, 241) + _mm_dp_ps(sum1, kvx1, 17);          PRINT_VECTOR(inv0);
             
             ROTATE_RIGHT(kvx1);                                                     
             ROTATE_RIGHT_BLEND(kvx0, kvx1);                                         
-            inv0 += mm_dp_ps(sum0, kvx0, 226) + mm_dp_ps(sum1, kvx1, 50);         PRINT_VECTOR(inv0);
+            inv0 += _mm_dp_ps(sum0, kvx0, 226) + _mm_dp_ps(sum1, kvx1, 50);         PRINT_VECTOR(inv0);
             
             ROTATE_RIGHT(kvx1);                                                     
             ROTATE_RIGHT_BLEND(kvx0, kvx1);                                         
-            inv0 += mm_dp_ps(sum0, kvx0, 196) + mm_dp_ps(sum1, kvx1, 116);         PRINT_VECTOR(inv0);
+            inv0 += _mm_dp_ps(sum0, kvx0, 196) + _mm_dp_ps(sum1, kvx1, 116);         PRINT_VECTOR(inv0);
             
             ROTATE_RIGHT(kvx1);                                                     
             ROTATE_RIGHT_BLEND(kvx0, kvx1);                                         
-            inv0 += mm_dp_ps(sum0, kvx0, 136) + mm_dp_ps(sum1, kvx1, 248);         PRINT_VECTOR(inv0);
+            inv0 += _mm_dp_ps(sum0, kvx0, 136) + _mm_dp_ps(sum1, kvx1, 248);         PRINT_VECTOR(inv0);
             
             ROTATE_RIGHT(kvx0);
             ROTATE_RIGHT(kvx1);
@@ -5148,16 +5148,16 @@ void scGaussian7SSE (const int s, const int w, const int h,
             // ---------   ---------
             // |0|1|2|3|   |4|5|6|-|
             // ---------   ---------
-            inv0 = mm_dp_ps(sum0, kvx0, 241) + 
-                   mm_dp_ps(sum1, kvx1 , 113);          PRINT_VECTOR(inv0);
+            inv0 = _mm_dp_ps(sum0, kvx0, 241) + 
+                   _mm_dp_ps(sum1, kvx1 , 113);          PRINT_VECTOR(inv0);
                    
             // ---------   ---------
             // |3|0|1|2|   |3|4|5|6|
             // ---------   ---------
             ROTATE_RIGHT(kvx1);                                                     
             ROTATE_RIGHT_BLEND(kvx0, kvx1);   
-            inv0 += mm_dp_ps(sum0, kvx0, 226) + 
-                   mm_dp_ps(sum1, kvx1, 242);          PRINT_VECTOR(inv0);
+            inv0 += _mm_dp_ps(sum0, kvx0, 226) + 
+                   _mm_dp_ps(sum1, kvx1, 242);          PRINT_VECTOR(inv0);
             
             PRINT_LABEL("Terceiro"); 
             // ---------   ---------   ---------
@@ -5165,9 +5165,9 @@ void scGaussian7SSE (const int s, const int w, const int h,
             // ---------   ---------   ---------
             ROTATE_RIGHT_BLEND(kvx1, kvx2); 
             ROTATE_RIGHT_BLEND(kvx0, kvx1); 
-            inv0 += mm_dp_ps(sum0, kvx0, 196) + 
-                   mm_dp_ps(sum1, kvx1, 244) + 
-                   mm_dp_ps(sum2, kvx2 , 20);          PRINT_VECTOR(inv0);
+            inv0 += _mm_dp_ps(sum0, kvx0, 196) + 
+                   _mm_dp_ps(sum1, kvx1, 244) + 
+                   _mm_dp_ps(sum2, kvx2 , 20);          PRINT_VECTOR(inv0);
             
             PRINT_LABEL("Quarto"); 
             PRINT_VECTOR(sum0);
@@ -5180,9 +5180,9 @@ void scGaussian7SSE (const int s, const int w, const int h,
             ROTATE_RIGHT(kvx2);
             ROTATE_RIGHT_BLEND(kvx1, kvx2);
             ROTATE_RIGHT_BLEND(kvx0, kvx1);                                         
-            inv0 += mm_dp_ps(sum0, kvx0, 136) + 
-                   mm_dp_ps(sum1, kvx1, 248) + 
-                   mm_dp_ps(sum2, kvx2, 56);          PRINT_VECTOR(inv0);
+            inv0 += _mm_dp_ps(sum0, kvx0, 136) + 
+                   _mm_dp_ps(sum1, kvx1, 248) + 
+                   _mm_dp_ps(sum2, kvx2, 56);          PRINT_VECTOR(inv0);
             
             PRINT_LABEL("Rotate"); 
             PRINT_VECTOR(kvx0);
@@ -5191,7 +5191,7 @@ void scGaussian7SSE (const int s, const int w, const int h,
 
             ROTATE_RIGHT(kvx0);
             //FIXME O erro está aqui. kvx1 não está carregado de forma correta. Dar um shuffle com inv1 para pegar de volta os elementos.
-            kvx1 = mm_blend_ps(kvx1, kvx2, 7);
+            kvx1 = _mm_blend_ps(kvx1, kvx2, 7);
             ROTATE_RIGHT(kvx1);
             
             
@@ -5337,9 +5337,9 @@ void scGaussian9SSE (const int s, const int w, const int h,
             // ---------   ---------   ---------
             // |0|1|2|3|   |4|5|6|7|   |8|-|-|-|
             // ---------   ---------   ---------
-            inv0 = mm_dp_ps(sum0, kvx0, 241) + 
-                   mm_dp_ps(sum1, kvx1 , 241) + 
-                   mm_dp_ps(sum2, kvx2 , 17);          PRINT_VECTOR(inv0);
+            inv0 = _mm_dp_ps(sum0, kvx0, 241) + 
+                   _mm_dp_ps(sum1, kvx1 , 241) + 
+                   _mm_dp_ps(sum2, kvx2 , 17);          PRINT_VECTOR(inv0);
                    
             // ---------   ---------   ---------
             // |3|0|1|2|   |3|4|5|6|   |7|8|-|-|
@@ -5347,9 +5347,9 @@ void scGaussian9SSE (const int s, const int w, const int h,
             ROTATE_RIGHT( kvx2 );
             ROTATE_RIGHT_BLEND(kvx1, kvx2);
             ROTATE_RIGHT_BLEND(kvx0,  kvx1);
-            inv0 += mm_dp_ps(sum0, kvx0, 226) + 
-                   mm_dp_ps(sum1, kvx1, 242) + 
-                   mm_dp_ps(sum2, kvx2 , 50);          PRINT_VECTOR(inv0);
+            inv0 += _mm_dp_ps(sum0, kvx0, 226) + 
+                   _mm_dp_ps(sum1, kvx1, 242) + 
+                   _mm_dp_ps(sum2, kvx2 , 50);          PRINT_VECTOR(inv0);
             
             PRINT_LABEL("Terceiro"); 
             // ---------   ---------   ---------
@@ -5358,9 +5358,9 @@ void scGaussian9SSE (const int s, const int w, const int h,
             ROTATE_RIGHT( kvx2 );
             ROTATE_RIGHT_BLEND(kvx1, kvx2);
             ROTATE_RIGHT_BLEND(kvx0,  kvx1);
-            inv0 += mm_dp_ps(sum0, kvx0, 196) + 
-                   mm_dp_ps(sum1, kvx1, 244) + 
-                   mm_dp_ps(sum2, kvx2 , 116);          PRINT_VECTOR(inv0);
+            inv0 += _mm_dp_ps(sum0, kvx0, 196) + 
+                   _mm_dp_ps(sum1, kvx1, 244) + 
+                   _mm_dp_ps(sum2, kvx2 , 116);          PRINT_VECTOR(inv0);
             
             PRINT_LABEL("Quarto"); 
             PRINT_VECTOR(sum0);
@@ -5373,9 +5373,9 @@ void scGaussian9SSE (const int s, const int w, const int h,
             ROTATE_RIGHT( kvx2 );
             ROTATE_RIGHT_BLEND( kvx1, kvx2);
             ROTATE_RIGHT_BLEND(kvx0, kvx1);
-            inv0 += mm_dp_ps(sum0, kvx0, 136) + 
-                   mm_dp_ps(sum1, kvx1, 248) + 
-                   mm_dp_ps(sum2, kvx2, 120);          PRINT_VECTOR(inv0);
+            inv0 += _mm_dp_ps(sum0, kvx0, 136) + 
+                   _mm_dp_ps(sum1, kvx1, 248) + 
+                   _mm_dp_ps(sum2, kvx2, 120);          PRINT_VECTOR(inv0);
             
             PRINT_LABEL("Rotate"); 
             PRINT_VECTOR(kvx0);
@@ -5383,9 +5383,9 @@ void scGaussian9SSE (const int s, const int w, const int h,
             PRINT_VECTOR(kvx2);
 
             ROTATE_RIGHT( kvx0 );
-            kvx1 = mm_blend_ps(kvx1, kvx2, 7);             PRINT_VECTOR(kvx1);
+            kvx1 = _mm_blend_ps(kvx1, kvx2, 7);             PRINT_VECTOR(kvx1);
             ROTATE_RIGHT( kvx1 );
-            kvx2 = mm_blend_ps(kvx2, _mm_setzero_ps(), 7); PRINT_VECTOR(kvx2);
+            kvx2 = _mm_blend_ps(kvx2, _mm_setzero_ps(), 7); PRINT_VECTOR(kvx2);
             ROTATE_RIGHT( kvx2 );
             
             
