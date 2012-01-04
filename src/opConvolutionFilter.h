@@ -205,8 +205,8 @@ inline __m128 _mm_dp_ps (__m128& __X, __m128& __Y, const int __M)
 {
     //http://sseplus.sourceforge.net/group__emulated___s_s_e3.html
   
-    const static __m128i mulShiftImm_0123 = SSP_CONST_SET_32I( 0x010000, 0x020000, 0x040000, 0x080000 );   // Shift mask multiply moves 0,1,2,3 bits to left, becomes MSB
-    const static __m128i mulShiftImm_4567 = SSP_CONST_SET_32I( 0x100000, 0x200000, 0x400000, 0x800000 );   // Shift mask multiply moves 4,5,6,7 bits to left, becomes MSB
+    const static __m128i mulShiftImm_0123 = _mm_set_epi32( 0x010000, 0x020000, 0x040000, 0x080000 );   // Shift mask multiply moves 0,1,2,3 bits to left, becomes MSB
+    const static __m128i mulShiftImm_4567 = _mm_set_epi32( 0x100000, 0x200000, 0x400000, 0x800000 );   // Shift mask multiply moves 4,5,6,7 bits to left, becomes MSB
     
     // Begin mask preparation
     ssp_m128 mHi, mLo;
