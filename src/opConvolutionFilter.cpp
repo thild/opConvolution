@@ -31,17 +31,14 @@
 #include <iomanip>
 
 //sse and omp
-
+#include <omp.h>
 #include <xmmintrin.h>  // SSE  (Required to use the __m128, and __m128d type)
 #include <emmintrin.h>  // SSE2 (Required to use the __m128i type)
 #include <pmmintrin.h>  // SSE3
  
-#if !defined(__amd64__)
+#ifdef __SSE4_1__
 #include <smmintrin.h>  
 #endif 
- 
-
-#include <omp.h>
 #include <cmath>
 
 using namespace std;
@@ -189,7 +186,7 @@ void sseNoReuse1Convolve (const int s, const int w, const int h,
                 const int idxIntmp = (y + r) * s + x;
                 for (int c = 0; c < kw; c += 4) {
                     __m128 iv0, iv1;
-                    __m128 kv = _mm_load_ps(&kernel[idxFtmp + c]);                     PRINT_VECTOR(kv);
+                    register const __m128 kv = _mm_load_ps(&kernel[idxFtmp + c]);                     PRINT_VECTOR(kv);
                     //cout << "aqui 1" << flush << endl;
                     iv0 = _mm_load_ps(&input[idxIntmp + c]);               PRINT_VECTOR(iv0);
                     iv1 = _mm_load_ps(&input[idxIntmp + c + 4]);           PRINT_VECTOR(iv1);
@@ -258,7 +255,7 @@ void sseNoReuse2Convolve (const int s, const int w, const int h,
                 const int idxIntmp = (y + r) * s + x;
                 for (int c = 0; c < kw; c += 4) {
                     __m128 iv0, iv1, iv2;
-                    __m128 kv = _mm_load_ps(&kernel[idxFtmp + c]);                     PRINT_VECTOR(kv);
+                    register const __m128 kv = _mm_load_ps(&kernel[idxFtmp + c]);                     PRINT_VECTOR(kv);
                     //cout << "aqui 1" << flush << endl;
                     iv0 = _mm_load_ps(&input[idxIntmp + c]);               PRINT_VECTOR(iv0);
                     iv1 = _mm_load_ps(&input[idxIntmp + c + 4]);           PRINT_VECTOR(iv1);
@@ -332,7 +329,7 @@ void sseNoReuse3Convolve (const int s, const int w, const int h,
                 const int idxIntmp = (y + r) * s + x;  
                 for (int c = 0; c < kw; c += 4) {
                     __m128 iv0, iv1, iv2, iv3;
-                    __m128 kv = _mm_load_ps(&kernel[idxFtmp + c]);                     PRINT_VECTOR(kv);
+                    register const __m128 kv = _mm_load_ps(&kernel[idxFtmp + c]);                     PRINT_VECTOR(kv);
                     //cout << "aqui 1" << flush << endl;
                     iv0 = _mm_load_ps(&input[idxIntmp + c]);               PRINT_VECTOR(iv0);
                     iv1 = _mm_load_ps(&input[idxIntmp + c + 4]);           PRINT_VECTOR(iv1);
@@ -418,7 +415,7 @@ void sseNoReuse3Convolve (const int s, const int w, const int h,
 //                for (int c = 0; c < kw; c += 4) {
 //                    PRINT(c); 
 //                    __m128 iv0, iv1, iv2, iv3, iv4;
-//                    __m128 kv = _mm_load_ps(&kernel[idxFtmp + c]);    PRINT_VECTOR(kv);
+//                    register const __m128 kv = _mm_load_ps(&kernel[idxFtmp + c]);    PRINT_VECTOR(kv);
 //                    //cout << "aqui 1" << flush << endl;
 //                    iv0 = _mm_load_ps(&input[idxIntmp + c]);               PRINT_VECTOR(iv0);
 //                    iv1 = _mm_load_ps(&input[idxIntmp + c + 4]);           PRINT_VECTOR(iv1);
@@ -569,7 +566,7 @@ void sseNoReuse4Convolve (const int s, const int w, const int h,
                 
                 for (int c = 0; c < kw; c += 4) {
                     __m128 iv0, iv1, iv2, iv3, iv4;
-                    __m128 kv = _mm_load_ps(&kernel[idxFtmp + c]);                     PRINT_VECTOR(kv);
+                    register const __m128 kv = _mm_load_ps(&kernel[idxFtmp + c]);                     PRINT_VECTOR(kv);
                     //cout << "aqui 1" << flush << endl;
                     iv0 = _mm_load_ps(&input[idxIntmp + c]);               PRINT_VECTOR(iv0);
                     iv1 = _mm_load_ps(&input[idxIntmp + c + 4]);           PRINT_VECTOR(iv1);
@@ -658,7 +655,7 @@ void sseNoReuse5Convolve (const int s, const int w, const int h,
                 const int idxIntmp = (y + r) * s + x;
                 for (int c = 0; c < kw; c += 4) {
                     __m128 iv0, iv1, iv2, iv3, iv4, iv5;
-                    __m128 kv = _mm_load_ps(&kernel[idxFtmp + c]);                     PRINT_VECTOR(kv);
+                    register const __m128 kv = _mm_load_ps(&kernel[idxFtmp + c]);                     PRINT_VECTOR(kv);
                     //cout << "aqui 1" << flush << endl;
                     iv0 = _mm_load_ps(&input[idxIntmp + c]);               PRINT_VECTOR(iv0);
                     iv1 = _mm_load_ps(&input[idxIntmp + c + 4]);           PRINT_VECTOR(iv1);
@@ -752,7 +749,7 @@ void sseNoReuse6Convolve (const int s, const int w, const int h,
                 const int idxIntmp = (y + r) * s + x;
                 for (int c = 0; c < kw; c += 4) {
                     __m128 iv0, iv1, iv2, iv3, iv4, iv5, iv6;
-                    __m128 kv = _mm_load_ps(&kernel[idxFtmp + c]);                     PRINT_VECTOR(kv);
+                    register const __m128 kv = _mm_load_ps(&kernel[idxFtmp + c]);                     PRINT_VECTOR(kv);
                     //cout << "aqui 1" << flush << endl;
                     iv0 = _mm_load_ps(&input[idxIntmp + c]);               PRINT_VECTOR(iv0);
                     iv1 = _mm_load_ps(&input[idxIntmp + c + 4]);           PRINT_VECTOR(iv1);
@@ -850,7 +847,7 @@ void sseNoReuse7Convolve (const int s, const int w, const int h,
                 const int idxIntmp = (y + r) * s + x;
                 for (int c = 0; c < kw; c += 4) {
                     __m128 iv0, iv1, iv2, iv3, iv4, iv5, iv6, iv7;
-                    __m128 kv = _mm_load_ps(&kernel[idxFtmp + c]);                     PRINT_VECTOR(kv);
+                    register const __m128 kv = _mm_load_ps(&kernel[idxFtmp + c]);                     PRINT_VECTOR(kv);
                     //cout << "aqui 1" << flush << endl;
                     iv0 = _mm_load_ps(&input[idxIntmp + c]);               PRINT_VECTOR(iv0);
                     iv1 = _mm_load_ps(&input[idxIntmp + c + 4]);           PRINT_VECTOR(iv1);
@@ -959,7 +956,7 @@ void sseReuse1Convolve (const int s, const int w, const int h,
                 
                 for (int c = 0; c < kw; c += 4) {
                     PRINT_LABEL("carregando"); 
-                    __m128 kv = _mm_load_ps(&kernel[idxFtmp + c]);   PRINT_VECTOR(kv);
+                    register const __m128 kv = _mm_load_ps(&kernel[idxFtmp + c]);   PRINT_VECTOR(kv);
                     iv1 = _mm_load_ps(&input[idxIntmp + c + 4]);              PRINT_VECTOR(iv1);
                     PRINT_LABEL("sum0"); 
                     sum0 += mm_dp_ps(kv, iv0, 241);    PRINT_VECTOR(sum0); 
@@ -1035,7 +1032,7 @@ void sseReuse2Convolve (const int s, const int w, const int h,
                 
                 for (int c = 0; c < kw; c += 4) {
                     PRINT_LABEL("carregando"); 
-                    __m128 kv = _mm_load_ps(&kernel[idxFtmp + c]);   PRINT_VECTOR(kv);
+                    register const __m128 kv = _mm_load_ps(&kernel[idxFtmp + c]);   PRINT_VECTOR(kv);
                     iv2 = _mm_load_ps(&input[idxIntmp + c + 8]);              PRINT_VECTOR(iv2);
                     PRINT_LABEL("sum0"); 
                     sum0 += mm_dp_ps(kv, iv0, 241);    PRINT_VECTOR(sum0); 
@@ -1118,7 +1115,7 @@ void sseReuse3Convolve (const int s, const int w, const int h,
                 
                 for (int c = 0; c < kw; c += 4) {
                     PRINT_LABEL("carregando"); 
-                    __m128 kv = _mm_load_ps(&kernel[idxFtmp + c]);   PRINT_VECTOR(kv);
+                    register const __m128 kv = _mm_load_ps(&kernel[idxFtmp + c]);   PRINT_VECTOR(kv);
                     iv3 = _mm_load_ps(&input[idxIntmp + c + 12]);              PRINT_VECTOR(iv3);
                     PRINT_LABEL("sum0"); 
                     sum0 += mm_dp_ps(kv, iv0, 241);    PRINT_VECTOR(sum0); 
@@ -1208,7 +1205,7 @@ void sseReuse4Convolve (const int s, const int w, const int h,
                 
                 for (int c = 0; c < kw; c += 4) {
                     PRINT_LABEL("carregando"); 
-                    __m128 kv = _mm_load_ps(&kernel[idxFtmp + c]);   PRINT_VECTOR(kv);
+                    register const __m128 kv = _mm_load_ps(&kernel[idxFtmp + c]);   PRINT_VECTOR(kv);
                     iv4 = _mm_load_ps(&input[idxIntmp + c + 16]);              PRINT_VECTOR(iv4);
                     PRINT_LABEL("sum0"); 
                     sum0 += mm_dp_ps(kv, iv0, 241);    PRINT_VECTOR(sum0); 
@@ -1303,7 +1300,7 @@ void sseReuse5Convolve (const int s, const int w, const int h,
                 
                 for (int c = 0; c < kw; c += 4) {
                     PRINT_LABEL("carregando"); 
-                    __m128 kv = _mm_load_ps(&kernel[idxFtmp + c]);   PRINT_VECTOR(kv);
+                    register const __m128 kv = _mm_load_ps(&kernel[idxFtmp + c]);   PRINT_VECTOR(kv);
                     iv5 = _mm_load_ps(&input[idxIntmp + c + 20]);              PRINT_VECTOR(iv5);
                     PRINT_LABEL("sum0"); 
                     sum0 += mm_dp_ps(kv, iv0, 241);    PRINT_VECTOR(sum0); 
@@ -1403,7 +1400,7 @@ void sseReuse6Convolve (const int s, const int w, const int h,
                 
                 for (int c = 0; c < kw; c += 4) {
                     PRINT_LABEL("carregando"); 
-                    __m128 kv = _mm_load_ps(&kernel[idxFtmp + c]);   PRINT_VECTOR(kv);
+                    register const __m128 kv = _mm_load_ps(&kernel[idxFtmp + c]);   PRINT_VECTOR(kv);
                     iv6 = _mm_load_ps(&input[idxIntmp + c + 24]);              PRINT_VECTOR(iv6);
                     PRINT_LABEL("sum0"); 
                     sum0 += mm_dp_ps(kv, iv0, 241);    PRINT_VECTOR(sum0); 
@@ -1504,7 +1501,7 @@ void sseReuse7Convolve (const int s, const int w, const int h,
                 
                 for (int c = 0; c < kw; c += 4) {
                     PRINT_LABEL("carregando"); 
-                    __m128 kv = _mm_load_ps(&kernel[idxFtmp + c]);   PRINT_VECTOR(kv);
+                    register const __m128 kv = _mm_load_ps(&kernel[idxFtmp + c]);   PRINT_VECTOR(kv);
                     iv7 = _mm_load_ps(&input[idxIntmp + c + 28]);              PRINT_VECTOR(iv7);
                     PRINT_LABEL("sum0"); 
                     sum0 += mm_dp_ps(kv, iv0, 241);    PRINT_VECTOR(sum0); 
@@ -1745,7 +1742,7 @@ void loopBlockAlignedSSEConvolve (const int s, const int w, const int h,
                         const int idxIntmp = (yy + r) * s + xx;
                         for (int c = 0; c < kw; c += 4) {
                             __m128 iv0, iv1, iv2, iv3, iv4;
-                            __m128 kv = _mm_load_ps(&kernel[idxFtmp + c]);   PRINT_VECTOR(kv);
+                            register const __m128 kv = _mm_load_ps(&kernel[idxFtmp + c]);   PRINT_VECTOR(kv);
                             //cout << "aqui 1" << flush << endl;
                             iv0 = _mm_load_ps(&input[idxIntmp + c]);               PRINT_VECTOR(iv0);
                             iv1 = _mm_load_ps(&input[idxIntmp + c + 4]);           PRINT_VECTOR(iv1);
@@ -1829,7 +1826,7 @@ void loopBlockAlignedSSEConvolve2 (const int s, const int w, const int h,
                         const int idxIntmp = (yy + r) * s + xx;
                         for (int c = 0; c < kw; c += 4) {
                             __m128 iv0, iv1, iv2, iv3, iv4, iv5, iv6, iv7;
-                            __m128 kv = _mm_load_ps(&kernel[idxFtmp + c]);   PRINT_VECTOR(kv);
+                            register const __m128 kv = _mm_load_ps(&kernel[idxFtmp + c]);   PRINT_VECTOR(kv);
                             //cout << "aqui 1" << flush << endl;
                             iv0 = _mm_load_ps(&input[idxIntmp + c]);               PRINT_VECTOR(iv0);
                             iv1 = _mm_load_ps(&input[idxIntmp + c + 4]);           PRINT_VECTOR(iv1);
@@ -1939,9 +1936,9 @@ void sse3LbConvolve (const int s, const int w, const int h, const int ks,
      
     #pragma omp parallel for shared (input, output) schedule(guided)
     for (const float* ip = input; ip < stopYY; ip += yJump) {
-        register __m128 kv0 = _mm_load_ps(&kernel[0]); PRINT_VECTOR(kv0); //{1,2,3,0}
-        register __m128 kv1 = _mm_load_ps(&kernel[ks]); PRINT_VECTOR(kv1); //{1,2,3,0}
-        register __m128 kv2 = _mm_load_ps(&kernel[ks + ks]); PRINT_VECTOR(kv2); //{1,2,3,0}
+        const register __m128 kv0 = _mm_load_ps(&kernel[0]); PRINT_VECTOR(kv0); //{1,2,3,0}
+        const register __m128 kv1 = _mm_load_ps(&kernel[ks]); PRINT_VECTOR(kv1); //{1,2,3,0}
+        const register __m128 kv2 = _mm_load_ps(&kernel[ks + ks]); PRINT_VECTOR(kv2); //{1,2,3,0}
         
         register __m128 sum0, sum1, sum2;
         register __m128 inv0, inv1, inv2, inv3; 
@@ -2022,9 +2019,9 @@ void sse3LbConvolve (const int s, const int w, const int h, const int ks,
     } //for (int y = 0...
     stopYY = input + (s * stopY);
     for (const float* ip = input + (s * (stopY - 3)); ip < stopYY; ip += s) {
-        register __m128 kv0 = _mm_load_ps(&kernel[0]); PRINT_VECTOR(kv0); //{1,2,3,0}
-        register __m128 kv1 = _mm_load_ps(&kernel[ks]); PRINT_VECTOR(kv1); //{1,2,3,0}
-        register __m128 kv2 = _mm_load_ps(&kernel[ks + ks]); PRINT_VECTOR(kv2); //{1,2,3,0}
+        const register __m128 kv0 = _mm_load_ps(&kernel[0]); PRINT_VECTOR(kv0); //{1,2,3,0}
+        const register __m128 kv1 = _mm_load_ps(&kernel[ks]); PRINT_VECTOR(kv1); //{1,2,3,0}
+        const register __m128 kv2 = _mm_load_ps(&kernel[ks + ks]); PRINT_VECTOR(kv2); //{1,2,3,0}
         register __m128 sum0, sum1, sum2;
         register __m128 inv0, inv1, inv2, inv3; 
         const float* ipStopX = ip + stopX; 
@@ -2371,9 +2368,9 @@ void sse3Convolve (const int s, const int w, const int h, const int ks,
     #pragma omp parallel for shared (input, output) 
     for (const float* ip = input; ip < stopYY; ip += s) {
         //FIXME Create constant
-        register __m128 kv0 = _mm_load_ps(&kernel[0]); PRINT_VECTOR(kv0); //{1,2,3,0}
-        register __m128 kv1 = _mm_load_ps(&kernel[ks]); PRINT_VECTOR(kv1); //{4,5,6,0}
-        register __m128 kv2 = _mm_load_ps(&kernel[ks + ks]); PRINT_VECTOR(kv2); //{7,8,9,0}
+        const register __m128 kv0 = _mm_load_ps(&kernel[0]); PRINT_VECTOR(kv0); //{1,2,3,0}
+        const register __m128 kv1 = _mm_load_ps(&kernel[ks]); PRINT_VECTOR(kv1); //{4,5,6,0}
+        const register __m128 kv2 = _mm_load_ps(&kernel[ks + ks]); PRINT_VECTOR(kv2); //{7,8,9,0}
         
         register __m128 sum0, sum1, sum2;
         register __m128 inv0, inv1, inv2, inv3; 
@@ -4424,9 +4421,9 @@ void sc3SSE (const int s, const int w, const int h,
     #pragma omp parallel for shared (input, output) 
     for (int y = startY; y < stopY; ++y) {
         const __m128 kv = _mm_load_ps(kernelY);             PRINT_VECTOR(kv);
-        register __m128 kvy0 = _mm_shuffle_ps(kv, kv, 0);            PRINT_VECTOR(kvy0);
-        register __m128 kvy1 = _mm_shuffle_ps(kv, kv, 85);           PRINT_VECTOR(kvy1);
-        register __m128 kvy2 = _mm_shuffle_ps(kv, kv, 170);          PRINT_VECTOR(kvy2);
+        const register __m128 kvy0 = _mm_shuffle_ps(kv, kv, 0);            PRINT_VECTOR(kvy0);
+        const register __m128 kvy1 = _mm_shuffle_ps(kv, kv, 85);           PRINT_VECTOR(kvy1);
+        const register __m128 kvy2 = _mm_shuffle_ps(kv, kv, 170);          PRINT_VECTOR(kvy2);
         register __m128 kvx0 = _mm_load_ps(kernelX);                 PRINT_VECTOR(kvx0);
 
         __m128 kvx1 = _mm_setzero_ps();                     PRINT_VECTOR(kvx1);
@@ -4512,13 +4509,13 @@ void sc5SSE (const int s, const int w, const int h,
      
         //TODO For gaussian we only need kw / 2 + 1 kernel vectors since guassian function repeats 
         register __m128 inv0 = _mm_load_ps(kernelY);                          PRINT_VECTOR(inv0);
-        register __m128 kvy0 = _mm_shuffle_ps(inv0, inv0, 0);             PRINT_VECTOR(kvy0);
-        register __m128 kvy1 = _mm_shuffle_ps(inv0, inv0, 85);            PRINT_VECTOR(kvy1);
-        register __m128 kvy2 = _mm_shuffle_ps(inv0, inv0, 170);           PRINT_VECTOR(kvy2);
-        register __m128 kvy3 = _mm_shuffle_ps(inv0, inv0, 255);           PRINT_VECTOR(kvy3);
+        const register __m128 kvy0 = _mm_shuffle_ps(inv0, inv0, 0);             PRINT_VECTOR(kvy0);
+        const register __m128 kvy1 = _mm_shuffle_ps(inv0, inv0, 85);            PRINT_VECTOR(kvy1);
+        const register __m128 kvy2 = _mm_shuffle_ps(inv0, inv0, 170);           PRINT_VECTOR(kvy2);
+        const register __m128 kvy3 = _mm_shuffle_ps(inv0, inv0, 255);           PRINT_VECTOR(kvy3);
 
         inv0 = _mm_load_ps(kernelY + 4);                                      PRINT_VECTOR(inv0);
-        register __m128 kvy4 = _mm_shuffle_ps(inv0, inv0, 0);             PRINT_VECTOR(kvy4);
+        const register __m128 kvy4 = _mm_shuffle_ps(inv0, inv0, 0);             PRINT_VECTOR(kvy4);
 
         register __m128 kvx0 = _mm_load_ps(kernelX);                        PRINT_VECTOR(kvx0);
         register __m128 kvx1 = _mm_load_ps(kernelX + 4);                    PRINT_VECTOR(kvx1);
@@ -4621,15 +4618,15 @@ void sc7SSE (const int s, const int w, const int h,
      
         //TODO For gaussian we only need kw / 2 + 1 kernel vectors since guassian function repeats 
         register __m128 kvx0 = _mm_load_ps(kernelY);                        PRINT_VECTOR(kvx0);
-        register __m128 kvy0 = _mm_shuffle_ps(kvx0, kvx0, 0);         PRINT_VECTOR(kvy0);
-        register __m128 kvy1 = _mm_shuffle_ps(kvx0, kvx0, 85);        PRINT_VECTOR(kvy1);
-        register __m128 kvy2 = _mm_shuffle_ps(kvx0, kvx0, 170);       PRINT_VECTOR(kvy2);
-        register __m128 kvy3 = _mm_shuffle_ps(kvx0, kvx0, 255);       PRINT_VECTOR(kvy3);
+        const register __m128 kvy0 = _mm_shuffle_ps(kvx0, kvx0, 0);         PRINT_VECTOR(kvy0);
+        const register __m128 kvy1 = _mm_shuffle_ps(kvx0, kvx0, 85);        PRINT_VECTOR(kvy1);
+        const register __m128 kvy2 = _mm_shuffle_ps(kvx0, kvx0, 170);       PRINT_VECTOR(kvy2);
+        const register __m128 kvy3 = _mm_shuffle_ps(kvx0, kvx0, 255);       PRINT_VECTOR(kvy3);
 
         kvx0 = _mm_load_ps(kernelY + 4);                                    PRINT_VECTOR(kvx0);
-        register __m128 kvy4 = _mm_shuffle_ps(kvx0, kvx0, 0);         PRINT_VECTOR(kvy4);
-        register __m128 kvy5 = _mm_shuffle_ps(kvx0, kvx0, 85);        PRINT_VECTOR(kvy5);
-        register __m128 kvy6 = _mm_shuffle_ps(kvx0, kvx0, 170);       PRINT_VECTOR(kvy6);
+        const register __m128 kvy4 = _mm_shuffle_ps(kvx0, kvx0, 0);         PRINT_VECTOR(kvy4);
+        const register __m128 kvy5 = _mm_shuffle_ps(kvx0, kvx0, 85);        PRINT_VECTOR(kvy5);
+        const register __m128 kvy6 = _mm_shuffle_ps(kvx0, kvx0, 170);       PRINT_VECTOR(kvy6);
 
         kvx0 = _mm_load_ps(kernelX);                                        PRINT_VECTOR(kvx0);
         register __m128 kvx1 = _mm_load_ps(kernelX + 4);                    PRINT_VECTOR(kvx1);
@@ -4777,19 +4774,19 @@ void sc9SSE (const int s, const int w, const int h,
      
         //Load kernel lines. Make it const, so we don't have to load every time
         register __m128 inv0 = _mm_load_ps(kernelY);                        PRINT_VECTOR(inv0);
-        register __m128 kvy0 = _mm_shuffle_ps(inv0, inv0, 0);         PRINT_VECTOR(kvy0);
-        register __m128 kvy1 = _mm_shuffle_ps(inv0, inv0, 85);        PRINT_VECTOR(kvy1);
-        register __m128 kvy2 = _mm_shuffle_ps(inv0, inv0, 170);       PRINT_VECTOR(kvy2);
-        register __m128 kvy3 = _mm_shuffle_ps(inv0, inv0, 255);       PRINT_VECTOR(kvy3);
+        const register __m128 kvy0 = _mm_shuffle_ps(inv0, inv0, 0);         PRINT_VECTOR(kvy0);
+        const register __m128 kvy1 = _mm_shuffle_ps(inv0, inv0, 85);        PRINT_VECTOR(kvy1);
+        const register __m128 kvy2 = _mm_shuffle_ps(inv0, inv0, 170);       PRINT_VECTOR(kvy2);
+        const register __m128 kvy3 = _mm_shuffle_ps(inv0, inv0, 255);       PRINT_VECTOR(kvy3);
 
         inv0 = _mm_load_ps(kernelY + 4);                                    PRINT_VECTOR(inv0);
-        register __m128 kvy4 = _mm_shuffle_ps(inv0, inv0, 0);         PRINT_VECTOR(kvy4);
-        register __m128 kvy5 = _mm_shuffle_ps(inv0, inv0, 85);        PRINT_VECTOR(kvy5);
-        register __m128 kvy6 = _mm_shuffle_ps(inv0, inv0, 170);       PRINT_VECTOR(kvy6);
-        register __m128 kvy7 = _mm_shuffle_ps(inv0, inv0, 255);       PRINT_VECTOR(kvy7);
+        const register __m128 kvy4 = _mm_shuffle_ps(inv0, inv0, 0);         PRINT_VECTOR(kvy4);
+        const register __m128 kvy5 = _mm_shuffle_ps(inv0, inv0, 85);        PRINT_VECTOR(kvy5);
+        const register __m128 kvy6 = _mm_shuffle_ps(inv0, inv0, 170);       PRINT_VECTOR(kvy6);
+        const register __m128 kvy7 = _mm_shuffle_ps(inv0, inv0, 255);       PRINT_VECTOR(kvy7);
 
         inv0 = _mm_load_ps(kernelY + 8);                                    PRINT_VECTOR(inv0);
-        register __m128 kvy8 = _mm_shuffle_ps(inv0, inv0, 0);         PRINT_VECTOR(kvy8);
+        const register __m128 kvy8 = _mm_shuffle_ps(inv0, inv0, 0);         PRINT_VECTOR(kvy8);
 
          //vectors that will hold y dot product results
         __m128 sum0, sum1, sum2;
@@ -4965,9 +4962,9 @@ void scGaussian5SSE (const int s, const int w, const int h,
      
         //TODO For gaussian we only need kw / 2 + 1 kernel vectors since guassian function repeats 
         register __m128 kv = _mm_load_ps(kernel);                          PRINT_VECTOR(kv);
-        register __m128 kvy0 = _mm_shuffle_ps(kv, kv, 0);             PRINT_VECTOR(kvy0);
-        register __m128 kvy1 = _mm_shuffle_ps(kv, kv, 85);            PRINT_VECTOR(kvy1);
-        register __m128 kvy2 = _mm_shuffle_ps(kv, kv, 170);           PRINT_VECTOR(kvy2);
+        const register __m128 kvy0 = _mm_shuffle_ps(kv, kv, 0);             PRINT_VECTOR(kvy0);
+        const register __m128 kvy1 = _mm_shuffle_ps(kv, kv, 85);            PRINT_VECTOR(kvy1);
+        const register __m128 kvy2 = _mm_shuffle_ps(kv, kv, 170);           PRINT_VECTOR(kvy2);
 
         register __m128 kvx0 = _mm_load_ps(kernel);                        PRINT_VECTOR(kvx0);
         register __m128 kvx1 = _mm_load_ps(kernel + 4);                    PRINT_VECTOR(kvx1);
@@ -5069,10 +5066,10 @@ void scGaussian7SSE (const int s, const int w, const int h,
      
         //Load kernel lines. Make it const, so we don't have to load every time
         register __m128 inv0 = _mm_load_ps(kernel);                        PRINT_VECTOR(inv0);
-        register __m128 kvy0 = _mm_shuffle_ps(inv0, inv0, 0);         PRINT_VECTOR(kvy0);
-        register __m128 kvy1 = _mm_shuffle_ps(inv0, inv0, 85);        PRINT_VECTOR(kvy1);
-        register __m128 kvy2 = _mm_shuffle_ps(inv0, inv0, 170);       PRINT_VECTOR(kvy2);
-        register __m128 kvy3 = _mm_shuffle_ps(inv0, inv0, 255);       PRINT_VECTOR(kvy3);
+        const register __m128 kvy0 = _mm_shuffle_ps(inv0, inv0, 0);         PRINT_VECTOR(kvy0);
+        const register __m128 kvy1 = _mm_shuffle_ps(inv0, inv0, 85);        PRINT_VECTOR(kvy1);
+        const register __m128 kvy2 = _mm_shuffle_ps(inv0, inv0, 170);       PRINT_VECTOR(kvy2);
+        const register __m128 kvy3 = _mm_shuffle_ps(inv0, inv0, 255);       PRINT_VECTOR(kvy3);
 
         register __m128 kvx0 = _mm_load_ps(kernel);                        PRINT_VECTOR(kvx0);
         register __m128 kvx1 = _mm_load_ps(kernel + 4);                    PRINT_VECTOR(kvx1);
@@ -5242,13 +5239,13 @@ void scGaussian9SSE (const int s, const int w, const int h,
      
         //Load kernel lines. Make it const, so we don't have to load every time
         register __m128 inv0 = _mm_load_ps(kernel);                        PRINT_VECTOR(inv0);
-        register __m128 kvy0 = _mm_shuffle_ps(inv0, inv0, 0);         PRINT_VECTOR(kvy0);
-        register __m128 kvy1 = _mm_shuffle_ps(inv0, inv0, 85);        PRINT_VECTOR(kvy1);
-        register __m128 kvy2 = _mm_shuffle_ps(inv0, inv0, 170);       PRINT_VECTOR(kvy2);
-        register __m128 kvy3 = _mm_shuffle_ps(inv0, inv0, 255);       PRINT_VECTOR(kvy3);
+        const register __m128 kvy0 = _mm_shuffle_ps(inv0, inv0, 0);         PRINT_VECTOR(kvy0);
+        const register __m128 kvy1 = _mm_shuffle_ps(inv0, inv0, 85);        PRINT_VECTOR(kvy1);
+        const register __m128 kvy2 = _mm_shuffle_ps(inv0, inv0, 170);       PRINT_VECTOR(kvy2);
+        const register __m128 kvy3 = _mm_shuffle_ps(inv0, inv0, 255);       PRINT_VECTOR(kvy3);
 
         inv0 = _mm_load_ps(kernel + 4);                                    PRINT_VECTOR(inv0);
-        register __m128 kvy4 = _mm_shuffle_ps(inv0, inv0, 0);         PRINT_VECTOR(kvy4); 
+        const register __m128 kvy4 = _mm_shuffle_ps(inv0, inv0, 0);         PRINT_VECTOR(kvy4); 
 
 
         register __m128 kvx0 = _mm_load_ps(kernel);                        PRINT_VECTOR(kvx0);

@@ -31,7 +31,7 @@
 #include <emmintrin.h>  // SSE2 (Required to use the __m128i type)
 #include <pmmintrin.h>  // SSE3
  
-#if !defined(__amd64__)
+#ifdef __SSE4_1__
 #include <smmintrin.h>  
 #endif 
 
@@ -194,17 +194,24 @@
 #endif  
 
 
-#if defined(__amd64__)
- 
+#ifdef __SSE4_1__ 
+    //extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+    inline __m128 mm_dp_ps (__m128 a, __m128 b, const int mask) {
+        _mm_dp_ps(a, b, mask);
+    } 
+    inline __m128 mm_blend_ps(__m128 a, __m128 b, const int mask ) {
+        _mm_blend_ps(a, b, mask);
+    }
+#else  
+  
     typedef union 
     {
         __m128  f;
         __m128i i;
     } ssp_m128;
     
-    extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
-    mm_dp_ps (__m128 a, __m128 b, const int mask)
-    {
+//    extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+    inline __m128 mm_dp_ps (__m128 a, __m128 b, const int mask) {
         //http://sseplus.sourceforge.net/group__emulated___s_s_e3.html
       
         const static __m128i mulShiftImm_0123 = _mm_set_epi32( 0x010000, 0x020000, 0x040000, 0x080000 );   // Shift mask multiply moves 0,1,2,3 bits to left, becomes MSB
@@ -252,14 +259,7 @@
         screen.i = _mm_or_si128  ( A.i, B.i );                                 // a = a OR b        
         return screen.f;
     }  
-#else  
-    extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
-    mm_dp_ps (__m128 a, __m128 b, const int mask)
-        _mm_dp_ps(a, b, mask);
-    } 
-    inline __m128 mm_blend_ps(__m128 a, __m128 b, const int mask ) {
-        _mm_blend_ps(a, b, mask);
-    }
+
     
 #endif  
 
