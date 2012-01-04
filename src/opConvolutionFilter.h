@@ -220,12 +220,12 @@ inline __m128 _mm_dp_ps (__m128& __X, __m128& __Y, const int __M)
     mLo.i = _mm_cmplt_epi32( mLo.i, _mm_setzero_si128() );    // FFFFFFFF if bit set, 00000000 if not set
     // End mask preparation - Mask bits 0-3 in mLo, 4-7 in mHi
     
-    a = _mm_and_ps( a, mHi.f );                                       // Clear input using the high bits of the mask
-    a = _mm_mul_ps( a, b );
+    __X = _mm_and_ps( __X, mHi.f );                                       // Clear input using the high bits of the mask
+    __X = _mm_mul_ps( __X, __Y );
     
-    a = _mm_hadd_ps( a, a );                            // Horizontally add the 4 values
-    a = _mm_and_ps( a, mLo.f );                                      // Clear output using low bits of the mask
-    return a;   
+    __X = _mm_hadd_ps( __X, __X );                            // Horizontally add the 4 values
+    __X = _mm_and_ps( __X, mLo.f );                                      // Clear output using low bits of the mask
+    return __X;   
 
 //typedef __m128 float4;
 //
