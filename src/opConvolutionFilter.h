@@ -210,7 +210,7 @@ inline __m128 _mm_dp_ps (__m128& __X, __m128& __Y, const int __M)
     
     // Begin mask preparation
     ssp_m128 mHi, mLo;
-    mLo.i = _mm_set1_epi32( mask );                                 // Load the mask into register
+    mLo.i = _mm_set1_epi32( __M );                                 // Load the mask into register
     mLo.i = _mm_slli_si128( mLo.i, 3 );                         // Shift into reach of the 16 bit multiply
     
     mHi.i = _mm_mullo_epi16( mLo.i, mulShiftImm_0123 );   // Shift the bits
