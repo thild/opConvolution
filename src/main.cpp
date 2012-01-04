@@ -1089,6 +1089,10 @@ void naiveConvolveTest( const int iterations, list<int>& kernels,
 
 int main (int argc, char *argv[])
 {
+    #if defined(AMD)
+        cout << "Running in AMD architecture..." << endl;
+    #endif
+ 
     /* initialize random seed: */
     srand ( time(NULL) );
     cout.setf(ios::fixed);
