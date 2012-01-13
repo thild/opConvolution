@@ -1,5 +1,5 @@
 // 
-// statistics.cpp
+// statistics.h
 //  
 // Author:
 //       Tony Alexander Hild <tony_hild@yahoo.com>
@@ -23,6 +23,9 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+
+#ifndef _STATISTICS_H
+#define _STATISTICS_H
 
 #include <cmath>
 #include <cstdlib>
@@ -59,3 +62,5 @@ double StDev(const vector<T>& arr)
     // Standard deviation is square root of variance
     return std::sqrt(variance);
 }
+
+#endif //_STATISTICS_H

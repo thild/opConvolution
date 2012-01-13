@@ -24,6 +24,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+#ifndef _UTIL_H
+#define _UTIL_H
+
 std::vector<std::string> &split(const std::string &s, char delim, std::vector<std::string> &elems) {
     std::stringstream ss(s);
     std::string item;
@@ -52,26 +55,4 @@ void populateBuffer(const int imageStride, const int imageWidth, const int image
     }
 }
 
-//#define cout sout
-//#include <fstream>
-//#include <iostream>
-//#include <ostream>
-//#include <cstdio>
-//
-//using namespace std;
-//
-//class mstream
-//{
-//  public:
-//  ofstream coss;
-//  mstream(void);
-//  ~mstream(void);
-//};
-//
-//template <class T>
-//mstream& operator<<(std::ostream& (*pfun)(std::ostream& a))
-//{
-//    pfun(coss);
-//    pfun(cout);
-//    return *this;
-//}
+#endif //_UTIL_H

@@ -87,6 +87,50 @@ void opConvolve (const int s, const int w, const int h,
     }                  
 }
  
+void opSeparableConvolve (const int s, const int w, const int h, const int kw, 
+                          const float* __restrict input, float* __restrict output, 
+                          const float* __restrict kernelX, 
+                          const float* __restrict kernelY) {
+    if(kw < 2) return;
+    
+    if(kw > w || kw > h) return;
+                  
+    if(w < ALIGMENT_BYTES || h < ALIGMENT_BYTES){
+        separableConvolve (s, w, h, kw, 
+                           input, output, kernelX, kernelY);  
+        return;
+     
+    }                
+                  
+    switch (kw) {
+        case 3:
+            sc3SSE (s, w, h,
+                    input, output, 
+                    kernelX, kernelY);
+            break;
+        case 5:
+            sc5SSE (s, w, h,
+                    input, output, 
+                    kernelX, kernelY);
+            break;
+        case 7:
+            sc7SSE (s, w, h,
+                    input, output, 
+                    kernelX, kernelY);
+            break;
+        case 9:
+            sc9SSE (s, w, h,
+                    input, output, 
+                    kernelX, kernelY);
+            break;
+        default:
+            scSSE (s, w, h, kw,
+                    input, output, 
+                    kernelX, kernelY);
+            break;
+    }                                             
+}
+ 
 
 
 void naiveConvolve (const int s, const int w, const int h, 
@@ -248,7 +292,7 @@ void sseNoReuse2Convolve (const int s, const int w, const int h,
     #pragma omp parallel for shared (input, output) 
     for (int y = startY; y < stopY; ++y) {
         for (int x = startX; x < stopX; x += 8) {
-            register __m128 sum0, sum1, sum2;
+            register __m128 sum0, sum1;
             sum0 = sum1 = _mm_setzero_ps();
             for (int r = 0; r < kw; ++r) {
                 const int idxFtmp = r * ks;
@@ -544,7 +588,6 @@ void sseNoReuse4Convolve (const int s, const int w, const int h,
     #pragma omp parallel for shared (input, output) 
     for (int y = startY; y < stopY; ++y) {
         for (int x = startX; x < stopX; x += 16) { 
-            int yy = y * s;
             register __m128 sum0, sum1, sum2, sum3; 
             sum0 = sum1 = sum2 = sum3 = _mm_setzero_ps();
             for (int r = 0; r < kw; ++r) {
@@ -1571,41 +1614,41 @@ void sseReuse7Convolve (const int s, const int w, const int h,
     
 }
 
-
-
-void pointerArithmeticConvolve (const int s, const int w, const int h, 
-                                const int ks, const int kw, 
-                                const float* input, float* output, const float* kernel) {
-
-    const int hk = kw / 2;
-    const int stopX = w - 2 * (kw / 2);
-    const int stopY = h - 2 * (kw / 2);
-    const float* ipStopY = &input[s * stopY];
-    const float* kpStopY = &kernel[ks * kw];
-    const int offset = hk * s + hk;         
-    #pragma omp parallel for shared (input, output) 
-    for (const float* ipY = input; ipY < ipStopY; ipY += s) {
-        const float* ipStopX = ipY + stopX;            
-        float* op = output + (ipY - input);
-        for (const float* ipX = ipY; ipX < ipStopX; ++ipX, ++op) {
-            float sum = 0;
-            const float* ip = ipX;
-            for (const float* kpY = kernel; kpY < kpStopY; kpY += ks, ip += s) { 
-                const float* kpStopX = kpY + kw;            
-                for (const float* kpX = kpY; kpX < kpStopX; ++kpX, ++ip) {
-                    sum += *kpX * *ip;
-                }
-                ip -= kw;
-            } //for (int r = 0...
-            *(op + offset)= sum;
-        } //for (int x = 0...
-    } //for (int y = 0...
-    processBoundaries2D (s, w, h, 
-                       ks, kw, 
-                       input, output, kernel);    
-//    printImage(w, h, s, output);
-    
-}
+//
+//
+//void pointerArithmeticConvolve (const int s, const int w, const int h, 
+//                                const int ks, const int kw, 
+//                                const float* input, float* output, const float* kernel) {
+//
+//    const int hk = kw / 2;
+//    const int stopX = w - 2 * (kw / 2);
+//    const int stopY = h - 2 * (kw / 2);
+//    const float* ipStopY = &input[s * stopY];
+//    const float* kpStopY = &kernel[ks * kw];
+//    const int offset = hk * s + hk;         
+//    #pragma omp parallel for shared (input, output) 
+//    for (const float* ipY = input; ipY < ipStopY; ipY += s) {
+//        const float* ipStopX = ipY + stopX;            
+//        float* op = output + (ipY - input);
+//        for (const float* ipX = ipY; ipX < ipStopX; ++ipX, ++op) {
+//            float sum = 0;
+//            const float* ip = ipX;
+//            for (const float* kpY = kernel; kpY < kpStopY; kpY += ks, ip += s) { 
+//                const float* kpStopX = kpY + kw;            
+//                for (const float* kpX = kpY; kpX < kpStopX; ++kpX, ++ip) {
+//                    sum += *kpX * *ip;
+//                }
+//                ip -= kw;
+//            } //for (int r = 0...
+//            *(op + offset)= sum;
+//        } //for (int x = 0...
+//    } //for (int y = 0...
+//    processBoundaries2D (s, w, h, 
+//                       ks, kw, 
+//                       input, output, kernel);    
+////    printImage(w, h, s, output);
+//    
+//}
 
 void unalignedSSEConvolve (const int s, const int w, const int h, 
                            const int ks, int kw, 
@@ -1719,93 +1762,92 @@ void loopBlockLoopUnrollConvolve (const int s, const int w, const int h,
                        input, output, kernel);    
     
 }
- 
-  
+//  
+//void loopBlockAlignedSSEConvolve (const int s, const int w, const int h, 
+//                        const int ks, const int kw, 
+//                        const float* input, float* output, const float* kernel, 
+//                        const int xBlock, const int yBlock) {
+//    int hk = kw / 2;                       
+//    int startX  = 0;
+//    int stopX   = (w - 2 * (kw / 2));
+//    int startY  = 0;
+//    int stopY   = (h - 2 * (kw / 2));
+//    #pragma omp parallel for shared (input, output) 
+//    for (int y = startY; y < stopY; y += yBlock) {
+//        for (int x = startX; x < stopX; x += xBlock) {
+//            for (int yy = y; yy < min(y + yBlock, stopY); ++yy) {
+//                for (int xx = x; xx < min(x + xBlock, stopX); xx += 16) {
+//                    register __m128 sum0, sum1, sum2, sum3;
+//                    sum0 = sum1 = sum2 = sum3 = _mm_setzero_ps();
+//                    for (int r = 0; r < kw; ++r) {
+//                        const int idxFtmp = r * ks;
+//                        const int idxIntmp = (yy + r) * s + xx;
+//                        for (int c = 0; c < kw; c += 4) {
+//                            __m128 iv0, iv1, iv2, iv3, iv4;
+//                            register const __m128 kv = _mm_load_ps(&kernel[idxFtmp + c]);   PRINT_VECTOR(kv);
+//                            //cout << "aqui 1" << flush << endl;
+//                            iv0 = _mm_load_ps(&input[idxIntmp + c]);               PRINT_VECTOR(iv0);
+//                            iv1 = _mm_load_ps(&input[idxIntmp + c + 4]);           PRINT_VECTOR(iv1);
+//                            iv2 = _mm_load_ps(&input[idxIntmp + c + 8]);           PRINT_VECTOR(iv2);
+//                            iv3 = _mm_load_ps(&input[idxIntmp + c + 12]);          PRINT_VECTOR(iv3);
+//                            iv4 = _mm_load_ps(&input[idxIntmp + c + 16]);          PRINT_VECTOR(iv4);
+//                            
+//                            //cout << "aqui 2" << flush << endl;
+//                            PRINT_LABEL("sum0"); 
+//                            sum0 += _mm_dp_ps(kv, iv0, 241);    PRINT_VECTOR(sum0); 
+//                            sum1 += _mm_dp_ps(kv, iv1, 241);    PRINT_VECTOR(sum1);
+//                            sum2 += _mm_dp_ps(kv, iv2, 241);    PRINT_VECTOR(sum2);
+//                            sum3 += _mm_dp_ps(kv, iv3, 241);    PRINT_VECTOR(sum3);
+//                             
+//                            //cout << "aqui 3" << flush << endl;
+//                             
+//                            BLEND_ROTATE4_LEFT(iv0, iv1, iv2, iv3, iv4);
+//        
+//                            PRINT_LABEL("sum1"); 
+//                            sum0 += _mm_dp_ps(kv, iv0, 242);    PRINT_VECTOR(sum0);
+//                            sum1 += _mm_dp_ps(kv, iv1, 242);    PRINT_VECTOR(sum1);
+//                            sum2 += _mm_dp_ps(kv, iv2, 242);    PRINT_VECTOR(sum2);
+//                            sum3 += _mm_dp_ps(kv, iv3, 242);    PRINT_VECTOR(sum3);
+//                            
+//                            //cout << "aqui 4" << flush << endl;
+//                            
+//                            BLEND_ROTATE4_LEFT(iv0, iv1, iv2, iv3, iv4);
+//        
+//                            PRINT_LABEL("sum2"); 
+//                            sum0 += _mm_dp_ps(kv, iv0, 244);    PRINT_VECTOR(sum0);
+//                            sum1 += _mm_dp_ps(kv, iv1, 244);    PRINT_VECTOR(sum1);
+//                            sum2 += _mm_dp_ps(kv, iv2, 244);    PRINT_VECTOR(sum2);
+//                            sum3 += _mm_dp_ps(kv, iv3, 244);    PRINT_VECTOR(sum3);
+//                            
+//                            //cout << "aqui 5" << flush << endl;
+//                            
+//                            BLEND_ROTATE4_LEFT(iv0, iv1, iv2, iv3, iv4);
+//        
+//                            PRINT_LABEL("sum3"); 
+//                            sum0 += _mm_dp_ps(kv, iv0, 248);    PRINT_VECTOR(sum0);
+//                            sum1 += _mm_dp_ps(kv, iv1, 248);    PRINT_VECTOR(sum1);
+//                            sum2 += _mm_dp_ps(kv, iv2, 248);    PRINT_VECTOR(sum2);
+//                            sum3 += _mm_dp_ps(kv, iv3, 248);    PRINT_VECTOR(sum3);
+//                            
+//                        }
+//                    } //for (int r = 0...
+//                    
+//                    _mm_storeu_ps(&output[(yy + hk) * s + (xx + hk)], sum0);         PRINT_VECTOR(sum0);
+//                    _mm_storeu_ps(&output[(yy + hk) * s + (xx + hk) + 4], sum1);     PRINT_VECTOR(sum1);
+//                    _mm_storeu_ps(&output[(yy + hk) * s + (xx + hk) + 8], sum2);     PRINT_VECTOR(sum2);
+//                    _mm_storeu_ps(&output[(yy + hk) * s + (xx + hk) + 12], sum3);    PRINT_VECTOR(sum3);
+//                } //for (int x = 0...
+//            } //for (int y = 0...
+//        }
+//    }
+//    processBoundaries2D (s, w, h, 
+//                       ks, kw, 
+//                       input, output, kernel);    
+//    
+//}
+//
+
 void loopBlockAlignedSSEConvolve (const int s, const int w, const int h, 
-                        const int ks, const int kw, 
-                        const float* input, float* output, const float* kernel, 
-                        const int xBlock, const int yBlock) {
-    int hk = kw / 2;                       
-    int startX  = 0;
-    int stopX   = (w - 2 * (kw / 2));
-    int startY  = 0;
-    int stopY   = (h - 2 * (kw / 2));
-    #pragma omp parallel for shared (input, output) 
-    for (int y = startY; y < stopY; y += yBlock) {
-        for (int x = startX; x < stopX; x += xBlock) {
-            for (int yy = y; yy < min(y + yBlock, stopY); ++yy) {
-                for (int xx = x; xx < min(x + xBlock, stopX); xx += 16) {
-                    register __m128 sum0, sum1, sum2, sum3;
-                    sum0 = sum1 = sum2 = sum3 = _mm_setzero_ps();
-                    for (int r = 0; r < kw; ++r) {
-                        const int idxFtmp = r * ks;
-                        const int idxIntmp = (yy + r) * s + xx;
-                        for (int c = 0; c < kw; c += 4) {
-                            __m128 iv0, iv1, iv2, iv3, iv4;
-                            register const __m128 kv = _mm_load_ps(&kernel[idxFtmp + c]);   PRINT_VECTOR(kv);
-                            //cout << "aqui 1" << flush << endl;
-                            iv0 = _mm_load_ps(&input[idxIntmp + c]);               PRINT_VECTOR(iv0);
-                            iv1 = _mm_load_ps(&input[idxIntmp + c + 4]);           PRINT_VECTOR(iv1);
-                            iv2 = _mm_load_ps(&input[idxIntmp + c + 8]);           PRINT_VECTOR(iv2);
-                            iv3 = _mm_load_ps(&input[idxIntmp + c + 12]);          PRINT_VECTOR(iv3);
-                            iv4 = _mm_load_ps(&input[idxIntmp + c + 16]);          PRINT_VECTOR(iv4);
-                            
-                            //cout << "aqui 2" << flush << endl;
-                            PRINT_LABEL("sum0"); 
-                            sum0 += _mm_dp_ps(kv, iv0, 241);    PRINT_VECTOR(sum0); 
-                            sum1 += _mm_dp_ps(kv, iv1, 241);    PRINT_VECTOR(sum1);
-                            sum2 += _mm_dp_ps(kv, iv2, 241);    PRINT_VECTOR(sum2);
-                            sum3 += _mm_dp_ps(kv, iv3, 241);    PRINT_VECTOR(sum3);
-                             
-                            //cout << "aqui 3" << flush << endl;
-                             
-                            BLEND_ROTATE4_LEFT(iv0, iv1, iv2, iv3, iv4);
-        
-                            PRINT_LABEL("sum1"); 
-                            sum0 += _mm_dp_ps(kv, iv0, 242);    PRINT_VECTOR(sum0);
-                            sum1 += _mm_dp_ps(kv, iv1, 242);    PRINT_VECTOR(sum1);
-                            sum2 += _mm_dp_ps(kv, iv2, 242);    PRINT_VECTOR(sum2);
-                            sum3 += _mm_dp_ps(kv, iv3, 242);    PRINT_VECTOR(sum3);
-                            
-                            //cout << "aqui 4" << flush << endl;
-                            
-                            BLEND_ROTATE4_LEFT(iv0, iv1, iv2, iv3, iv4);
-        
-                            PRINT_LABEL("sum2"); 
-                            sum0 += _mm_dp_ps(kv, iv0, 244);    PRINT_VECTOR(sum0);
-                            sum1 += _mm_dp_ps(kv, iv1, 244);    PRINT_VECTOR(sum1);
-                            sum2 += _mm_dp_ps(kv, iv2, 244);    PRINT_VECTOR(sum2);
-                            sum3 += _mm_dp_ps(kv, iv3, 244);    PRINT_VECTOR(sum3);
-                            
-                            //cout << "aqui 5" << flush << endl;
-                            
-                            BLEND_ROTATE4_LEFT(iv0, iv1, iv2, iv3, iv4);
-        
-                            PRINT_LABEL("sum3"); 
-                            sum0 += _mm_dp_ps(kv, iv0, 248);    PRINT_VECTOR(sum0);
-                            sum1 += _mm_dp_ps(kv, iv1, 248);    PRINT_VECTOR(sum1);
-                            sum2 += _mm_dp_ps(kv, iv2, 248);    PRINT_VECTOR(sum2);
-                            sum3 += _mm_dp_ps(kv, iv3, 248);    PRINT_VECTOR(sum3);
-                            
-                        }
-                    } //for (int r = 0...
-                    
-                    _mm_storeu_ps(&output[(yy + hk) * s + (xx + hk)], sum0);         PRINT_VECTOR(sum0);
-                    _mm_storeu_ps(&output[(yy + hk) * s + (xx + hk) + 4], sum1);     PRINT_VECTOR(sum1);
-                    _mm_storeu_ps(&output[(yy + hk) * s + (xx + hk) + 8], sum2);     PRINT_VECTOR(sum2);
-                    _mm_storeu_ps(&output[(yy + hk) * s + (xx + hk) + 12], sum3);    PRINT_VECTOR(sum3);
-                } //for (int x = 0...
-            } //for (int y = 0...
-        }
-    }
-    processBoundaries2D (s, w, h, 
-                       ks, kw, 
-                       input, output, kernel);    
-    
-}
-
-
-void loopBlockAlignedSSEConvolve2 (const int s, const int w, const int h, 
                         const int ks, const int kw, 
                         const float* input, float* output, const float* kernel, 
                         const int xBlock, const int yBlock) {
@@ -1912,15 +1954,10 @@ void sse3LbConvolve (const int s, const int w, const int h, const int ks,
     int hk = kw / 2;                       
     const int stopX = w - 2 * (kw / 2);
     const int stopY = h - 2 * (kw / 2);
-    const int ks1 = ks;
-    const int ks2 = ks * 2;
     
     const int is1 = s;
     const int is2 = s * 2;
     const int is3 = s * 3;
-    const int is4 = s * 4;
-    const int is5 = s * 5;
-    const int is6 = s * 6;
     const int yJump = is3;
     
     const float* stopYY = input + (s * (stopY - 3));
@@ -1930,10 +1967,6 @@ void sse3LbConvolve (const int s, const int w, const int h, const int ks,
     const int yJump1 = s * 4;
     const int yJump2 = s * 5;
     
-    const int idxK0 = 0;
-    const int idxK1 = ks;
-    const int idxK2 = ks + ks;              
-     
     #pragma omp parallel for shared (input, output) schedule(guided)
     for (const float* ip = input; ip < stopYY; ip += yJump) {
         const register __m128 kv0 = _mm_load_ps(&kernel[0]); PRINT_VECTOR(kv0); //{1,2,3,0}
@@ -2243,29 +2276,17 @@ void sse3CmConvolve (const int s, const int w, const int h, const int ks,
     const int stopY   = h - 2 * (kw / 2);  
     const float* stopXX  = input + stopX; 
     
-    const int ks1 = ks;
-    const int ks2 = ks * 2;
-    
     const int is1 = s;
     const int is2 = s * 2;
-    const int is3 = s * 3;
-    const int is4 = s * 4;
-    const int is5 = s * 5;
-    const int is6 = s * 6;
-    
     
     register __m128 kv0 = _mm_load_ps(&kernel[0]); PRINT_VECTOR(kv0); //{1,2,3,0}
     register __m128 kv1 = _mm_load_ps(&kernel[ks]); PRINT_VECTOR(kv1); //{1,2,3,0}
     register __m128 kv2 = _mm_load_ps(&kernel[ks + ks]); PRINT_VECTOR(kv2); //{1,2,3,0}
 
-    const int idxK0 = 0;
-    const int idxK1 = ks;
-    const int idxK2 = ks + ks;              
-     
     #pragma omp parallel for shared (kv0, kv1, kv2, input, output) schedule(guided)
     for (const float* ipX = input; ipX < stopXX; ipX += 12) {
         register __m128 sum0, sum1, sum2, sum3;
-        register __m128 inv0, inv1, inv2, inv3, inv4; 
+        register __m128 inv0, inv1, inv2, inv3; 
         const float* ipStopYY = ipX + (s * stopY); 
         float* op = output + (ipX - input); 
         const float* ip = ipX;  
@@ -2347,24 +2368,16 @@ void sse3Convolve (const int s, const int w, const int h, const int ks,
     int kw = 3;
     
     int hk = kw / 2;                       
-    const int stopX   = w - 2 * (kw / 2);
     const int stopY   = h - 2 * (kw / 2);  
     const int stopXX  = (w - 2 * (kw / 2)); // - (w % 4); 
     const float* stopYY = &input[s * stopY];
-    const int ks1 = ks;
-    const int ks2 = ks * 2;
     
     const int is1 = s;
     const int is2 = s * 2;
-    const int is3 = s * 3;
 
     
     PRINT_LINE(); 
  
-    const int idxK0 = 0;
-    const int idxK1 = ks;
-    const int idxK2 = ks + ks;              
-    
     #pragma omp parallel for shared (input, output) 
     for (const float* ip = input; ip < stopYY; ip += s) {
         //FIXME Create constant
@@ -2454,7 +2467,6 @@ void sse5Convolve (const int s, const int w, const int h, const int ks,
     int kw = 5;
     int hk = kw / 2;                       
     //const int startX  = 0;
-    const int stopX   = w - 2 * (kw / 2);
     //const int startY  = 0;
     const int stopY   = h - 2 * (kw / 2);  
     const int stopXX  = (w - 2 * (kw / 2)); // - (w % 4);
@@ -2469,10 +2481,8 @@ void sse5Convolve (const int s, const int w, const int h, const int ks,
     const int is3 = s * 3;
     const int is4 = s * 4; 
     
-    const int offset = s - stopXX - 4; 
     const float* totalBytes = &input[(s * (stopY - 1) + stopXX)];
     const float* kp = kernel;        
-    const int trailing = w - (stopXX + 8);
  
     //#pragma omp parallel for num_threads(200)
     #pragma omp parallel for shared (input, output) 
@@ -2554,9 +2564,6 @@ void sse7Convolve (const int s, const int w, const int h, const int ks,
 
     int kw = 7;
     int hk = kw / 2;                       
-    //const int startX  = 0;
-    const int stopX   = w - 2 * (kw / 2);
-    //const int startY  = 0;
     const int stopY   = h - 2 * (kw / 2);  
     const int stopXX  = (w - 2 * (kw / 2)); // - (w % 4);
     
@@ -2574,9 +2581,7 @@ void sse7Convolve (const int s, const int w, const int h, const int ks,
     const int is5 = s * 5; 
     const int is6 = s * 6; 
     
-    const int offset = s - stopXX - 4; 
     const float* totalBytes = &input[(s * (stopY - 1) + stopXX)];
-    const int trailing = w - (stopXX + 8);
     const float* kp = kernel;        
  
      #pragma omp parallel for shared (input, output) 
@@ -2685,19 +2690,13 @@ void sse9Convolve (const int s, const int w, const int h, const int ks,
                    const float* input, float* output, const float* kernel) {
     int kw = 9;
     int hk = kw / 2;                       
-    //const int startX  = 0;
-    const int stopX   = w - 2 * (kw / 2);
-    //const int startY  = 0;
     const int stopY   = h - 2 * (kw / 2);    
  
     const int stopXX  = (w - 2 * (kw / 2)); //- (w % 4);
-    const int widthBytes = w / sizeof(float);
 
     PRINT_LINE();
     PRINT(w);
     PRINT(s);
-    
-    float m = 0;        
     
     const int ks1 = ks;
     const int ks2 = ks * 2;
@@ -2717,18 +2716,14 @@ void sse9Convolve (const int s, const int w, const int h, const int ks,
     const int is7 = s * 7; 
     const int is8 = s * 8;  
     
-    const int offset = s - stopXX - 4; 
     const float* totalBytes = &input[(s * (stopY - 1) + stopXX)];
-    const int trailing = w - (stopXX + 8);
-    PRINT(offset); 
     PRINT(stopXX); 
-    PRINT(trailing); 
     PRINT((long)input); 
     const float* kp = kernel;         
     #pragma omp parallel for shared (input, output) 
     for (const float* ip = input; ip < totalBytes; ip += s) {
         register __m128 sum0, sum1;
-        register __m128 kv0, kv1, kv2, kv3, inv0, inv1, inv2, inv3; 
+        register __m128 kv0, kv1, kv2, kv3, inv0, inv1, inv2; 
         const float* ipStopX = ip + stopXX; 
         float* op = output + (ip - input);
         const float* ipX;
@@ -2847,13 +2842,9 @@ void sse11Convolve (const int s, const int w, const int h, const int ks,
                     const float* input, float* output, const float* kernel) {
     int kw = 11;
     int hk = kw / 2;                       
-    //const int startX  = 0;
-    const int stopX   = w - 2 * (kw / 2);
-    //const int startY  = 0;
     const int stopY   = h - 2 * (kw / 2);  
     
     const int stopXX  = (w - 2 * (kw / 2)); //- (w % 4);
-    const int widthBytes = w / sizeof(float);
     
     const int ks1 = ks;
     const int ks2 = ks * 2;
@@ -2877,9 +2868,7 @@ void sse11Convolve (const int s, const int w, const int h, const int ks,
     const int is9 = s * 9;  
     const int is10 = s * 10;   
  
-    const int offset = s - stopXX - 4; 
     const float* totalBytes = &input[(s * (stopY - 1) + stopXX)];
-    const int trailing = w - (stopXX + 8);
     const float* kp = kernel;        
     #pragma omp parallel for shared (input, output) 
     for (const float* ip = input; ip < totalBytes; ip += s) {
@@ -3016,265 +3005,261 @@ void sse11Convolve (const int s, const int w, const int h, const int ks,
     
 }
   
-
-
-void sseWideKernelConvolve (const int s, const int w, const int h, 
-                            const int ks, const int kw, 
-                            const float* input, float* output, const float* kernel) {
-
-    int hk = kw / 2;                       
-    const int stopX   = w - 2 * (kw / 2);
-    const int stopY   = h - 2 * (kw / 2);    
-    const int widthBytes = w / sizeof(float);
-    const int remaining = ceil((kw % 12) / 4.0) - 1;
-    const int kremaining = (kw % 12) % 4;
-    const float* kp = kernel; //kernel pointer       
-    const int kernel64 = kw - (kw % 12); //review
-    const float* ipStopY = &input[s * stopY];
-    const float* kpStopY = &kernel[ks * kw];
-
-    PRINT_LINE();
-    PRINT(w);
-    PRINT(s);
-    PRINT_TRACE(w);
-    PRINT_TRACE(h);
-    PRINT_TRACE(s);
-    PRINT_TRACE(kw);
-    PRINT_TRACE(ks);
-    PRINT_TRACE(stopX);
-    PRINT_TRACE(stopY);
-    PRINT_TRACE((long)input);
-    PRINT_TRACE((long)ipStopY);
-    PRINT((long)input); 
-    PRINT((long)remaining); 
-    PRINT((long)kremaining); 
-
- 
-    #pragma omp parallel for shared (input, output) 
-    for (const float* ip = input; ip < ipStopY; ip += s) { // ip = input image pointer
-        int y = (ip - input) / s;
-        //PRINT_TRACE(y);
-        register __m128 sum0, sum1;
-        register __m128 kv0, kv1, kv2, kv3, kv4, kv5, kv6, inv0, inv1, inv2, inv3, inv4, inv5, inv6; 
-        
-        const float* ipStopX = ip + stopX; 
-        float* op = output + (ip - input);
-        const float* ipX;
-        // the strategy is rotate and blend the vectors
-        // give an kernel row with length = 30
-        //       ---------------------------------------------------------------------------------
-        //       | 5 | 5 | 5 | 5 | 5 | 5 | 5 | 5 | 5 | 5 | 5 | 5 | 5 | 5 | 5 | 5 | 5 | 5 | 5 | 5 |  
-        //       ---------------------------------------------------------------------------------      
-        //         0   1   2   3   4   5   6   7   8   9   10  11  12  13  14  15  16  17  18  19   
-        // we have two cases:
-        //    --kernels who end with one vector element 
-        //       -----------------
-        //       | 5 | - | - | - |  
-        //       -----------------      
-        //    --kernels who end with three vector elements
-        //       -----------------
-        //       | 5 | 5 | 5 | - |  
-        //       -----------------      
-        int x = 0;
-        for (ipX = ip; ipX < ipStopX; ipX += 4) { // ip = input image pointer in X axis
-            
-            x += 4;
-            sum0 = sum1 = _mm_setzero_ps();
-            
-            int ky = 0;
-            PRINT_TRACE((long)kpStopY);
-            for (const float* kpY = kernel; kpY < kpStopY; kpY += ks) { // kernel row loop
-                PRINT((long)kpY);
-                PRINT(ky);
-                int ijump =  s * ky;
-                ky++;
-                float* op = output + (ip - input);
-                int kx = 0;
-                const float* kpX = kpY;
-                const float* kpStopX = kpY + kernel64;
-                PRINT((long)kpStopX);
-                for( ; kpX < kpStopX; kpX += 12) { //kernel column loop 
-                    PRINT(kx);
-                    inv0 = _mm_load_ps(ipX + ijump + kx);        PRINT_VECTOR(inv0); 
-                    inv1 = _mm_load_ps(ipX + ijump + kx + 4);    PRINT_VECTOR(inv1); 
-                    inv2 = _mm_load_ps(ipX + ijump + kx + 8);    PRINT_VECTOR(inv2); 
-                    inv3 = _mm_load_ps(ipX + ijump + kx + 12);   PRINT_VECTOR(inv3); 
-                         
-                    kv0 = _mm_load_ps(kpX); PRINT_VECTOR(kv0); 
-                    kv1 = _mm_load_ps(kpX + 4); PRINT_VECTOR(kv1); 
-                    kv2 = _mm_load_ps(kpX + 8); PRINT_VECTOR(kv2); 
-                    kv3 = _mm_setzero_ps();//_mm_load_ps(kpX + 12); PRINT_VECTOR(kv3); 
-                    
-                    sum0 += _mm_dp_ps(kv0, inv0, 241); PRINT_VECTOR(sum0);  
-                    sum0 += _mm_dp_ps(kv1, inv1, 241); PRINT_VECTOR(sum0);  
-                    sum0 += _mm_dp_ps(kv2, inv2, 241); PRINT_VECTOR(sum0);  
-                    
-                    ROTATE_RIGHT_BLEND(kv2, kv3); 
-                    ROTATE_RIGHT_BLEND(kv1, kv2); 
-                    ROTATE_RIGHT_BLEND(kv0, kv1); 
-                    sum0 += _mm_dp_ps(kv0, inv0, 226); PRINT_VECTOR(sum0);  
-                    sum0 += _mm_dp_ps(kv1, inv1, 242); PRINT_VECTOR(sum0);  
-                    sum0 += _mm_dp_ps(kv2, inv2, 242); PRINT_VECTOR(sum0);  
-                    sum0 += _mm_dp_ps(kv3, inv3, 18); PRINT_VECTOR(sum0);   
-                    
-                    ROTATE_RIGHT(kv3); 
-                    ROTATE_RIGHT_BLEND(kv2, kv3); 
-                    ROTATE_RIGHT_BLEND(kv1, kv2); 
-                    ROTATE_RIGHT_BLEND(kv0, kv1); 
-                    sum0 += _mm_dp_ps(kv0, inv0, 196); PRINT_VECTOR(sum0);  
-                    sum0 += _mm_dp_ps(kv1, inv1, 244); PRINT_VECTOR(sum0);  
-                    sum0 += _mm_dp_ps(kv2, inv2, 244); PRINT_VECTOR(sum0);  
-                    sum0 += _mm_dp_ps(kv3, inv3, 52); PRINT_VECTOR(sum0);   
-                    
-                    
-                    ROTATE_RIGHT(kv3); 
-                    ROTATE_RIGHT_BLEND(kv2, kv3); 
-                    ROTATE_RIGHT_BLEND(kv1, kv2); 
-                    ROTATE_RIGHT_BLEND(kv0, kv1); 
-                    sum0 += _mm_dp_ps(kv0, inv0, 136); PRINT_VECTOR(sum0);  /*{68,0,0,0}*/
-                    sum0 += _mm_dp_ps(kv1, inv1, 248); PRINT_VECTOR(sum0);  /*{68,0,0,0}*/
-                    sum0 += _mm_dp_ps(kv2, inv2, 248); PRINT_VECTOR(sum0);  /*{68,0,0,0}*/
-                    sum0 += _mm_dp_ps(kv3, inv3, 120); PRINT_VECTOR(sum0);  /*{68,0,0,0}*/
-                    
-                    kx += 12;
-                }
-             
-                PRINT(remaining);
-                PRINT(kremaining);
-                
-                #define REMAINING1() \
-                    PRINT("kremaining 1"); \
-                    sum0 += _mm_dp_ps(kv0, inv0, 17);   PRINT_VECTOR(sum0); \
-                    ROTATE_RIGHT(kv0); \
-                    sum0 += _mm_dp_ps(kv0, inv0, 34);   PRINT_VECTOR(sum0); \
-                    ROTATE_RIGHT(kv0); \
-                    sum0 += _mm_dp_ps(kv0, inv0, 68);   PRINT_VECTOR(sum0); \
-                    ROTATE_RIGHT(kv0); \
-                    sum0 += _mm_dp_ps(kv0, inv0, 136);  PRINT_VECTOR(sum0);  
-                
-                
-                #define REMAINING3() \
-                    PRINT("kremaining 3"); \
-                    sum0 += _mm_dp_ps(kv0, inv0, 113);          PRINT_VECTOR(sum0); \
-                    ROTATE_RIGHT(kv0); \
-                    sum0 += _mm_dp_ps(kv0, inv0, 226);          PRINT_VECTOR(sum0); \
-                    ROTATE_RIGHT_BLEND(kv0, kv1); \
-                    sum0 += _mm_dp_ps(kv0, inv0, 196);          PRINT_VECTOR(sum0); \
-                    sum0 += _mm_dp_ps(kv1, inv1, 20);           PRINT_VECTOR(sum0); \
-                    ROTATE_RIGHT(kv1); \
-                    ROTATE_RIGHT_BLEND(kv0, kv1); \
-                    sum0 += _mm_dp_ps(kv0, inv0, 136);          PRINT_VECTOR(sum0); \
-                    sum0 += _mm_dp_ps(kv1, inv1, 56);           PRINT_VECTOR(sum0);  
-
-                switch(remaining) {
-                case 0: 
-                    PRINT("case 0");
-                    if (kremaining == 1) {
-                        inv0 = inv3;                                PRINT_VECTOR(inv0); 
-                        kv0 = _mm_load_ps(kpX);                     PRINT_VECTOR(kv0); 
-                        REMAINING1();
-                    }
-                    else {
-                        inv0 = inv3;                                PRINT_VECTOR(inv0); 
-                        inv1 = _mm_load_ps(ipX + ijump + kx + 4);   PRINT_VECTOR(inv1); 
-                        kv0 = _mm_load_ps(kpX);                     PRINT_VECTOR(kv0); 
-                        kv1 = _mm_setzero_ps();                     PRINT_VECTOR(kv1); 
-                        REMAINING3();                         
-                    }
-                    break;
-                case 1: 
-                    PRINT("case 1");
-                    inv0 = inv3;                                    PRINT_VECTOR(inv0); 
-                    inv1 = _mm_load_ps(ipX + ijump + kx + 4);       PRINT_VECTOR(inv1); 
-                    kv0 = _mm_load_ps(kpX);                         PRINT_VECTOR(kv0); 
-                    kv1 = _mm_setzero_ps();
-                    sum0 += _mm_dp_ps(kv0, inv0, 241);              PRINT_VECTOR(sum0);  
-                    //ROTATE_RIGHT(kv1); 
-                    ROTATE_RIGHT_BLEND(kv0, kv1); 
-                    sum0 += _mm_dp_ps(kv0, inv0, 226);              PRINT_VECTOR(sum0);  
-                    sum0 += _mm_dp_ps(kv1, inv1, 18);               PRINT_VECTOR(sum0);  
-                    ROTATE_RIGHT(kv1); 
-                    ROTATE_RIGHT_BLEND(kv0, kv1); 
-                    sum0 += _mm_dp_ps(kv0, inv0, 196);              PRINT_VECTOR(sum0);  
-                    sum0 += _mm_dp_ps(kv1, inv1, 52);               PRINT_VECTOR(sum0);  
-                    ROTATE_RIGHT(kv1); 
-                    ROTATE_RIGHT_BLEND(kv0, kv1); 
-                    sum0 += _mm_dp_ps(kv0, inv0, 136);              PRINT_VECTOR(sum0);  
-                    sum0 += _mm_dp_ps(kv1, inv1, 120);              PRINT_VECTOR(sum0);   
-                    
-                    if (kremaining == 1) {
-                        inv0 = inv1;                                PRINT_VECTOR(inv0); 
-                        kv0 = _mm_load_ps(kpX + 4);                 PRINT_VECTOR(kv0); 
-                        REMAINING1();
-                    }
-                    else {
-                        inv0 = inv1;                                PRINT_VECTOR(inv0); 
-                        inv1 = _mm_load_ps(ipX + ijump + kx + 8);   PRINT_VECTOR(inv1); 
-                        kv0 = _mm_load_ps(kpX + 4);                 PRINT_VECTOR(kv0); 
-                        kv1 = _mm_setzero_ps();                     PRINT_VECTOR(kv1); 
-                        REMAINING3();                         
-                    }
-                    
-                    break;          
-                
-                case 2:
-                    PRINT("case 2");
-                    inv0 = inv3;                                PRINT_VECTOR(inv0); 
-                    inv1 = _mm_load_ps(ipX + ijump + kx + 4);   PRINT_VECTOR(inv1); 
-                    inv2 = _mm_load_ps(ipX + ijump + kx + 8);   PRINT_VECTOR(inv1); 
-                    
-                    kv0 = _mm_load_ps(kpX);                     PRINT_VECTOR(kv0); 
-                    kv1 = _mm_load_ps(kpX + 4);                 PRINT_VECTOR(kv1); 
-                    kv2 = _mm_setzero_ps(); //_mm_load_ps(kpX + 8); PRINT_VECTOR(kv2); 
-                    
-                    sum0 += _mm_dp_ps(kv0, inv0, 241);          PRINT_VECTOR(sum0);  
-                    sum0 += _mm_dp_ps(kv1, inv1, 241);          PRINT_VECTOR(sum0);  
-                    
-                    ROTATE_RIGHT_BLEND(kv1, kv2); 
-                    ROTATE_RIGHT_BLEND(kv0, kv1); 
-                    sum0 += _mm_dp_ps(kv0, inv0, 226);          PRINT_VECTOR(sum0);  
-                    sum0 += _mm_dp_ps(kv1, inv1, 242);          PRINT_VECTOR(sum0);  
-                    sum0 += _mm_dp_ps(kv2, inv2, 18);           PRINT_VECTOR(sum0);  
-                    
-                    ROTATE_RIGHT(kv2); 
-                    ROTATE_RIGHT_BLEND(kv1, kv2); 
-                    ROTATE_RIGHT_BLEND(kv0, kv1); 
-                    sum0 += _mm_dp_ps(kv0, inv0, 196);          PRINT_VECTOR(sum0);  
-                    sum0 += _mm_dp_ps(kv1, inv1, 244);          PRINT_VECTOR(sum0);  
-                    sum0 += _mm_dp_ps(kv2, inv2, 52);           PRINT_VECTOR(sum0);  
-                    
-                    
-                    ROTATE_RIGHT(kv2); 
-                    ROTATE_RIGHT_BLEND(kv1, kv2); 
-                    ROTATE_RIGHT_BLEND(kv0, kv1); 
-                    sum0 += _mm_dp_ps(kv0, inv0, 136);          PRINT_VECTOR(sum0);  
-                    sum0 += _mm_dp_ps(kv1, inv1, 248);          PRINT_VECTOR(sum0);  
-                    sum0 += _mm_dp_ps(kv2, inv2, 120);          PRINT_VECTOR(sum0);  
-                    
-                    if (kremaining == 1) {
-                        inv0 = inv2;                                PRINT_VECTOR(inv0); 
-                        kv0 = _mm_load_ps(kpX + 8);                 PRINT_VECTOR(kv0); 
-                        REMAINING1();
-                    }
-                    else {
-                        inv0 = inv2;                                PRINT_VECTOR(inv0); 
-                        inv1 = _mm_load_ps(ipX + ijump + kx + 12);  PRINT_VECTOR(inv1); 
-                        kv0 = _mm_load_ps(kpX + 8);                 PRINT_VECTOR(kv0); 
-                        kv1 = _mm_setzero_ps();                     PRINT_VECTOR(kv1); 
-                        REMAINING3();
-                    }
-                    break;
-                }               
-            }
-            _mm_storeu_ps((op + hk) + (hk * s), sum0); 
-            op += 4;
-        }  
-    } //for (int y = 0...
-    processBoundaries2D (s, w, h, 
-                       ks, kw, 
-                       input, output, kernel);    
-    
-}
+//
+//
+//void sseWideKernelConvolve (const int s, const int w, const int h, 
+//                            const int ks, const int kw, 
+//                            const float* input, float* output, const float* kernel) {
+//
+//    int hk = kw / 2;                       
+//    const int stopX   = w - 2 * (kw / 2);
+//    const int stopY   = h - 2 * (kw / 2);    
+//    const int remaining = ceil((kw % 12) / 4.0) - 1;
+//    const int kremaining = (kw % 12) % 4;
+//    const int kernel64 = kw - (kw % 12); //review
+//    const float* ipStopY = &input[s * stopY];
+//    const float* kpStopY = &kernel[ks * kw];
+//
+//    PRINT_LINE();
+//    PRINT(w);
+//    PRINT(s);
+//    PRINT_TRACE(w);
+//    PRINT_TRACE(h);
+//    PRINT_TRACE(s);
+//    PRINT_TRACE(kw);
+//    PRINT_TRACE(ks);
+//    PRINT_TRACE(stopX);
+//    PRINT_TRACE(stopY);
+//    PRINT_TRACE((long)input);
+//    PRINT_TRACE((long)ipStopY);
+//    PRINT((long)input); 
+//    PRINT((long)remaining); 
+//    PRINT((long)kremaining); 
+//
+// 
+//    #pragma omp parallel for shared (input, output) 
+//    for (const float* ip = input; ip < ipStopY; ip += s) { // ip = input image pointer
+//        //PRINT_TRACE(y);
+//        register __m128 sum0, sum1;
+//        register __m128 kv0, kv1, kv2, kv3, inv0, inv1, inv2, inv3; 
+//        
+//        const float* ipStopX = ip + stopX; 
+//        float* op = output + (ip - input);
+//        const float* ipX;
+//        // the strategy is rotate and blend the vectors
+//        // give an kernel row with length = 30
+//        //       ---------------------------------------------------------------------------------
+//        //       | 5 | 5 | 5 | 5 | 5 | 5 | 5 | 5 | 5 | 5 | 5 | 5 | 5 | 5 | 5 | 5 | 5 | 5 | 5 | 5 |  
+//        //       ---------------------------------------------------------------------------------      
+//        //         0   1   2   3   4   5   6   7   8   9   10  11  12  13  14  15  16  17  18  19   
+//        // we have two cases:
+//        //    --kernels who end with one vector element 
+//        //       -----------------
+//        //       | 5 | - | - | - |  
+//        //       -----------------      
+//        //    --kernels who end with three vector elements
+//        //       -----------------
+//        //       | 5 | 5 | 5 | - |  
+//        //       -----------------      
+//        int x = 0;
+//        for (ipX = ip; ipX < ipStopX; ipX += 4) { // ip = input image pointer in X axis
+//            
+//            x += 4;
+//            sum0 = sum1 = _mm_setzero_ps();
+//            
+//            int ky = 0;
+//            PRINT_TRACE((long)kpStopY);
+//            for (const float* kpY = kernel; kpY < kpStopY; kpY += ks) { // kernel row loop
+//                PRINT((long)kpY);
+//                PRINT(ky);
+//                int ijump =  s * ky;
+//                ky++;
+//                int kx = 0;
+//                const float* kpX = kpY;
+//                const float* kpStopX = kpY + kernel64;
+//                PRINT((long)kpStopX);
+//                for( ; kpX < kpStopX; kpX += 12) { //kernel column loop 
+//                    PRINT(kx);
+//                    inv0 = _mm_load_ps(ipX + ijump + kx);        PRINT_VECTOR(inv0); 
+//                    inv1 = _mm_load_ps(ipX + ijump + kx + 4);    PRINT_VECTOR(inv1); 
+//                    inv2 = _mm_load_ps(ipX + ijump + kx + 8);    PRINT_VECTOR(inv2); 
+//                    inv3 = _mm_load_ps(ipX + ijump + kx + 12);   PRINT_VECTOR(inv3); 
+//                         
+//                    kv0 = _mm_load_ps(kpX); PRINT_VECTOR(kv0); 
+//                    kv1 = _mm_load_ps(kpX + 4); PRINT_VECTOR(kv1); 
+//                    kv2 = _mm_load_ps(kpX + 8); PRINT_VECTOR(kv2); 
+//                    kv3 = _mm_setzero_ps();//_mm_load_ps(kpX + 12); PRINT_VECTOR(kv3); 
+//                    
+//                    sum0 += _mm_dp_ps(kv0, inv0, 241); PRINT_VECTOR(sum0);  
+//                    sum0 += _mm_dp_ps(kv1, inv1, 241); PRINT_VECTOR(sum0);  
+//                    sum0 += _mm_dp_ps(kv2, inv2, 241); PRINT_VECTOR(sum0);  
+//                    
+//                    ROTATE_RIGHT_BLEND(kv2, kv3); 
+//                    ROTATE_RIGHT_BLEND(kv1, kv2); 
+//                    ROTATE_RIGHT_BLEND(kv0, kv1); 
+//                    sum0 += _mm_dp_ps(kv0, inv0, 226); PRINT_VECTOR(sum0);  
+//                    sum0 += _mm_dp_ps(kv1, inv1, 242); PRINT_VECTOR(sum0);  
+//                    sum0 += _mm_dp_ps(kv2, inv2, 242); PRINT_VECTOR(sum0);  
+//                    sum0 += _mm_dp_ps(kv3, inv3, 18); PRINT_VECTOR(sum0);   
+//                    
+//                    ROTATE_RIGHT(kv3); 
+//                    ROTATE_RIGHT_BLEND(kv2, kv3); 
+//                    ROTATE_RIGHT_BLEND(kv1, kv2); 
+//                    ROTATE_RIGHT_BLEND(kv0, kv1); 
+//                    sum0 += _mm_dp_ps(kv0, inv0, 196); PRINT_VECTOR(sum0);  
+//                    sum0 += _mm_dp_ps(kv1, inv1, 244); PRINT_VECTOR(sum0);  
+//                    sum0 += _mm_dp_ps(kv2, inv2, 244); PRINT_VECTOR(sum0);  
+//                    sum0 += _mm_dp_ps(kv3, inv3, 52); PRINT_VECTOR(sum0);   
+//                    
+//                    
+//                    ROTATE_RIGHT(kv3); 
+//                    ROTATE_RIGHT_BLEND(kv2, kv3); 
+//                    ROTATE_RIGHT_BLEND(kv1, kv2); 
+//                    ROTATE_RIGHT_BLEND(kv0, kv1); 
+//                    sum0 += _mm_dp_ps(kv0, inv0, 136); PRINT_VECTOR(sum0);  /*{68,0,0,0}*/
+//                    sum0 += _mm_dp_ps(kv1, inv1, 248); PRINT_VECTOR(sum0);  /*{68,0,0,0}*/
+//                    sum0 += _mm_dp_ps(kv2, inv2, 248); PRINT_VECTOR(sum0);  /*{68,0,0,0}*/
+//                    sum0 += _mm_dp_ps(kv3, inv3, 120); PRINT_VECTOR(sum0);  /*{68,0,0,0}*/
+//                    
+//                    kx += 12;
+//                }
+//             
+//                PRINT(remaining);
+//                PRINT(kremaining);
+//                
+//                #define REMAINING1() \
+//                    PRINT("kremaining 1"); \
+//                    sum0 += _mm_dp_ps(kv0, inv0, 17);   PRINT_VECTOR(sum0); \
+//                    ROTATE_RIGHT(kv0); \
+//                    sum0 += _mm_dp_ps(kv0, inv0, 34);   PRINT_VECTOR(sum0); \
+//                    ROTATE_RIGHT(kv0); \
+//                    sum0 += _mm_dp_ps(kv0, inv0, 68);   PRINT_VECTOR(sum0); \
+//                    ROTATE_RIGHT(kv0); \
+//                    sum0 += _mm_dp_ps(kv0, inv0, 136);  PRINT_VECTOR(sum0);  
+//                
+//                
+//                #define REMAINING3() \
+//                    PRINT("kremaining 3"); \
+//                    sum0 += _mm_dp_ps(kv0, inv0, 113);          PRINT_VECTOR(sum0); \
+//                    ROTATE_RIGHT(kv0); \
+//                    sum0 += _mm_dp_ps(kv0, inv0, 226);          PRINT_VECTOR(sum0); \
+//                    ROTATE_RIGHT_BLEND(kv0, kv1); \
+//                    sum0 += _mm_dp_ps(kv0, inv0, 196);          PRINT_VECTOR(sum0); \
+//                    sum0 += _mm_dp_ps(kv1, inv1, 20);           PRINT_VECTOR(sum0); \
+//                    ROTATE_RIGHT(kv1); \
+//                    ROTATE_RIGHT_BLEND(kv0, kv1); \
+//                    sum0 += _mm_dp_ps(kv0, inv0, 136);          PRINT_VECTOR(sum0); \
+//                    sum0 += _mm_dp_ps(kv1, inv1, 56);           PRINT_VECTOR(sum0);  
+//
+//                switch(remaining) {
+//                case 0: 
+//                    PRINT("case 0");
+//                    if (kremaining == 1) {
+//                        inv0 = inv3;                                PRINT_VECTOR(inv0); 
+//                        kv0 = _mm_load_ps(kpX);                     PRINT_VECTOR(kv0); 
+//                        REMAINING1();
+//                    }
+//                    else {
+//                        inv0 = inv3;                                PRINT_VECTOR(inv0); 
+//                        inv1 = _mm_load_ps(ipX + ijump + kx + 4);   PRINT_VECTOR(inv1); 
+//                        kv0 = _mm_load_ps(kpX);                     PRINT_VECTOR(kv0); 
+//                        kv1 = _mm_setzero_ps();                     PRINT_VECTOR(kv1); 
+//                        REMAINING3();                         
+//                    }
+//                    break;
+//                case 1: 
+//                    PRINT("case 1");
+//                    inv0 = inv3;                                    PRINT_VECTOR(inv0); 
+//                    inv1 = _mm_load_ps(ipX + ijump + kx + 4);       PRINT_VECTOR(inv1); 
+//                    kv0 = _mm_load_ps(kpX);                         PRINT_VECTOR(kv0); 
+//                    kv1 = _mm_setzero_ps();
+//                    sum0 += _mm_dp_ps(kv0, inv0, 241);              PRINT_VECTOR(sum0);  
+//                    //ROTATE_RIGHT(kv1); 
+//                    ROTATE_RIGHT_BLEND(kv0, kv1); 
+//                    sum0 += _mm_dp_ps(kv0, inv0, 226);              PRINT_VECTOR(sum0);  
+//                    sum0 += _mm_dp_ps(kv1, inv1, 18);               PRINT_VECTOR(sum0);  
+//                    ROTATE_RIGHT(kv1); 
+//                    ROTATE_RIGHT_BLEND(kv0, kv1); 
+//                    sum0 += _mm_dp_ps(kv0, inv0, 196);              PRINT_VECTOR(sum0);  
+//                    sum0 += _mm_dp_ps(kv1, inv1, 52);               PRINT_VECTOR(sum0);  
+//                    ROTATE_RIGHT(kv1); 
+//                    ROTATE_RIGHT_BLEND(kv0, kv1); 
+//                    sum0 += _mm_dp_ps(kv0, inv0, 136);              PRINT_VECTOR(sum0);  
+//                    sum0 += _mm_dp_ps(kv1, inv1, 120);              PRINT_VECTOR(sum0);   
+//                    
+//                    if (kremaining == 1) {
+//                        inv0 = inv1;                                PRINT_VECTOR(inv0); 
+//                        kv0 = _mm_load_ps(kpX + 4);                 PRINT_VECTOR(kv0); 
+//                        REMAINING1();
+//                    }
+//                    else {
+//                        inv0 = inv1;                                PRINT_VECTOR(inv0); 
+//                        inv1 = _mm_load_ps(ipX + ijump + kx + 8);   PRINT_VECTOR(inv1); 
+//                        kv0 = _mm_load_ps(kpX + 4);                 PRINT_VECTOR(kv0); 
+//                        kv1 = _mm_setzero_ps();                     PRINT_VECTOR(kv1); 
+//                        REMAINING3();                         
+//                    }
+//                    
+//                    break;          
+//                
+//                case 2:
+//                    PRINT("case 2");
+//                    inv0 = inv3;                                PRINT_VECTOR(inv0); 
+//                    inv1 = _mm_load_ps(ipX + ijump + kx + 4);   PRINT_VECTOR(inv1); 
+//                    inv2 = _mm_load_ps(ipX + ijump + kx + 8);   PRINT_VECTOR(inv1); 
+//                    
+//                    kv0 = _mm_load_ps(kpX);                     PRINT_VECTOR(kv0); 
+//                    kv1 = _mm_load_ps(kpX + 4);                 PRINT_VECTOR(kv1); 
+//                    kv2 = _mm_setzero_ps(); //_mm_load_ps(kpX + 8); PRINT_VECTOR(kv2); 
+//                    
+//                    sum0 += _mm_dp_ps(kv0, inv0, 241);          PRINT_VECTOR(sum0);  
+//                    sum0 += _mm_dp_ps(kv1, inv1, 241);          PRINT_VECTOR(sum0);  
+//                    
+//                    ROTATE_RIGHT_BLEND(kv1, kv2); 
+//                    ROTATE_RIGHT_BLEND(kv0, kv1); 
+//                    sum0 += _mm_dp_ps(kv0, inv0, 226);          PRINT_VECTOR(sum0);  
+//                    sum0 += _mm_dp_ps(kv1, inv1, 242);          PRINT_VECTOR(sum0);  
+//                    sum0 += _mm_dp_ps(kv2, inv2, 18);           PRINT_VECTOR(sum0);  
+//                    
+//                    ROTATE_RIGHT(kv2); 
+//                    ROTATE_RIGHT_BLEND(kv1, kv2); 
+//                    ROTATE_RIGHT_BLEND(kv0, kv1); 
+//                    sum0 += _mm_dp_ps(kv0, inv0, 196);          PRINT_VECTOR(sum0);  
+//                    sum0 += _mm_dp_ps(kv1, inv1, 244);          PRINT_VECTOR(sum0);  
+//                    sum0 += _mm_dp_ps(kv2, inv2, 52);           PRINT_VECTOR(sum0);  
+//                    
+//                    
+//                    ROTATE_RIGHT(kv2); 
+//                    ROTATE_RIGHT_BLEND(kv1, kv2); 
+//                    ROTATE_RIGHT_BLEND(kv0, kv1); 
+//                    sum0 += _mm_dp_ps(kv0, inv0, 136);          PRINT_VECTOR(sum0);  
+//                    sum0 += _mm_dp_ps(kv1, inv1, 248);          PRINT_VECTOR(sum0);  
+//                    sum0 += _mm_dp_ps(kv2, inv2, 120);          PRINT_VECTOR(sum0);  
+//                    
+//                    if (kremaining == 1) {
+//                        inv0 = inv2;                                PRINT_VECTOR(inv0); 
+//                        kv0 = _mm_load_ps(kpX + 8);                 PRINT_VECTOR(kv0); 
+//                        REMAINING1();
+//                    }
+//                    else {
+//                        inv0 = inv2;                                PRINT_VECTOR(inv0); 
+//                        inv1 = _mm_load_ps(ipX + ijump + kx + 12);  PRINT_VECTOR(inv1); 
+//                        kv0 = _mm_load_ps(kpX + 8);                 PRINT_VECTOR(kv0); 
+//                        kv1 = _mm_setzero_ps();                     PRINT_VECTOR(kv1); 
+//                        REMAINING3();
+//                    }
+//                    break;
+//                }               
+//            }
+//            _mm_storeu_ps((op + hk) + (hk * s), sum0); 
+//            op += 4;
+//        }  
+//    } //for (int y = 0...
+//    processBoundaries2D (s, w, h, 
+//                       ks, kw, 
+//                       input, output, kernel);    
+//    
+//}
 //
 //
 //void separableConvolve (const int s, const int w, const int h, const int kw, 
@@ -3482,7 +3467,6 @@ void separableConvolve (const int s, const int w, const int h, const int kw,
     const int stopX   = w - 2 * hk;
     const int startY  = 0;
     const int stopY   = h - 2 * hk;
-    const int kernelOffset = 2 * hk;
      
     #pragma omp parallel for shared (input, output)
     for (int y = startY; y < stopY; ++y) {
@@ -3523,9 +3507,6 @@ void separableLoopBlockConvolve (const int s, const int w, const int h, const in
                         const int xBlock, const int yBlock) {
     
     const int hk = kw / 2;
-    const int stopYY = yBlock - 2 * (kw / 2);
-    const int stopR = yBlock - 2 * (kw / 2);
-    
     int startX  = 0;
     int stopX   = w - 2 * hk;
     int startY  = 0;
@@ -4352,7 +4333,6 @@ void scSSE (const int s, const int w, const int h, int kw,
              
                 PRINT_LABEL("end kvy + 16"); 
                 
-                const int idxIntmp = (y + hk) * s + x; 
                 kvx = _mm_load_ps(&kernelX[c]);                                          PRINT_VECTOR(kvx);
                 PRINT_VECTOR_TRACE (kvx);
                 iv4 = sumy4;                                                             PRINT_VECTOR(iv4);
@@ -4409,13 +4389,10 @@ void sc3SSE (const int s, const int w, const int h,
 
     const int kw = 3;
     const int hk = kw / 2;
-    const int yBlock = kw;
     
-    int startX  = 0;
     int stopX   = w;
     int startY  = 0;
     int stopY   = h - 2 * (kw / 2);
-    const int kernelOffset = kw -  1;
 
       
     #pragma omp parallel for shared (input, output) 
@@ -4495,13 +4472,10 @@ void sc5SSE (const int s, const int w, const int h,
 
     const int kw = 5;
     const int hk = kw / 2;
-    const int yBlock = kw;
     
-    int startX  = 0;
     int stopX   = w;
     int startY  = 0;
     int stopY   = h - 2 * (kw / 2);
-    const int kernelOffset = kw -  1;
 
       
     #pragma omp parallel for shared (input, output) 
@@ -4604,13 +4578,10 @@ void sc7SSE (const int s, const int w, const int h,
 
     const int kw = 7;
     const int hk = kw / 2;
-    const int yBlock = kw;
     
-    int startX  = 0;
     int stopX   = w;
     int startY  = 0;
     int stopY   = h - 2 * (kw / 2);
-    const int kernelOffset = kw -  1;
 
       
     #pragma omp parallel for shared (input, output) 
@@ -4760,13 +4731,10 @@ void sc9SSE (const int s, const int w, const int h,
 
     const int kw = 9;
     const int hk = kw / 2;
-    const int yBlock = kw;
     
-    int startX  = 0;
     int stopX   = w;
     int startY  = 0;
     int stopY   = h - 2 * (kw / 2);
-    const int kernelOffset = kw -  1;
 
       
     #pragma omp parallel for shared (input, output) 
@@ -4948,13 +4916,10 @@ void scGaussian5SSE (const int s, const int w, const int h,
 
     const int kw = 5;
     const int hk = kw / 2;
-    const int yBlock = kw;
     
-    int startX  = 0;
     int stopX   = w;
     int startY  = 0;
     int stopY   = h - 2 * (kw / 2);
-    const int kernelOffset = kw -  1;
 
       
     #pragma omp parallel for shared (input, output) 
@@ -5052,13 +5017,10 @@ void scGaussian7SSE (const int s, const int w, const int h,
 
     const int kw = 7;
     const int hk = kw / 2;
-    const int yBlock = kw;
     
-    int startX  = 0;
     int stopX   = w;
     int startY  = 0;
     int stopY   = h - 2 * (kw / 2);
-    const int kernelOffset = kw -  1;
 
       
     #pragma omp parallel for shared (input, output) 
@@ -5225,13 +5187,10 @@ void scGaussian9SSE (const int s, const int w, const int h,
 
     const int kw = 9;
     const int hk = kw / 2;
-    const int yBlock = kw;
     
-    int startX  = 0;
     int stopX   = w;
     int startY  = 0;
     int stopY   = h - 2 * (kw / 2);
-    const int kernelOffset = kw -  1;
 
       
     #pragma omp parallel for shared (input, output) 
@@ -5897,7 +5856,6 @@ inline void processBoundariesS2DLeft(const int s, const int w, const int h,
                                      const float* input, float* output, 
                                      const float* kernelX, const float* kernelY) {
     int hk = kw / 2;   
-    int stopX = w - hk * 2;                      
     int stopY = h;                      
     int vw = (kw - 1 + hk);
     float* values = new float[vw];
@@ -5947,7 +5905,6 @@ inline void processBoundariesS2DRight(const int s, const int w, const int h,
                                      const float* input, float* output, 
                                      const float* kernelX, const float* kernelY) {
     int hk = kw / 2;   
-    int stopX = w - hk * 2;                      
     int stopY = h;                      
     int vw = (kw - 1 + hk);
     float* values = new float[vw];
@@ -6115,3 +6072,76 @@ int calculateAlignedStride (int width, int pixelSizeInBytes, int alignInBytes)
     return widthInBytes % alignInBytes == 0 ? width : 
         (widthInBytes + alignInBytes - (widthInBytes % alignInBytes)) / pixelSizeInBytes;
 }
+
+void copy2DBufferChunk(const float* inBuffer, float* outBuffer,
+                       const int inX, const int inY, 
+                       const int inStride, 
+                       const int inWidth, const int inHeight,
+                       const int outX, const int outY, 
+                       const int outStride ){
+   
+    for (int y = inY, oY = outY; y < inHeight; ++y, ++oY) {
+        for (int x = inX, oX = outX; x < inWidth; ++x, ++oX) {
+            _mm_storeu_ps(&outBuffer[oY * outStride + oX], _mm_loadu_ps(&inBuffer[y * inStride + x]));
+        }
+    }
+}
+                       
+void copy2DBoundaryChunk(const float* inBuffer, float* outBuffer,
+                           const int outStride, const int outWidth, const int outHeight, 
+                           const int replicateLeft, const int replicateTop,
+                           const int replicateRight, const int replicateBottom,
+                           const int inStride,  const int inWidth, const int inHeight) {
+   
+    int startIy = 0;
+    int startIx = 0;
+    
+    if (!(replicateLeft && replicateRight)) {
+        startIx = replicateLeft ? 0 : inWidth - outWidth + replicateRight;
+    }
+    
+    if (!(replicateTop && replicateBottom)) {
+        startIy = replicateTop ? 0 : inHeight - outHeight + replicateBottom;
+    }
+    
+    int stopY = outHeight;
+    int stopX = outWidth;
+    for (int y = 0, iy = startIy; y < stopY; ++y, ++iy) {
+        for (int x = 0, ix = startIx; x < stopX; ++x, ++ix) {
+            if(y < replicateTop) {
+                if (x < replicateLeft) {
+                    outBuffer[y * outStride + x] = inBuffer[0];
+                }
+                else if (x >= outWidth - replicateRight) {
+                    outBuffer[y * outStride + x] = inBuffer[inWidth - 1];
+                }
+                else {
+                    outBuffer[y * outStride + x] = inBuffer[ix - replicateLeft];
+                }
+            }
+            else if(y >= outHeight - replicateBottom) {
+                if (x < replicateLeft) {
+                    outBuffer[y * outStride + x] = inBuffer[(inHeight - 1) * inStride];
+                }
+                else if (x >= outWidth - replicateRight) {
+                    outBuffer[y * outStride + x] = inBuffer[(inHeight - 1) * inStride + (inWidth - 1)];
+                }
+                else {
+                    outBuffer[y * outStride + x] = inBuffer[(inHeight - 1) * inStride + (ix - replicateLeft)];
+                }
+            }
+            else {
+                if (x < replicateLeft) {
+                    outBuffer[y * outStride + x] = inBuffer[(iy - replicateTop) * inStride];
+                }
+                else if (x >= outWidth - replicateRight) {
+                    outBuffer[y * outStride + x] = inBuffer[(iy - replicateTop) * inStride + (inWidth - 1)];
+                }
+                else {
+                    outBuffer[y * outStride + x] = inBuffer[(iy - replicateTop) * inStride + (ix - replicateLeft)];
+                }
+            }
+        }
+    }
+}
+                       

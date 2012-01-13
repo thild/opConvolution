@@ -42,8 +42,6 @@
 #define CACHE_LINE_SIZE 64
 
 
-//debug helpers
-
 //#define TRACE
 #ifdef TRACE
     #define PRINT_TRACE(x) \
@@ -305,7 +303,15 @@
 
 void opConvolve (const int s, const int w, const int h,
                  const int ks, const int kw, 
-                 const float* input, float* output, const float* kernel); 
+                 const float* __restrict input, float* __restrict output, 
+                 const float* __restrict kernel); 
+                 
+void opSeparableConvolve (const int s, const int w, const int h, const int kw, 
+                          const float* __restrict input, float* __restrict output, 
+                          const float* __restrict kernelX, 
+                          const float* __restrict kernelY); 
+                        
+                 
                  
 void naiveConvolve (const int s, const int w, const int h, 
                     const int ks, const int kw, 
@@ -380,9 +386,9 @@ void unalignedSSEConvolve (const int s, const int w, const int h,
                       const int ks, const int kw, 
                       const float* input, float* output, const float* kernel); 
 
-void pointerArithmeticConvolve (const int s, const int w, const int h, 
-                                const int ks, const int kw, 
-                                const float* input, float* output, const float* kernel);
+//void pointerArithmeticConvolve (const int s, const int w, const int h, 
+//                                const int ks, const int kw, 
+//                                const float* input, float* output, const float* kernel);
 
 void loopUnrollConvolve (const int s, const int w, const int h, 
                          const int ks, const int kw, 
@@ -416,10 +422,10 @@ void loopBlockAlignedSSEConvolve (const int s, const int w, const int h,
                         const float* input, float* output, const float* kernel, 
                         const int xBlock, const int yBlock);
                                                                
-void loopBlockAlignedSSEConvolve2 (const int s, const int w, const int h, 
-                        const int ks, const int kw, 
-                        const float* input, float* output, const float* kernel, 
-                        const int xBlock, const int yBlock);
+//void loopBlockAlignedSSEConvolve2 (const int s, const int w, const int h, 
+//                        const int ks, const int kw, 
+//                        const float* input, float* output, const float* kernel, 
+//                        const int xBlock, const int yBlock);
                                                                
 
                              
@@ -439,9 +445,9 @@ void sse9Convolve (const int s, const int w, const int h, const int ks,
 void sse11Convolve (const int s, const int w, const int h, const int ks, 
                    const float* input, float* output, const float* kernel);
                    
-void sseWideKernelConvolve (const int s, const int w, const int h, 
-                            const int ks, const int kw, 
-                            const float* input, float* output, const float* kernel); 
+//void sseWideKernelConvolve (const int s, const int w, const int h, 
+//                            const int ks, const int kw, 
+//                            const float* input, float* output, const float* kernel); 
                             
 void sse3CmConvolve (const int s, const int w, const int h, const int ks, 
                    const float* input, float* output, const float* kernel);
@@ -507,7 +513,22 @@ void processBoundariesS2D(const int s, const int w, const int h,
 void printImage(int w, int h, int s, const float* out);
 void printImageToFile(const std::string& file, int width, int height, int s, const float* out);
 void printKernel2D(const int ks, const int kw, const float* kernel);
-void clear2DBuffer( float* buffer, int s, int height );
+void clear2DBuffer( float* buffer, int stride, int height );
+
+void copy2DBufferChunk(const float* inBuffer, float* outBuffer,
+                       const int inX, const int inY, 
+                       const int inStride, 
+                       const int inWidth, const int inHeight,
+                       const int outX, const int outY, 
+                       const int outStride);
+                       
+void copy2DBoundaryChunk(const float* inBuffer, float* outBuffer,
+                           const int outStride, const int outWidth, const int outHeight, 
+                           const int replicateLeft, const int replicateTop,
+                           const int replicateRight, const int replicateBottom,
+                           const int inStride,  const int inWidth, const int inHeight);
+                       
+                       
 float* allocateFloatAlignedBuffer (int width, int height);
 int calculateAlignedStride (int width, int pixelSizeInBytes, int alignInBytes);
 

@@ -43,7 +43,6 @@
 -ffast-math
 -mtune=core2
 -ftree-vectorize
--ftree-vectorizer-verbose=1
 -fabi-version=4
 -funroll-loops</ExtraCompilerArguments>
     <ExtraLinkerArguments> -O3
@@ -54,7 +53,6 @@
 -ffast-math
 -mtune=core2
 -ftree-vectorize
--ftree-vectorizer-verbose=1
 -fabi-version=4
 -funroll-loops</ExtraLinkerArguments>
     <OptimizationLevel>3</OptimizationLevel>

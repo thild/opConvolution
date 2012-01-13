@@ -231,7 +231,21 @@ void runLoopBlockConvolveTest(const string testName, const int iterations, list<
                                   outputImage, kernel, xBlock, yBlock);                     
                     m_Timer.stop();
                 } 
-                else if(testName == "loopBlockLoopUnroll16x64Convolve") {
+                else if(testName == "loopBlock512x512Convolve") {
+                    m_Timer.start();    
+                    loopBlockConvolve (imageStride, imageWidth, imageHeight, 
+                                  kernelStride, kernelWidth, inputImage, 
+                                  outputImage, kernel, xBlock, yBlock);                     
+                    m_Timer.stop();
+                }
+                else if(testName == "loopBlockLoopUnroll128x128Convolve") {
+                    m_Timer.start();     
+                    loopBlockLoopUnrollConvolve (imageStride, imageWidth, imageHeight, 
+                                  kernelStride, kernelWidth, inputImage, 
+                                  outputImage, kernel, xBlock, yBlock);                     
+                    m_Timer.stop();
+                }
+                else if(testName == "loopBlockLoopUnroll512x512Convolve") {
                     m_Timer.start();    
                     loopBlockLoopUnrollConvolve (imageStride, imageWidth, imageHeight, 
                                   kernelStride, kernelWidth, inputImage, 
@@ -240,7 +254,7 @@ void runLoopBlockConvolveTest(const string testName, const int iterations, list<
                 }
                 else {
                     m_Timer.start();    
-                    loopBlockAlignedSSEConvolve2 (imageStride, imageWidth, imageHeight, 
+                    loopBlockAlignedSSEConvolve (imageStride, imageWidth, imageHeight, 
                                   kernelStride, kernelWidth, inputImage, 
                                   outputImage, kernel, xBlock, yBlock);
                      
@@ -618,16 +632,16 @@ void assertTest() {
             }
             
 
-            clear2DBuffer(outputImage, imageStride, imageHeight);
-            pointerArithmeticConvolve(imageStride, imageWidth, imageHeight, 
-                            kernelStride, kernelWidth, inputImage, 
-                            outputImage, kernel); 
-            if(!assertConvolution(naiveOutputImage, outputImage, imageWidth, imageHeight, imageWidth, imageStride, kernelWidth)) {
-                stringstream f;
-                f << "pointerArithmeticConvolve fail!" << endl;
-                f << s.str();
-                assertFailList.push_back(f.str());
-            }
+//            clear2DBuffer(outputImage, imageStride, imageHeight);
+//            pointerArithmeticConvolve(imageStride, imageWidth, imageHeight, 
+//                            kernelStride, kernelWidth, inputImage, 
+//                            outputImage, kernel); 
+//            if(!assertConvolution(naiveOutputImage, outputImage, imageWidth, imageHeight, imageWidth, imageStride, kernelWidth)) {
+//                stringstream f;
+//                f << "pointerArithmeticConvolve fail!" << endl;
+//                f << s.str();
+//                assertFailList.push_back(f.str());
+//            }
       
             if(imageWidth > 128 &&  imageHeight > 128) {                        
                 clear2DBuffer(outputImage, imageStride, imageHeight);
@@ -679,18 +693,18 @@ void assertTest() {
                 assertFailList.push_back(f.str());
             }
      
-            if(kernelWidth > 11) {                        
-                clear2DBuffer(outputImage, imageStride, imageHeight);
-                sseWideKernelConvolve(imageStride, imageWidth, imageHeight, 
-                                kernelStride, kernelWidth, inputImage, 
-                                outputImage, kernel); 
-                if(!assertConvolution(naiveOutputImage, outputImage, imageWidth, imageHeight, imageWidth, imageStride, kernelWidth)) {
-                    stringstream f;
-                    f << "sseWideKernelConvolve fail!" << endl;
-                    f << s.str();
-                    assertFailList.push_back(f.str());
-                }
-            }
+//            if(kernelWidth > 11) {                        
+//                clear2DBuffer(outputImage, imageStride, imageHeight);
+//                sseWideKernelConvolve(imageStride, imageWidth, imageHeight, 
+//                                kernelStride, kernelWidth, inputImage, 
+//                                outputImage, kernel); 
+//                if(!assertConvolution(naiveOutputImage, outputImage, imageWidth, imageHeight, imageWidth, imageStride, kernelWidth)) {
+//                    stringstream f;
+//                    f << "sseWideKernelConvolve fail!" << endl;
+//                    f << s.str();
+//                    assertFailList.push_back(f.str());
+//                }
+//            }
             
             if(kernelWidth == 3) {                        
                 clear2DBuffer(outputImage, imageStride, imageHeight);
@@ -1156,7 +1170,7 @@ static void clearCache() {
 
 int main (int argc, char *argv[])
 {
-    #ifdef __SSE4_1__
+    #ifndef __SSE4_1__
         cout << "Running in AMD architecture..." << endl;
     #endif
     
@@ -1256,11 +1270,11 @@ int main (int argc, char *argv[])
     //#endif
     
 
-    //#if POINTERARITHMETICCONVOLVE
-    run2DTest (pointerArithmeticConvolve, "pointerArithmeticConvolve", iterations, kernels, 2, 0, imageStride, imageWidth, imageHeight, 
-             inputImage, outputImage);
-    //#endif
-      
+//    //#if POINTERARITHMETICCONVOLVE
+//    run2DTest (pointerArithmeticConvolve, "pointerArithmeticConvolve", iterations, kernels, 2, 0, imageStride, imageWidth, imageHeight, 
+//             inputImage, outputImage);
+//    //#endif
+//      
                
     //#if LOOPUNROLLCONVOLVE
     run2DTest (loopUnrollConvolve, "loopUnrollConvolve", iterations, kernels, 2, 0, imageStride, imageWidth, imageHeight, 
@@ -1276,11 +1290,6 @@ int main (int argc, char *argv[])
     run2DTest (prefetchConvolve128, "prefetchConvolve128", iterations, kernels, 2, 0, imageStride, imageWidth, imageHeight, 
              inputImage, outputImage);
     //#endif    
-
-    //#if LOOPBLOCKALIGNEDSSECONVOLVE
-    runLoopBlockConvolveTest("loopBlockLoopUnroll16x64Convolve", iterations, kernels, 2, 0, imageStride, imageWidth, imageHeight, 
-             inputImage, outputImage, 16, 64);
-    //#endif
 
     //#if ALIGNEDSSE1CONVOLVE
     run2DTest (sseNoReuse1Convolve, "sseNoReuse1Convolve", iterations, kernels, 2, 0, imageStride, imageWidth, imageHeight, 
@@ -1354,72 +1363,92 @@ int main (int argc, char *argv[])
              inputImage, outputImage);
     //#endif
 
-
     //#if LOOPBLOCKALIGNEDSSECONVOLVE
     runLoopBlockConvolveTest("loopBlock128x128Convolve", iterations, kernels, 2, 0, imageStride, imageWidth, imageHeight, 
              inputImage, outputImage, 128, 128);
     //#endif
 
-
-
-
     //#if LOOPBLOCKALIGNEDSSECONVOLVE
-    runLoopBlockConvolveTest("loopBlock16x48AlignedSSEConvolve", iterations, kernels, 2, 0, imageStride, imageWidth, imageHeight, 
-             inputImage, outputImage, 16, 48);
+    runLoopBlockConvolveTest("loopBlock512x512Convolve", iterations, kernels, 2, 0, imageStride, imageWidth, imageHeight, 
+             inputImage, outputImage, 128, 128);
     //#endif
 
     //#if LOOPBLOCKALIGNEDSSECONVOLVE
-    runLoopBlockConvolveTest("loopBlock32x48AlignedSSEConvolve", iterations, kernels, 2, 0, imageStride, imageWidth, imageHeight, 
-             inputImage, outputImage, 32, 48);
+    runLoopBlockConvolveTest("loopBlockLoopUnroll128x128Convolve", iterations, kernels, 2, 0, imageStride, imageWidth, imageHeight, 
+             inputImage, outputImage, 128, 128);
     //#endif
 
     //#if LOOPBLOCKALIGNEDSSECONVOLVE
-    runLoopBlockConvolveTest("loopBlock32x32AlignedSSEConvolve", iterations, kernels, 2, 0, imageStride, imageWidth, imageHeight, 
-             inputImage, outputImage, 32, 32);
+    runLoopBlockConvolveTest("loopBlockLoopUnroll512x512Convolve", iterations, kernels, 2, 0, imageStride, imageWidth, imageHeight, 
+             inputImage, outputImage, 512, 512);
     //#endif
 
 
-    //#if LOOPBLOCKALIGNEDSSECONVOLVE
-    runLoopBlockConvolveTest("loopBlock64x16AlignedSSEConvolve", iterations, kernels, 2, 0, imageStride, imageWidth, imageHeight, 
-             inputImage, outputImage, 64, 16);
-    //#endif
-
-
-      
-    //#if LOOPBLOCKALIGNEDSSECONVOLVE
-    runLoopBlockConvolveTest("loopBlock64x48AlignedSSEConvolve", iterations, kernels, 2, 0, imageStride, imageWidth, imageHeight, 
-             inputImage, outputImage, 64, 48);
-    //#endif
-
-    //#if LOOPBLOCKALIGNEDSSECONVOLVE
-    runLoopBlockConvolveTest("loopBlock64x64AlignedSSEConvolve", iterations, kernels, 2, 0, imageStride, imageWidth, imageHeight, 
-             inputImage, outputImage, 64, 64);
-    //#endif
-
-    //#if LOOPBLOCKALIGNEDSSECONVOLVE
-    runLoopBlockConvolveTest("loopBlock80x48AlignedSSEConvolve", iterations, kernels, 2, 0, imageStride, imageWidth, imageHeight, 
-             inputImage, outputImage, 80, 48);
-    //#endif
-
-    //#if LOOPBLOCKALIGNEDSSECONVOLVE
-    runLoopBlockConvolveTest("loopBlock128x48AlignedSSEConvolve", iterations, kernels, 2, 0, imageStride, imageWidth, imageHeight, 
-             inputImage, outputImage, 128, 48);
-    //#endif
-
+//
+//
+//
+//    //#if LOOPBLOCKALIGNEDSSECONVOLVE
+//    runLoopBlockConvolveTest("loopBlock16x48AlignedSSEConvolve", iterations, kernels, 2, 0, imageStride, imageWidth, imageHeight, 
+//             inputImage, outputImage, 16, 48);
+//    //#endif
+//
+//    //#if LOOPBLOCKALIGNEDSSECONVOLVE
+//    runLoopBlockConvolveTest("loopBlock32x48AlignedSSEConvolve", iterations, kernels, 2, 0, imageStride, imageWidth, imageHeight, 
+//             inputImage, outputImage, 32, 48);
+//    //#endif
+//
+//    //#if LOOPBLOCKALIGNEDSSECONVOLVE
+//    runLoopBlockConvolveTest("loopBlock32x32AlignedSSEConvolve", iterations, kernels, 2, 0, imageStride, imageWidth, imageHeight, 
+//             inputImage, outputImage, 32, 32);
+//    //#endif
+//
+//
+//    //#if LOOPBLOCKALIGNEDSSECONVOLVE
+//    runLoopBlockConvolveTest("loopBlock64x16AlignedSSEConvolve", iterations, kernels, 2, 0, imageStride, imageWidth, imageHeight, 
+//             inputImage, outputImage, 64, 16);
+//    //#endif
+//
+//
+//      
+//    //#if LOOPBLOCKALIGNEDSSECONVOLVE
+//    runLoopBlockConvolveTest("loopBlock64x48AlignedSSEConvolve", iterations, kernels, 2, 0, imageStride, imageWidth, imageHeight, 
+//             inputImage, outputImage, 64, 48);
+//    //#endif
+//
+//    //#if LOOPBLOCKALIGNEDSSECONVOLVE
+//    runLoopBlockConvolveTest("loopBlock64x64AlignedSSEConvolve", iterations, kernels, 2, 0, imageStride, imageWidth, imageHeight, 
+//             inputImage, outputImage, 64, 64);
+//    //#endif
+//
+//    //#if LOOPBLOCKALIGNEDSSECONVOLVE
+//    runLoopBlockConvolveTest("loopBlock80x48AlignedSSEConvolve", iterations, kernels, 2, 0, imageStride, imageWidth, imageHeight, 
+//             inputImage, outputImage, 80, 48);
+//    //#endif
+//
+//    //#if LOOPBLOCKALIGNEDSSECONVOLVE
+//    runLoopBlockConvolveTest("loopBlock128x48AlignedSSEConvolve", iterations, kernels, 2, 0, imageStride, imageWidth, imageHeight, 
+//             inputImage, outputImage, 128, 48);
+//    //#endif
+//
     //#if LOOPBLOCKALIGNEDSSECONVOLVE
     runLoopBlockConvolveTest("loopBlock128x128AlignedSSEConvolve", iterations, kernels, 2, 0, imageStride, imageWidth, imageHeight, 
              inputImage, outputImage, 128, 128);
     //#endif
 
-    //#if LOOPBLOCKALIGNEDSSECONVOLVE
-    runLoopBlockConvolveTest("loopBlock512x48AlignedSSEConvolve", iterations, kernels, 2, 0, imageStride, imageWidth, imageHeight, 
-             inputImage, outputImage, 512, 48);
-    //#endif
+//    //#if LOOPBLOCKALIGNEDSSECONVOLVE
+//    runLoopBlockConvolveTest("loopBlock512x48AlignedSSEConvolve", iterations, kernels, 2, 0, imageStride, imageWidth, imageHeight, 
+//             inputImage, outputImage, 512, 48);
+//    //#endif
+//
+// 
+//    //#if LOOPBLOCKALIGNEDSSECONVOLVE
+//    runLoopBlockConvolveTest("loopBlock512x256AlignedSSEConvolve", iterations, kernels, 2, 0, imageStride, imageWidth, imageHeight, 
+//             inputImage, outputImage, 512, 256);
+//    //#endif
 
- 
     //#if LOOPBLOCKALIGNEDSSECONVOLVE
-    runLoopBlockConvolveTest("loopBlock512x256AlignedSSEConvolve", iterations, kernels, 2, 0, imageStride, imageWidth, imageHeight, 
-             inputImage, outputImage, 512, 256);
+    runLoopBlockConvolveTest("loopBlock512x512AlignedSSEConvolve", iterations, kernels, 2, 0, imageStride, imageWidth, imageHeight, 
+             inputImage, outputImage, 512, 512);
     //#endif
 
  
@@ -1429,11 +1458,11 @@ int main (int argc, char *argv[])
              inputImage, outputImage);
     //#endif
      
-    //#if SSEWIDEKERNELCONVOLVE
-    run2DTest (sseWideKernelConvolve, "sseWideKernelConvolve", iterations, kernels, 13, 0, imageStride, imageWidth, imageHeight, 
-             inputImage, outputImage);
-    //#endif
-     
+////    //#if SSEWIDEKERNELCONVOLVE
+////    run2DTest (sseWideKernelConvolve, "sseWideKernelConvolve", iterations, kernels, 13, 0, imageStride, imageWidth, imageHeight, 
+////             inputImage, outputImage);
+////    //#endif
+//     
 //    #if SEPARABLECONVOLVE
     runScTest ("separableConvolve", iterations, kernels, 2, 0, imageStride, imageWidth, imageHeight, 
              inputImage, outputImage);
