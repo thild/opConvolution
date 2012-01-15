@@ -28,6 +28,7 @@
       </Includes>
     </Includes>
     <Commandlineparameters>6 8 1 3</Commandlineparameters>
+    <ExtraLinkerArguments>-lboost_system -lboost_filesystem</ExtraLinkerArguments>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>..\bin\release</OutputPath>
@@ -36,7 +37,13 @@
     <Externalconsole>true</Externalconsole>
     <OutputName>opConvolution</OutputName>
     <CompileTarget>Bin</CompileTarget>
-    <ExtraCompilerArguments>-fopenmp -O3
+    <OptimizationLevel>3</OptimizationLevel>
+    <Includes>
+      <Includes>
+        <Include>/usr/include/valgrind</Include>
+      </Includes>
+    </Includes>
+    <ExtraCompilerArguments>-fopenmp -O3 
 -msse -msse2 -msse3 -msse4 -msse4.1 -msse4.2
 -mfpmath=sse
 -march=core2
@@ -54,23 +61,19 @@
 -mtune=core2
 -ftree-vectorize
 -fabi-version=4
--funroll-loops</ExtraLinkerArguments>
-    <OptimizationLevel>3</OptimizationLevel>
-    <Includes>
-      <Includes>
-        <Include>/usr/include/valgrind</Include>
-      </Includes>
-    </Includes>
+-funroll-loops
+-lboost_system -lboost_filesystem</ExtraLinkerArguments>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="main.cpp" />
     <Compile Include="statistics.h" />
     <Compile Include="opConvolutionFilter.cpp" />
+    <Compile Include="StopWatch.cxx" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="timer.h" />
     <None Include="util.h" />
     <None Include="opConvolutionFilter.h" />
+    <None Include="StopWatch.h" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

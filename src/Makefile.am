@@ -17,7 +17,7 @@ opConvolution_SOURCES = main.cpp timer.h opConvolutionFilter.cpp opConvolutionFi
 
 
 CXXFLAGS=-fopenmp -O3 -msse -msse2 -msse3 -msse4 -msse4.1 -msse4.2 -mfpmath=sse -march=core2 -ffast-math -mtune=core2 -ftree-vectorize -ftree-vectorizer-verbose=1 -fabi-version=4 -funroll-loops
-LDFLAGS=-O3 -lgomp -msse -msse2 -msse3 -msse4 -msse4.1 -msse4.2 -mfpmath=sse -march=core2 -ffast-math -mtune=core2 -ftree-vectorize -ftree-vectorizer-verbose=1 -fabi-version=4 -funroll-loops
+LDFLAGS=-O3 -lgomp -msse -msse2 -msse3 -msse4 -msse4.1 -msse4.2 -mfpmath=sse -march=core2 -ffast-math -mtune=core2 -ftree-vectorize -ftree-vectorizer-verbose=1 -fabi-version=4 -funroll-loops -lboost_system -lboost_filesystem
 #LDFLAGS=-lboost_thread -lgomp 
 
 #AUTOMAKE_OPTIONS = foreign

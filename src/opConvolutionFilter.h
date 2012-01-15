@@ -57,7 +57,7 @@
 #endif                      
 
 //#define DEBUG
-#ifndef DEBUG
+#ifndef DEBUGA
  #define PRINT_IMAGE_TO_FILE(file, image, width, height, s)
     #define PRINT_IMAGE(width, height, s, kw, out)
     #define PRINT_LABEL(x)
@@ -66,7 +66,7 @@
     #define PRINT_LINE()
     #define PRINT_VECTOR(x)
     #define PRINT_POSITION(x, y)
-#else
+#else 
 
  #define PRINT_IMAGE_TO_FILE(file, width, height, s, out) \
      printImageToFile(file, width, height, s, out);
@@ -158,16 +158,6 @@
     BLEND_ROTATE_LEFT(vector6, vector7) \
     ROTATE_LEFT(vector7)
 
-                      
-//typedef __m128 vec4;
-//
-//typedef struct fv {  
-//    union{  
-//        float f[4];  
-//        __m128 v;  
-//    };  
-//} f4v;
-
 
 #if defined(__GNUC__)  && !defined(__INTEL_COMPILER)  
 
@@ -193,14 +183,6 @@
 
 
 #ifndef __SSE4_1__ 
-//    //extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
-//    inline __m128 _mm_dp_ps (__m128 a, __m128 b, const int mask) {
-//        return _mm_dp_ps(a, b, mask);
-//    } 
-//    inline __m128 _mm_blend_ps(__m128 a, __m128 b, const int mask ) {
-//        return _mm_blend_ps(a, b, mask);
-//    }
-//#else  
   
     typedef union 
     {
@@ -242,7 +224,7 @@
         screen = _mm_set1_epi16 ( mask                );   // Load the mask into register
         screen = _mm_mullo_epi16( screen, mulShiftImm );   // Shift bits to MSB
         screen = _mm_srai_epi32 ( screen, 31          );   // Shift bits to obtain all F's or all 0's
-        return screen;
+        return screen;  
     } 
 
     inline __m128 _mm_blend_ps( __m128  a, __m128  b, const int mask )               // _mm_blend_ps [SSE4.1]
@@ -261,46 +243,6 @@
     
 #endif  
 
-
-//typedef __m128 float4;
-//
-//extern float4 float4_mask_xy; // defined as { 0xFFFFFFFF, 0xFFFFFFFF, 0, 0 }
-//extern float4 float4_mask_xyz; // defined as { 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0 }
-//    
-//inline float4 dot2(float4 a, float4 b) {
-//    float4 temp = _mm_mul_ps(a, b);
-//    temp = _mm_and_ps(temp, float4_mask_xy);
-//    temp = _mm_hadd_ps(temp, temp);
-//    return _mm_hadd_ps(temp, temp);
-//}
-//
-//inline float4 dot3(float4 a, float4 b) {
-//    float4 temp = _mm_mul_ps(a, b);
-//    temp = _mm_and_ps(temp, float4_mask_xyz);
-//    temp = _mm_hadd_ps(temp, temp);
-//    return _mm_hadd_ps(temp, temp);
-//}
-//
-//inline float4 dot4(float4 a, float4 b) {
-//    float4 temp = _mm_mul_ps(a, b);
-//    temp = _mm_hadd_ps(temp, temp);
-//    return _mm_hadd_ps(temp, temp);
-//}
-//    
-//    
-//}
-//
-//float ssedot(const float * __restrict u, const float *  __restrict v){  
-//    __m128 uv = _mm_mul_ps(_mm_load_ps(u), _mm_load_ps(v));  
-//    uv = _mm_hadd_ps(uv, uv); // or shuffle like there's no tomorrow   
-//    uv = _mm_hadd_ps(uv, uv); // if there ain't no haddps around.  
-//    return __builtin_ia32_vec_ext_v4sf(uv, 0);  
-//}  
-
-
-
-
-
 void opConvolve (const int s, const int w, const int h,
                  const int ks, const int kw, 
                  const float* __restrict input, float* __restrict output, 
@@ -310,8 +252,6 @@ void opSeparableConvolve (const int s, const int w, const int h, const int kw,
                           const float* __restrict input, float* __restrict output, 
                           const float* __restrict kernelX, 
                           const float* __restrict kernelY); 
-                        
-                 
                  
 void naiveConvolve (const int s, const int w, const int h, 
                     const int ks, const int kw, 
@@ -337,10 +277,6 @@ void sseNoReuse4Convolve (const int s, const int w, const int h,
                           const int ks, int kw, 
                           const float* __restrict input, float* __restrict output, 
                           const float* __restrict kernel); 
-
-//void sseNoReuse4Convolve2 (const int s, const int w, const int h,
-//                           const int ks, const int kw, 
-//                           const float* input, float* output, const float* kernel); 
 
 void sseNoReuse5Convolve (const int s, const int w, const int h,
                       const int ks, const int kw, 
@@ -386,10 +322,6 @@ void unalignedSSEConvolve (const int s, const int w, const int h,
                       const int ks, const int kw, 
                       const float* input, float* output, const float* kernel); 
 
-//void pointerArithmeticConvolve (const int s, const int w, const int h, 
-//                                const int ks, const int kw, 
-//                                const float* input, float* output, const float* kernel);
-
 void loopUnrollConvolve (const int s, const int w, const int h, 
                          const int ks, const int kw, 
                          const float* __restrict input, float* __restrict output, const float* kernel);
@@ -406,7 +338,6 @@ float convolution(const float* __restrict input, const int s,
                          const float* __restrict kernel, const int ks, const int kw, 
                          const int x, const int y);
 
-                   
 void loopBlockConvolve (const int s, const int w, const int h, 
                         const int ks, const int kw, 
                         const float* input, float* output, const float* kernel, 
@@ -422,14 +353,6 @@ void loopBlockAlignedSSEConvolve (const int s, const int w, const int h,
                         const float* input, float* output, const float* kernel, 
                         const int xBlock, const int yBlock);
                                                                
-//void loopBlockAlignedSSEConvolve2 (const int s, const int w, const int h, 
-//                        const int ks, const int kw, 
-//                        const float* input, float* output, const float* kernel, 
-//                        const int xBlock, const int yBlock);
-                                                               
-
-                             
-                                       
 void sse3Convolve (const int s, const int w, const int h, const int ks, 
                    const float* input, float* output, const float* kernel);
                    
@@ -445,10 +368,6 @@ void sse9Convolve (const int s, const int w, const int h, const int ks,
 void sse11Convolve (const int s, const int w, const int h, const int ks, 
                    const float* input, float* output, const float* kernel);
                    
-//void sseWideKernelConvolve (const int s, const int w, const int h, 
-//                            const int ks, const int kw, 
-//                            const float* input, float* output, const float* kernel); 
-                            
 void sse3CmConvolve (const int s, const int w, const int h, const int ks, 
                    const float* input, float* output, const float* kernel);
                    
@@ -458,10 +377,8 @@ void sse3LbConvolve (const int s, const int w, const int h, const int ks,
 void separableConvolve (const int s, const int w, const int h, const int kw, 
                         const float* __restrict input, float* __restrict output, 
                         const float* __restrict kernelX, 
-                        const float* __restrict kernelY); 
-                        
-//void separableConvolve2 (const int s, const int w, const int h, const int kw, 
-//                        const float* input, float* output, const float* kernelX, const float* kernelY);
+                        const float* __restrict kernelY,
+                        const bool processBoundaries); 
                         
 void separableLoopBlockConvolve (const int s, const int w, const int h, const int kw, 
                         const float* input, float* output, const float* kernelX, const float* kernelY, 
@@ -485,8 +402,6 @@ void sc7SSE (const int s, const int w, const int h,
 void sc9SSE (const int s, const int w, const int h, 
              const float* input, float* output, const float* kernelX, const float* kernelY);
 
-
-                                  
 void scGaussian5SSE (const int s, const int w, const int h, 
                      const float* input, float* output, 
                      const float* kernel);
@@ -506,10 +421,8 @@ void processBoundaries2D(const int s, const int w, const int h,
 void processBoundariesS2D(const int s, const int w, const int h, 
                         const int kw, 
                         const float* input, float* output, const float* kernelX, const float* kernelY);
-                     
 
 //helper functions
-
 void printImage(int w, int h, int s, const float* out);
 void printImageToFile(const std::string& file, int width, int height, int s, const float* out);
 void printKernel2D(const int ks, const int kw, const float* kernel);
@@ -531,7 +444,5 @@ void copy2DBoundaryChunk(const float* inBuffer, float* outBuffer,
                        
 float* allocateFloatAlignedBuffer (int width, int height);
 int calculateAlignedStride (int width, int pixelSizeInBytes, int alignInBytes);
-
-
 
 #endif // _OPCONVUTIONFILTER_H
