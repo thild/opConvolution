@@ -57,7 +57,7 @@
 #endif                      
 
 //#define DEBUG
-#ifndef DEBUGA
+#ifndef DEBUG
  #define PRINT_IMAGE_TO_FILE(file, image, width, height, s)
     #define PRINT_IMAGE(width, height, s, kw, out)
     #define PRINT_LABEL(x)
@@ -65,7 +65,7 @@
     #define PRINT_INLINE(x)
     #define PRINT_LINE()
     #define PRINT_VECTOR(x)
-    #define PRINT_POSITION(x, y)
+    #define PRINT_POSITION(x, y) 
 #else 
 
  #define PRINT_IMAGE_TO_FILE(file, width, height, s, out) \
@@ -356,13 +356,25 @@ void loopBlockAlignedSSEConvolve (const int s, const int w, const int h,
 void sse3Convolve (const int s, const int w, const int h, const int ks, 
                    const float* input, float* output, const float* kernel);
                    
+void sse3Convolve1 (const int s, const int w, const int h, const int ks, 
+                   const float* input, float* output, const float* kernel);
+                   
 void sse5Convolve (const int s, const int w, const int h, const int ks, 
+                   const float* input, float* output, const float* kernel);
+                   
+void sse5Convolve1 (const int s, const int w, const int h, const int ks, 
                    const float* input, float* output, const float* kernel);
                    
 void sse7Convolve (const int s, const int w, const int h, const int ks, 
                    const float* input, float* output, const float* kernel);
                    
+void sse7Convolve1 (const int s, const int w, const int h, const int ks, 
+                   const float* input, float* output, const float* kernel);
+                   
 void sse9Convolve (const int s, const int w, const int h, const int ks, 
+                   const float* input, float* output, const float* kernel);
+                   
+void sse9Convolve1 (const int s, const int w, const int h, const int ks, 
                    const float* input, float* output, const float* kernel);
                    
 void sse11Convolve (const int s, const int w, const int h, const int ks, 

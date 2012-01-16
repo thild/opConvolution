@@ -50,19 +50,10 @@
 -ffast-math
 -mtune=core2
 -ftree-vectorize
--fabi-version=4
--funroll-loops</ExtraCompilerArguments>
-    <ExtraLinkerArguments> -O3
--lgomp
--msse -msse2 -msse3 -msse4 -msse4.1 -msse4.2
--mfpmath=sse
--march=core2
--ffast-math
--mtune=core2
--ftree-vectorize
--fabi-version=4
--funroll-loops
--lboost_system -lboost_filesystem</ExtraLinkerArguments>
+-fabi-version=4</ExtraCompilerArguments>
+    <ExtraLinkerArguments>-lgomp
+-lboost_system 
+-lboost_filesystem</ExtraLinkerArguments>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="main.cpp" />

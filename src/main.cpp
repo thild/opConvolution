@@ -32,6 +32,7 @@
 #include <assert.h>
 #include <list>
 #include <map>
+#include <omp.h>
 
 #include <fstream>
 #include <math.h>
@@ -50,6 +51,7 @@ using boost::lexical_cast;
 using boost::bad_lexical_cast;  
 
 StopWatch m_StopWatch; 
+map<int, double> naiveTimes;
 
 void loopBlockAlignedSSEConvolveTest();
 
@@ -97,10 +99,14 @@ void run2DTest(void (*convolutionFunction)(const int imageStride, const int imag
                 iter.push_back(m_StopWatch.GetElapsedTime()); 
             }  
             delete[] kernel;
-            cout << setw(8) << Mean(iter) << setw(10) << StDev(iter) << flush; 
+            double mean = Mean(iter);
+            double stdev = StDev(iter);
+            cout << setw(8) << mean << setw(8) << setprecision(2) << naiveTimes[kernelWidth] / mean << 
+                setprecision(4) << setw(8) << stdev << setw(8) << setprecision(1) << stdev / mean * 100 << 
+                setprecision(4)  << flush; 
         }
         else {
-            cout << setw(8) << "-" << setw(10) << "-" << flush; 
+            cout << setw(8) << "-" << setw(8) << "-" << setw(8) << "-" << setw(8) << "-" << flush; 
         }
         #ifdef DEBUGA
         printImage(imageWidth, imageHeight, imageStride, outputImage);
@@ -128,50 +134,94 @@ void runSSETest(const string testName, const int iterations, vector<int>& kernel
             vector<double> iter;
             for (int i = 0; i < iterations; i++) {
                 clearCache();
-                m_StopWatch.StartNew();    
                 if(testName == "sse3Convolve"){
+                    m_StopWatch.StartNew();    
                     sse3Convolve(imageStride, imageWidth, imageHeight, 
                                  kernelStride, inputImage, 
                                  outputImage, kernel);
+                    m_StopWatch.Stop();
                 }  
+                else if(testName == "sse3Convolve1"){ 
+                    m_StopWatch.StartNew();    
+                    sse3Convolve1(imageStride, imageWidth, imageHeight, 
+                                 kernelStride, inputImage, 
+                                 outputImage, kernel);                 
+                    m_StopWatch.Stop();
+                }
                 else if(testName == "sse3CmConvolve"){ 
+                    m_StopWatch.StartNew();    
                     sse3CmConvolve(imageStride, imageWidth, imageHeight, 
                                  kernelStride, inputImage, 
                                  outputImage, kernel);                 
+                    m_StopWatch.Stop();
                 }
                 else if(testName == "sse3LbConvolve") {
+                    m_StopWatch.StartNew();    
                     sse3LbConvolve(imageStride, imageWidth, imageHeight, 
                                  kernelStride, inputImage, 
                                  outputImage, kernel);
+                    m_StopWatch.Stop();
                 }
                 else if(testName == "sse5Convolve") {
+                    m_StopWatch.StartNew();    
                     sse5Convolve(imageStride, imageWidth, imageHeight, 
                                  kernelStride, inputImage, 
                                  outputImage, kernel);
+                    m_StopWatch.Stop();
+                }
+                else if(testName == "sse5Convolve1") {
+                    m_StopWatch.StartNew();    
+                    sse5Convolve1(imageStride, imageWidth, imageHeight, 
+                                 kernelStride, inputImage, 
+                                 outputImage, kernel);
+                    m_StopWatch.Stop();
                 }
                 else if(testName == "sse7Convolve") {
+                    m_StopWatch.StartNew();    
                     sse7Convolve(imageStride, imageWidth, imageHeight, 
                                  kernelStride, inputImage, 
                                  outputImage, kernel);
+                    m_StopWatch.Stop();
+                }
+                else if(testName == "sse7Convolve1") {
+                    m_StopWatch.StartNew();    
+                    sse7Convolve1(imageStride, imageWidth, imageHeight, 
+                                 kernelStride, inputImage, 
+                                 outputImage, kernel);
+                    m_StopWatch.Stop();
                 }
                 else if(testName == "sse9Convolve") {
+                    m_StopWatch.StartNew();    
                     sse9Convolve(imageStride, imageWidth, imageHeight, 
                                  kernelStride, inputImage, 
                                  outputImage, kernel);
+                    m_StopWatch.Stop();
+                }
+                else if(testName == "sse9Convolve1") {
+                    m_StopWatch.StartNew();    
+                    sse9Convolve1(imageStride, imageWidth, imageHeight, 
+                                 kernelStride, inputImage, 
+                                 outputImage, kernel);
+                    m_StopWatch.Stop();
                 }
                 else if(testName == "sse11Convolve") {
+                    m_StopWatch.StartNew();    
                     sse11Convolve(imageStride, imageWidth, imageHeight, 
                                  kernelStride, inputImage, 
                                  outputImage, kernel);
+                    m_StopWatch.Stop();
                 }
-                m_StopWatch.Stop();
                 iter.push_back(m_StopWatch.GetElapsedTime()); 
             }  
             delete[] kernel;
-            cout << setw(8) << Mean(iter) << setw(10) << StDev(iter) << flush; 
+            double mean = Mean(iter);
+            double stdev = StDev(iter);
+            cout << setw(8) << mean << setw(8) << setprecision(2) << naiveTimes[kernelWidth] / mean << 
+                setprecision(4) << setw(8) << stdev << setw(8) << setprecision(1) << stdev / mean * 100 << 
+                setprecision(4)  << flush; 
         }
         else {
-            cout << setw(8) << "-" << setw(10) << "-" << flush; 
+            cout << setw(8) << "-" << setw(8) << "-" << setw(8) << "-" << setw(8) << "-" << flush; 
         }
         #ifdef DEBUGA
         printImage(imageWidth, imageHeight, imageStride, outputImage);
@@ -237,10 +287,14 @@ void runLoopBlockConvolveTest(const string testName, const int iterations, vecto
                 iter.push_back(m_StopWatch.GetElapsedTime()); 
             }  
             delete[] kernel;
-            cout << setw(8) << Mean(iter) << setw(10) << StDev(iter) << flush; 
+            double mean = Mean(iter);
+            double stdev = StDev(iter);
+            cout << setw(8) << mean << setw(8) << setprecision(2) << naiveTimes[kernelWidth] / mean << 
+                setprecision(4) << setw(8) << stdev << setw(8) << setprecision(1) << stdev / mean * 100 << 
+                setprecision(4)  << flush; 
         }
         else {
-            cout << setw(8) << "-" << setw(10) << "-" << flush; 
+            cout << setw(8) << "-" << setw(8) << "-" << setw(8) << "-" << setw(8) << "-" << flush; 
         }
         #ifdef DEBUGA 
         printImage(imageWidth, imageHeight, imageStride, outputImage);
@@ -332,10 +386,14 @@ void runScTest(const string testName, const int iterations, vector<int>& kernels
             }  
             delete[] kernelX;
             delete[] kernelY;
-            cout << setw(8) << Mean(iter) << setw(10) << StDev(iter) << flush; 
+            double mean = Mean(iter);
+            double stdev = StDev(iter);
+            cout << setw(8) << mean << setw(8) << setprecision(2) << naiveTimes[kernelWidth] / mean << 
+                setprecision(4) << setw(8) << stdev << setw(8) << setprecision(1) << stdev / mean * 100 << 
+                setprecision(4)  << flush; 
         }
         else {
-            cout << setw(8) << "-" << setw(10) << "-" << flush; 
+            cout << setw(8) << "-" << setw(8) << "-" << setw(8) << "-" << setw(8) << "-" << flush; 
         }
         #ifdef DEBUGA
         printImage(imageWidth, imageHeight, imageStride, outputImage);
@@ -1022,7 +1080,6 @@ void naiveConvolveTest( const int iterations, vector<int>& kernels,
              PRINT_LINE(); 
          }    
      
-         float m = 0;
          vector<double> iter;
          for (int i = 0; i < iterations; i++) {
              m_StopWatch.StartNew();    
@@ -1032,9 +1089,16 @@ void naiveConvolveTest( const int iterations, vector<int>& kernels,
              m_StopWatch.Stop();
               iter.push_back(m_StopWatch.GetElapsedTime()); 
          }
-            delete[] kernel;
-            m  = m / iterations;
-            cout << setw(8) << Mean(iter) << setw(10) << StDev(iter) << flush; 
+        delete[] kernel;
+        double mean = Mean(iter);
+        double stdev = StDev(iter);
+        cout << setw(8) << mean << setw(8) << setprecision(2) << 1.0 << setprecision(4) << setw(8) << stdev << setw(8) << setprecision(1) << stdev / mean * 100 << setprecision(4)  << flush; 
+        naiveTimes[kernelWidth]= mean;
+        
+//        cout.precision(2); 
+//        printImage(imageWidth, imageHeight, imageWidth, naiveOutputImage);
+//        cout.precision(4); 
+        
     }
     cout << endl;
   
@@ -1049,7 +1113,7 @@ static void prepareTestBuffers (const int imageStride, const int imageHeight,
     /* initialize random seed: */
     srand ( time(NULL) );
     for (int i = 0; i < imageStride * imageHeight; i++) {
-         inputImage[i] = rand() % 255;
+         inputImage[i] =  i + 1;//rand() % 255;
     }       
 }
 
@@ -1119,7 +1183,7 @@ int main (int argc, char *argv[])
             return 0;
         }
         else if (sw=="-lb") {
-            loopBlockAlignedSSEConvolveTest(); 
+            loopBlockAlignedSSEConvolveTest();  
             return 0;
         }
         optind++;
@@ -1163,20 +1227,22 @@ int main (int argc, char *argv[])
                                    lexical_cast<int>(simg[1])));
     }
     
+    omp_set_num_threads(lexical_cast<int>(config["maxthreads"]));
+    
     foreach (ImageSize image, images) {
      
         int imageWidth = image.Width;
         int imageHeight = image.Height;
         
-        cout << string(40 + kernels.size() * 18, '-') << endl;
-        cout << "image size " << image.ToString() << endl;
-        cout << string(40 + kernels.size() * 18, '-') << endl;
+        cout << string(40 + kernels.size() * 32, '-') << endl; 
+        cout << "image size " << image.ToString() << " - max threads " << config["maxthreads"] << endl;
+        cout << string(40 + kernels.size() * 32, '-') << endl;
         cout << left << setw(40) << "algorithm/kernel size";
         foreach (int i, kernels) {
-            cout << setw(8) << lexical_cast<string>(i) << setw(10) << "stdev"; 
+            cout << setw(8) << lexical_cast<string>(i) << setw(8) << "spdup" << setw(8) << "stdev" << setw(8) << "%"; 
         }
         cout << endl;
-        cout << string(40 + kernels.size() * 18, '-') << endl;
+//        cout << string(40 + kernels.size() * 32, '-') << endl;
         
        
         int iterations = lexical_cast<int>(config["iterations"]);
@@ -1215,6 +1281,74 @@ int main (int argc, char *argv[])
         if(find(algs.begin(), algs.end(), "prefetchConvolve128") != algs.end())
             run2DTest (prefetchConvolve128, "prefetchConvolve128", iterations, kernels, 2, 0, imageStride, imageWidth, imageHeight, 
                      inputImage, outputImage);
+                     
+        if(find(algs.begin(), algs.end(), "sse3Convolve") != algs.end()) {
+            runSSETest ("sse3Convolve", iterations, kernels, 3, 3, imageStride, imageWidth, imageHeight, 
+                     inputImage, outputImage);
+//            cout.precision(2); 
+//            printImage(imageWidth, imageHeight, imageStride, outputImage);
+//            cout.precision(4); 
+                     
+        }
+    
+        if(find(algs.begin(), algs.end(), "sse3Convolve1") != algs.end()) {
+            runSSETest ("sse3Convolve1", iterations, kernels, 3, 3, imageStride, imageWidth, imageHeight, 
+                     inputImage, outputImage);
+//            cout.precision(2); 
+//            printImage(imageWidth, imageHeight, imageStride, outputImage);
+//            cout.precision(4); 
+                     
+        }
+    
+        if(find(algs.begin(), algs.end(), "sse3CmConvolve") != algs.end())
+            runSSETest ("sse3CmConvolve", iterations, kernels, 3, 3, imageStride, imageWidth, imageHeight, 
+                     inputImage, outputImage);
+    
+        if(find(algs.begin(), algs.end(), "sse3LbConvolve") != algs.end())
+            runSSETest ("sse3LbConvolve", iterations, kernels, 3, 3, imageStride, imageWidth, imageHeight, 
+                     inputImage, outputImage);
+    
+        if(find(algs.begin(), algs.end(), "sse5Convolve") != algs.end()) {
+            runSSETest ("sse5Convolve", iterations, kernels, 5, 5, imageStride, imageWidth, imageHeight, 
+                     inputImage, outputImage);
+//            cout.precision(2); 
+//            printImage(imageWidth, imageHeight, imageStride, outputImage);
+//            cout.precision(4); 
+        }
+                     
+        if(find(algs.begin(), algs.end(), "sse5Convolve1") != algs.end()) {
+            runSSETest ("sse5Convolve1", iterations, kernels, 5, 5, imageStride, imageWidth, imageHeight, 
+                     inputImage, outputImage);
+//            cout.precision(2); 
+//            printImage(imageWidth, imageHeight, imageStride, outputImage);
+//            cout.precision(4); 
+        }
+                     
+    
+        if(find(algs.begin(), algs.end(), "sse7Convolve") != algs.end())
+            runSSETest ("sse7Convolve", iterations, kernels, 7, 7, imageStride, imageWidth, imageHeight, 
+                     inputImage, outputImage);
+    
+        if(find(algs.begin(), algs.end(), "sse7Convolve1") != algs.end())
+            runSSETest ("sse7Convolve1", iterations, kernels, 7, 7, imageStride, imageWidth, imageHeight, 
+                     inputImage, outputImage);
+    
+        if(find(algs.begin(), algs.end(), "sse9Convolve") != algs.end()) {
+            runSSETest ("sse9Convolve", iterations, kernels, 9, 9, imageStride, imageWidth, imageHeight, 
+                     inputImage, outputImage);
+//            cout.precision(2); 
+//            printImage(imageWidth, imageHeight, imageStride, outputImage);
+//            cout.precision(4); 
+                     
+        }
+    
+        if(find(algs.begin(), algs.end(), "sse9Convolve1") != algs.end())
+            runSSETest ("sse9Convolve1", iterations, kernels, 9, 9, imageStride, imageWidth, imageHeight, 
+                     inputImage, outputImage);
+    
+        if(find(algs.begin(), algs.end(), "sse11Convolve") != algs.end())
+            runSSETest ("sse11Convolve", iterations, kernels, 11, 11, imageStride, imageWidth, imageHeight, 
+                     inputImage, outputImage);
     
         if(find(algs.begin(), algs.end(), "sseNoReuse1Convolve") != algs.end())
             run2DTest (sseNoReuse1Convolve, "sseNoReuse1Convolve", iterations, kernels, 2, 0, imageStride, imageWidth, imageHeight, 
@@ -1234,9 +1368,9 @@ int main (int argc, char *argv[])
     
         if(find(algs.begin(), algs.end(), "sseNoReuse5Convolve") != algs.end())
             run2DTest (sseNoReuse5Convolve, "sseNoReuse5Convolve", iterations, kernels, 2, 0, imageStride, imageWidth, imageHeight, 
-                     inputImage, outputImage);
+                     inputImage, outputImage); 
     
-        if(find(algs.begin(), algs.end(), "sseNoReuse6Convolve") != algs.end())
+        if(find(algs.begin(), algs.end(), "sseNoReuse6Convolve") != algs.end()) 
             run2DTest (sseNoReuse6Convolve, "sseNoReuse6Convolve", iterations, kernels, 2, 0, imageStride, imageWidth, imageHeight, 
                      inputImage, outputImage);
     
@@ -1271,6 +1405,10 @@ int main (int argc, char *argv[])
         if(find(algs.begin(), algs.end(), "sseReuse7Convolve") != algs.end())
             run2DTest (sseReuse7Convolve, "sseReuse7Convolve", iterations, kernels, 2, 0, imageStride, imageWidth, imageHeight, 
                      inputImage, outputImage);
+                     
+        if(find(algs.begin(), algs.end(), "opConvolve") != algs.end())
+            run2DTest (opConvolve, "opConvolve", iterations, kernels, 2, 0, imageStride, imageWidth, imageHeight, 
+                     inputImage, outputImage);
     
         if(find(algs.begin(), algs.end(), "loopBlock128x128Convolve") != algs.end())
             runLoopBlockConvolveTest("loopBlock128x128Convolve", iterations, kernels, 2, 0, imageStride, imageWidth, imageHeight, 
@@ -1296,19 +1434,15 @@ int main (int argc, char *argv[])
             runLoopBlockConvolveTest("loopBlock512x512AlignedSSEConvolve", iterations, kernels, 2, 0, imageStride, imageWidth, imageHeight, 
                      inputImage, outputImage, 512, 512);
     
-        if(find(algs.begin(), algs.end(), "opConvolve") != algs.end())
-            run2DTest (opConvolve, "opConvolve", iterations, kernels, 2, 0, imageStride, imageWidth, imageHeight, 
-                     inputImage, outputImage);
-    
         if(find(algs.begin(), algs.end(), "separableConvolve") != algs.end())
             runScTest ("separableConvolve", iterations, kernels, 2, 0, imageStride, imageWidth, imageHeight, 
                      inputImage, outputImage);
     
-        if(find(algs.begin(), algs.end(), "opSeparableConvolve") != algs.end())
-            runScTest ("opSeparableConvolve", iterations, kernels, 2, 0, imageStride, imageWidth, imageHeight, 
+        if(find(algs.begin(), algs.end(), "scSSE") != algs.end())
+            runScTest ("scSSE", iterations, kernels, 2, 0, imageStride, imageWidth, imageHeight, 
                      inputImage, outputImage);
-    
-        if(find(algs.begin(), algs.end(), "sc3SSE") != algs.end())
+
+         if(find(algs.begin(), algs.end(), "sc3SSE") != algs.end())
             runScTest ("sc3SSE", iterations, kernels, 3, 3, imageStride, imageWidth, imageHeight, 
                      inputImage, outputImage);
     
@@ -1324,8 +1458,8 @@ int main (int argc, char *argv[])
             runScTest ("sc9SSE", iterations, kernels, 9, 9, imageStride, imageWidth, imageHeight, 
                      inputImage, outputImage);
     
-        if(find(algs.begin(), algs.end(), "sc9SSE") != algs.end())
-            runScTest ("scSSE", iterations, kernels, 2, 0, imageStride, imageWidth, imageHeight, 
+        if(find(algs.begin(), algs.end(), "opSeparableConvolve") != algs.end())
+            runScTest ("opSeparableConvolve", iterations, kernels, 2, 0, imageStride, imageWidth, imageHeight, 
                      inputImage, outputImage);
     
         if(find(algs.begin(), algs.end(), "scGaussian5SSE") != algs.end())
@@ -1340,37 +1474,9 @@ int main (int argc, char *argv[])
             runScTest ("scGaussian9SSE", iterations, kernels, 9, 9, imageStride, imageWidth, imageHeight, 
                      inputImage, outputImage);
     
-        if(find(algs.begin(), algs.end(), "sse3Convolve") != algs.end())
-            runSSETest ("sse3Convolve", iterations, kernels, 3, 3, imageStride, imageWidth, imageHeight, 
-                     inputImage, outputImage);
-    
-        if(find(algs.begin(), algs.end(), "sse3CmConvolve") != algs.end())
-            runSSETest ("sse3CmConvolve", iterations, kernels, 3, 3, imageStride, imageWidth, imageHeight, 
-                     inputImage, outputImage);
-    
-        if(find(algs.begin(), algs.end(), "sse3LbConvolve") != algs.end())
-            runSSETest ("sse3LbConvolve", iterations, kernels, 3, 3, imageStride, imageWidth, imageHeight, 
-                     inputImage, outputImage);
-    
-        if(find(algs.begin(), algs.end(), "sse5Convolve") != algs.end())
-            runSSETest ("sse5Convolve", iterations, kernels, 5, 5, imageStride, imageWidth, imageHeight, 
-                     inputImage, outputImage);
-    
-        if(find(algs.begin(), algs.end(), "sse7Convolve") != algs.end())
-            runSSETest ("sse7Convolve", iterations, kernels, 7, 7, imageStride, imageWidth, imageHeight, 
-                     inputImage, outputImage);
-    
-        if(find(algs.begin(), algs.end(), "sse7Convolve") != algs.end())
-            runSSETest ("sse9Convolve", iterations, kernels, 9, 9, imageStride, imageWidth, imageHeight, 
-                     inputImage, outputImage);
-    
-        if(find(algs.begin(), algs.end(), "sse11Convolve") != algs.end())
-            runSSETest ("sse11Convolve", iterations, kernels, 11, 11, imageStride, imageWidth, imageHeight, 
-                     inputImage, outputImage);
-        
         delete[] inputImage;
         delete[] outputImage;
-    cout << string(40 + kernels.size() * 18, '-') << endl;
+    cout << string(40 + kernels.size() * 32, '-') << endl;
     cout << endl;
     cout << endl;
     }
