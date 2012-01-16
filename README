@@ -1,0 +1,15 @@
+Config test examples:
+
+[First]
+images=321x481,642x962,1284x1924,2568x3848
+kernels=3,5,7,9
+iterations=100
+maxthreads=2
+algs=naiveConvolveTest,alignedConvolve,unalignedSSEConvolve,loopUnrollConvolve,prefetchConvolve64,prefetchConvolve128,sse3Convolve,sse5Convolve,sse7Convolve,sse9Convolve,sse11Convolve,sseNoReuse1Convolve,sseNoReuse2Convolve,sseNoReuse3Convolve,sseNoReuse4Convolve,sseNoReuse5Convolve,sseNoReuse6Convolve,sseNoReuse7Convolve,sseReuse1Convolve,sseReuse2Convolve,sseReuse3Convolve,sseReuse4Convolve,sseReuse5Convolve,sseReuse6Convolve,sseReuse7Convolve,separableConvolve,scSSE,sc3SSE,sc5SSE,sc7SSE,sc9SSE
+
+[Best]
+images=5136x7696,10272x15392
+kernels=3,5,7,9
+iterations=100
+maxthreads=2
+algs=naiveConvolveTest,alignedConvolve,unalignedSSEConvolve,loopUnrollConvolve,prefetchConvolve128,opConvolve,opSeparableConvolve
