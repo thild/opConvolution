@@ -191,7 +191,7 @@
     } ssp_m128;
     
     extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
-    inline __m128 _mm_dp_ps (__m128 a, __m128 b, const int mask) {
+    __m128 _mm_dp_ps (__m128 a, __m128 b, const int mask) {
         //http://sseplus.sourceforge.net/group__emulated___s_s_e3.html
       
         const static __m128i mulShiftImm_0123 = _mm_set_epi32( 0x010000, 0x020000, 0x040000, 0x080000 );   // Shift mask multiply moves 0,1,2,3 bits to left, becomes MSB
@@ -219,7 +219,7 @@
     }  
 
     extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
-    inline __m128i ssp_movmask_imm8_to_epi32_SSE2( int mask ) {
+    __m128i ssp_movmask_imm8_to_epi32_SSE2( int mask ) {
         __m128i screen;
         const static __m128i mulShiftImm = _mm_set_epi16( 0x1000, 0x0000, 0x2000, 0x0000, 0x4000, 0x0000, 0x8000, 0x0000 ); // Shift mask multiply moves all bits to left, becomes MSB
         screen = _mm_set1_epi16 ( mask                );   // Load the mask into register
