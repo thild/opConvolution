@@ -24,3 +24,4 @@ LDFLAGS=-lgomp -lboost_system -lboost_filesystem
 #if ENABLE_RELEASE
 # SUBDIRS = src bin docs lib
 #endif
+q
