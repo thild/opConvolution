@@ -50,7 +50,7 @@
 -ffast-math
 -mtune=core2
 -ftree-vectorize
--fabi-version=4</ExtraCompilerArguments>
+-fabi-version=5</ExtraCompilerArguments>
     <ExtraLinkerArguments>-lgomp
 -lboost_system 
 -lboost_filesystem</ExtraLinkerArguments>

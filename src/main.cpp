@@ -498,6 +498,17 @@ void assertTest() {
                 assertFailList.push_back(f.str());
             }
  
+            clear2DBuffer(outputImage, imageStride, imageHeight);
+            unalignedSSE4Convolve(imageStride, imageWidth, imageHeight, 
+                            kernelStride, kernelWidth, inputImage, 
+                            outputImage, kernel); 
+            if(!assertConvolution(naiveOutputImage, outputImage, imageWidth, imageHeight, imageWidth, imageStride, kernelWidth)) {
+                stringstream f;
+                f << "unalignedSSE4Convolve fail!" << endl;
+                f << s.str();
+                assertFailList.push_back(f.str());
+            }
+ 
             //ok  
             clear2DBuffer(outputImage, imageStride, imageHeight);
             sseNoReuse4Convolve(imageStride, imageWidth, imageHeight, 
@@ -1268,6 +1279,10 @@ int main (int argc, char *argv[])
      
         if(find(algs.begin(), algs.end(), "unalignedSSEConvolve") != algs.end())
             run2DTest (unalignedSSEConvolve, "unalignedSSEConvolve", iterations, kernels, 2, 0, imageStride, imageWidth, imageHeight, 
+                     inputImage, outputImage) ; 
+                 
+        if(find(algs.begin(), algs.end(), "unalignedSSE4Convolve") != algs.end())
+            run2DTest (unalignedSSEConvolve, "unalignedSSE4Convolve", iterations, kernels, 2, 0, imageStride, imageWidth, imageHeight, 
                      inputImage, outputImage) ;
                  
         if(find(algs.begin(), algs.end(), "loopUnrollConvolve") != algs.end())

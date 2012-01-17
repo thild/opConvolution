@@ -1264,8 +1264,61 @@ void unalignedSSEConvolve (const int s, const int w, const int h,
                          ks, kw, 
                          input, output, kernel);    
 }
- 
- 
+
+
+void unalignedSSE4Convolve (const int s, const int w, const int h, 
+                           const int ks, int kw, 
+                           const float* input, float* output,
+                           const float* kernel) {
+    
+    int hk      = kw / 2;                       
+    int startX  = 0;
+    int stopX   = w - hk * 2;
+    int startY  = 0;
+    int stopY   = h - hk * 2;
+    
+    #pragma omp parallel for shared (input, output) 
+    for (int y = startY; y < stopY; ++y) {
+        register __m128 sum0, sum1, sum2, sum3;
+        for (int x = startX; x < stopX; x += 16) {
+            sum0 = sum1 = sum2 = sum3 =_mm_setzero_ps();
+            for (int r = 0; r < kw; ++r) {
+                int idxFtmp = r * ks;
+                int idxIntmp = (y + r) * s + x;
+                for (int c = 0; c < kw; c += 4) {
+                    const register __m128 kv = _mm_load_ps(&kernel[idxFtmp + c]);
+                    sum0 += _mm_dp_ps(kv, _mm_loadu_ps(&input[idxIntmp + c]), 241);
+                    sum1 += _mm_dp_ps(kv, _mm_loadu_ps(&input[idxIntmp + c + 4]), 241);
+                    sum2 += _mm_dp_ps(kv, _mm_loadu_ps(&input[idxIntmp + c + 8]), 241);
+                    sum3 += _mm_dp_ps(kv, _mm_loadu_ps(&input[idxIntmp + c + 12]), 241);
+                    
+                    sum0 += _mm_dp_ps(kv, _mm_loadu_ps(&input[idxIntmp + c + 1]), 242);
+                    sum1 += _mm_dp_ps(kv, _mm_loadu_ps(&input[idxIntmp + c + 5]), 242);
+                    sum2 += _mm_dp_ps(kv, _mm_loadu_ps(&input[idxIntmp + c + 9]), 242);
+                    sum3 += _mm_dp_ps(kv, _mm_loadu_ps(&input[idxIntmp + c + 13]), 242);
+                    
+                    sum0 += _mm_dp_ps(kv, _mm_loadu_ps(&input[idxIntmp + c + 2]), 244);
+                    sum1 += _mm_dp_ps(kv, _mm_loadu_ps(&input[idxIntmp + c + 6]), 244);
+                    sum2 += _mm_dp_ps(kv, _mm_loadu_ps(&input[idxIntmp + c + 10]), 244);
+                    sum3 += _mm_dp_ps(kv, _mm_loadu_ps(&input[idxIntmp + c + 14]), 244);
+                    
+                    sum0 += _mm_dp_ps(kv, _mm_loadu_ps(&input[idxIntmp + c + 3]), 248);
+                    sum1 += _mm_dp_ps(kv, _mm_loadu_ps(&input[idxIntmp + c + 7]), 248);
+                    sum2 += _mm_dp_ps(kv, _mm_loadu_ps(&input[idxIntmp + c + 11]), 248);
+                    sum3 += _mm_dp_ps(kv, _mm_loadu_ps(&input[idxIntmp + c + 15]), 248);
+                }
+            } //for (int r = 0...
+            _mm_storeu_ps(&output[(y + hk) * s + (x + hk)], sum0);         PRINT_VECTOR(sum0);
+            _mm_storeu_ps(&output[(y + hk) * s + (x + hk) + 4], sum1);     PRINT_VECTOR(sum1);
+            _mm_storeu_ps(&output[(y + hk) * s + (x + hk) + 8], sum2);     PRINT_VECTOR(sum2);
+            _mm_storeu_ps(&output[(y + hk) * s + (x + hk) + 12], sum3);    PRINT_VECTOR(sum3);
+        } //for (int x = 0...
+    } //for (int y = 0...
+    processBoundaries2D (s, w, h, 
+                         ks, kw, 
+                         input, output, kernel);    
+}
+  
 
  
 void loopBlockConvolve (const int s, const int w, const int h, 

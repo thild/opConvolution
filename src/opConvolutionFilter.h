@@ -324,6 +324,10 @@ void unalignedSSEConvolve (const int s, const int w, const int h,
                       const int ks, const int kw, 
                       const float* input, float* output, const float* kernel); 
 
+void unalignedSSE4Convolve (const int s, const int w, const int h,
+                      const int ks, const int kw, 
+                      const float* input, float* output, const float* kernel); 
+
 void loopUnrollConvolve (const int s, const int w, const int h, 
                          const int ks, const int kw, 
                          const float* __restrict input, float* __restrict output, const float* kernel);
