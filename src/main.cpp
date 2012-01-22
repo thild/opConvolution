@@ -52,6 +52,7 @@ using boost::bad_lexical_cast;
 
 StopWatch m_StopWatch; 
 map<int, double> naiveTimes;
+map<int, double> separableTimes;
 
 void loopBlockAlignedSSEConvolveTest();
 
@@ -398,9 +399,17 @@ void runScTest(const string testName, const int iterations, vector<int>& kernels
             delete[] kernelY;
             double mean = Mean(iter);
             double stdev = StDev(iter);
-            cout << setw(8) << mean << setw(8) << setprecision(2) << naiveTimes[kernelWidth] / mean << 
-                setprecision(4) << setw(8) << stdev << setw(8) << setprecision(1) << stdev / mean * 100 << 
-                setprecision(4)  << flush; 
+            if (testName == "separableConvolve") {
+                separableTimes[kernelWidth] = mean;
+                cout << setw(8) << mean << setw(8) << setprecision(2) << naiveTimes[kernelWidth] / mean << 
+                    setprecision(4) << setw(8) << stdev << setw(8) << setprecision(1) << stdev / mean * 100 << 
+                    setprecision(4)  << flush;                 
+            }
+            else {
+                cout << setw(8) << mean << setw(8) << setprecision(2) << separableTimes[kernelWidth] / mean << 
+                    setprecision(4) << setw(8) << stdev << setw(8) << setprecision(1) << stdev / mean * 100 << 
+                    setprecision(4)  << flush; 
+            }
         }
         else {
             cout << setw(8) << "-" << setw(8) << "-" << setw(8) << "-" << setw(8) << "-" << flush; 
