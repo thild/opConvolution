@@ -106,8 +106,8 @@ void run2DTest(void (*convolutionFunction)(const int imageStride, const int imag
             double mean = Mean(iter);
             double stdev = StDev(iter);
             cout << setw(8) << mean << setw(8) << setprecision(2) << naiveTimes[kernelWidth] / mean << 
-                setprecision(4) << setw(8) << stdev << setw(8) << setprecision(1) << stdev / mean * 100 << 
-                setprecision(4)  << flush; 
+                setprecision(5) << setw(8) << stdev << setw(8) << setprecision(1) << stdev / mean * 100 << 
+                setprecision(5)  << flush; 
         }
         else {
             cout << setw(8) << "-" << setw(8) << "-" << setw(8) << "-" << setw(8) << "-" << flush; 
@@ -224,8 +224,8 @@ void runSSETest(const string testName, const int iterations, vector<int>& kernel
             double mean = Mean(iter);
             double stdev = StDev(iter);
             cout << setw(8) << mean << setw(8) << setprecision(2) << naiveTimes[kernelWidth] / mean << 
-                setprecision(4) << setw(8) << stdev << setw(8) << setprecision(1) << stdev / mean * 100 << 
-                setprecision(4)  << flush; 
+                setprecision(5) << setw(8) << stdev << setw(8) << setprecision(1) << stdev / mean * 100 << 
+                setprecision(5)  << flush; 
         }
         else {
             cout << setw(8) << "-" << setw(8) << "-" << setw(8) << "-" << setw(8) << "-" << flush; 
@@ -299,8 +299,8 @@ void runLoopBlockConvolveTest(const string testName, const int iterations, vecto
             double mean = Mean(iter);
             double stdev = StDev(iter);
             cout << setw(8) << mean << setw(8) << setprecision(2) << naiveTimes[kernelWidth] / mean << 
-                setprecision(4) << setw(8) << stdev << setw(8) << setprecision(1) << stdev / mean * 100 << 
-                setprecision(4)  << flush; 
+                setprecision(5) << setw(8) << stdev << setw(8) << setprecision(1) << stdev / mean * 100 << 
+                setprecision(5)  << flush; 
         }
         else {
             cout << setw(8) << "-" << setw(8) << "-" << setw(8) << "-" << setw(8) << "-" << flush; 
@@ -402,13 +402,13 @@ void runScTest(const string testName, const int iterations, vector<int>& kernels
             if (testName == "separableConvolve") {
                 separableTimes[kernelWidth] = mean;
                 cout << setw(8) << mean << setw(8) << setprecision(2) << naiveTimes[kernelWidth] / mean << 
-                    setprecision(4) << setw(8) << stdev << setw(8) << setprecision(1) << stdev / mean * 100 << 
-                    setprecision(4)  << flush;                 
+                    setprecision(5) << setw(8) << stdev << setw(8) << setprecision(1) << stdev / mean * 100 << 
+                    setprecision(5)  << flush;                 
             }
             else {
                 cout << setw(8) << mean << setw(8) << setprecision(2) << separableTimes[kernelWidth] / mean << 
-                    setprecision(4) << setw(8) << stdev << setw(8) << setprecision(1) << stdev / mean * 100 << 
-                    setprecision(4)  << flush; 
+                    setprecision(5) << setw(8) << stdev << setw(8) << setprecision(1) << stdev / mean * 100 << 
+                    setprecision(5)  << flush; 
             }
         }
         else {
@@ -1122,7 +1122,7 @@ void naiveConvolveTest( const int iterations, vector<int>& kernels,
         delete[] kernel;
         double mean = Mean(iter);
         double stdev = StDev(iter);
-        cout << setw(8) << mean << setw(8) << setprecision(2) << 1.0 << setprecision(4) << setw(8) << stdev << setw(8) << setprecision(1) << stdev / mean * 100 << setprecision(4)  << flush; 
+        cout << setw(8) << mean << setw(8) << setprecision(2) << 1.0 << setprecision(5) << setw(8) << stdev << setw(8) << setprecision(1) << stdev / mean * 100 << setprecision(5)  << flush; 
         naiveTimes[kernelWidth]= mean;
         
 //        cout.precision(2); 
