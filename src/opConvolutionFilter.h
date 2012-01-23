@@ -191,7 +191,23 @@
     #error "nope"  
 #endif  
 
-
+//#ifdef __SSE4_1__ 
+//    extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+//    _mm_dp241_ps (__m128 a, __m128 b) {
+//        return _mm_dp_ps(a, b, 241);      
+//    }
+//#else 
+    extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+    _mm_dp241_ps (__m128 a, __m128 b) {
+//        static const __m128 mask = _mm_castsi128_ps(_mm_set1_epi32(0x80000000));
+        static const __m128 mask = _mm_set_ps(0x0, 0x0, 0x0, 0xFFFFFFFF);
+        a = _mm_mul_ps( a, b );
+        a = _mm_hadd_ps( a, a ); // Horizontally add the 4 values
+        a = _mm_hadd_ps( a, a ); // Horizontally add the 4 values
+        return _mm_and_ps( a, mask );// Clear output using low bits of the mask
+    }
+//#endif
+    
 #ifndef __SSE4_1__ 
   
     typedef union 
@@ -225,7 +241,6 @@
         // End mask preparation - Mask bits 0-3 in mLo, 4-7 in mHi
         a = _mm_and_ps( a, mHi.f ); // Clear input using the high bits of the mask
         a = _mm_mul_ps( a, b );
-        
         a = _mm_hadd_ps( a, a ); // Horizontally add the 4 values
         a = _mm_hadd_ps( a, a ); // Horizontally add the 4 values
         a = _mm_and_ps( a, mLo.f );// Clear output using low bits of the mask

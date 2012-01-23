@@ -3719,10 +3719,12 @@ void scSSE (const int s, const int w, const int h, int kw,
                 iv4 = sumy4;                                                             PRINT_VECTOR(iv4);
                 
                 PRINT_LABEL("sum0"); 
-                sum0 += _mm_dp_ps(kvx, iv0, 241);    PRINT_VECTOR(sum0); 
-                sum1 += _mm_dp_ps(kvx, iv1, 241);    PRINT_VECTOR(sum1);
-                sum2 += _mm_dp_ps(kvx, iv2, 241);    PRINT_VECTOR(sum2);
-                sum3 += _mm_dp_ps(kvx, iv3, 241);    PRINT_VECTOR(sum3);
+//                sum0 += _mm_dp_ps(kvx, iv0, 241);    PRINT_VECTOR(sum0); 
+                
+                sum0 += _mm_dp241_ps(kvx, iv0);    PRINT_VECTOR(sum0); 
+                sum1 += _mm_dp241_ps(kvx, iv1);    PRINT_VECTOR(sum1);
+                sum2 += _mm_dp241_ps(kvx, iv2);    PRINT_VECTOR(sum2);
+                sum3 += _mm_dp241_ps(kvx, iv3);    PRINT_VECTOR(sum3);
                  
                 BLEND_ROTATE4_LEFT(iv0, iv1, iv2, iv3, iv4);
 
