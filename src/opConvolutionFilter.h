@@ -404,9 +404,9 @@ void sse9Convolve (const int s, const int w, const int h, const int ks,
 void sse9Convolve1 (const int s, const int w, const int h, const int ks, 
                    const float* input, float* output, const float* kernel);
                    
-//void sse11Convolve (const int s, const int w, const int h, const int ks, 
-//                   const float* input, float* output, const float* kernel);
-//                   
+void sse11Convolve (const int s, const int w, const int h, const int ks, 
+                   const float* input, float* output, const float* kernel);
+                   
 void sse3CmConvolve (const int s, const int w, const int h, const int ks, 
                    const float* input, float* output, const float* kernel);
                    
