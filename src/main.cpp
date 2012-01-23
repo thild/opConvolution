@@ -82,7 +82,7 @@ void run2DTest(void (*convolutionFunction)(const int imageStride, const int imag
                float* inputImage, float* outputImage) { 
               
      //#if aligned
-    cout << left << setw(40) << testName;
+    cout << left << setw(50) << testName;
     for ( vector<int>::iterator it = kernels.begin(); it != kernels.end(); it++ ) {
         int kernelWidth = *it; 
         if(kernelWidth >= minKernelWidth && (kernelWidth <= maxKernelWidth || maxKernelWidth == 0)) {
@@ -105,12 +105,12 @@ void run2DTest(void (*convolutionFunction)(const int imageStride, const int imag
             delete[] kernel;
             double mean = Mean(iter);
             double stdev = StDev(iter);
-            cout << setw(8) << mean << setw(8) << setprecision(2) << naiveTimes[kernelWidth] / mean << 
-                setprecision(4) << setw(8) << stdev << setw(8) << setprecision(1) << stdev / mean * 100 << 
-                setprecision(4)  << flush; 
+            cout << setw(10) << mean << setw(10) << setprecision(2) << naiveTimes[kernelWidth] / mean << 
+                setprecision(6) << setw(10) << stdev << setw(10) << setprecision(1) << stdev / mean * 100 << 
+                setprecision(6)  << flush; 
         }
         else {
-            cout << setw(8) << "-" << setw(8) << "-" << setw(8) << "-" << setw(8) << "-" << flush; 
+            cout << setw(10) << "-" << setw(10) << "-" << setw(10) << "-" << setw(10) << "-" << flush; 
         }
         #ifdef DEBUGA
         printImage(imageWidth, imageHeight, imageStride, outputImage);
@@ -128,7 +128,7 @@ void runSSETest(const string testName, const int iterations, vector<int>& kernel
               
              
      //#if aligned
-    cout << left << setw(40) << testName;
+    cout << left << setw(50) << testName;
     for ( vector<int>::iterator it = kernels.begin(); it != kernels.end(); it++ ) {
         int kernelWidth = *it; 
         if(kernelWidth >= minKernelWidth && (kernelWidth <= maxKernelWidth || maxKernelWidth == 0)) {
@@ -223,12 +223,12 @@ void runSSETest(const string testName, const int iterations, vector<int>& kernel
             delete[] kernel;
             double mean = Mean(iter);
             double stdev = StDev(iter);
-            cout << setw(8) << mean << setw(8) << setprecision(2) << naiveTimes[kernelWidth] / mean << 
-                setprecision(4) << setw(8) << stdev << setw(8) << setprecision(1) << stdev / mean * 100 << 
-                setprecision(4)  << flush; 
+            cout << setw(10) << mean << setw(10) << setprecision(2) << naiveTimes[kernelWidth] / mean << 
+                setprecision(6) << setw(10) << stdev << setw(10) << setprecision(1) << stdev / mean * 100 << 
+                setprecision(6)  << flush; 
         }
         else {
-            cout << setw(8) << "-" << setw(8) << "-" << setw(8) << "-" << setw(8) << "-" << flush; 
+            cout << setw(10) << "-" << setw(10) << "-" << setw(10) << "-" << setw(10) << "-" << flush; 
         }
         #ifdef DEBUGA
         printImage(imageWidth, imageHeight, imageStride, outputImage);
@@ -245,7 +245,7 @@ void runLoopBlockConvolveTest(const string testName, const int iterations, vecto
                float* inputImage, float* outputImage, const int xBlock, const int yBlock) { 
 
      //#if aligned
-    cout << left << setw(40) << testName;
+    cout << left << setw(50) << testName;
     for ( vector<int>::iterator it = kernels.begin(); it != kernels.end(); it++ ) {
         int kernelWidth = *it; 
         if(kernelWidth >= minKernelWidth && (kernelWidth <= maxKernelWidth || maxKernelWidth == 0)) {
@@ -298,12 +298,12 @@ void runLoopBlockConvolveTest(const string testName, const int iterations, vecto
             delete[] kernel;
             double mean = Mean(iter);
             double stdev = StDev(iter);
-            cout << setw(8) << mean << setw(8) << setprecision(2) << naiveTimes[kernelWidth] / mean << 
-                setprecision(4) << setw(8) << stdev << setw(8) << setprecision(1) << stdev / mean * 100 << 
-                setprecision(4)  << flush; 
+            cout << setw(10) << mean << setw(10) << setprecision(2) << naiveTimes[kernelWidth] / mean << 
+                setprecision(6) << setw(10) << stdev << setw(10) << setprecision(1) << stdev / mean * 100 << 
+                setprecision(6)  << flush; 
         }
         else {
-            cout << setw(8) << "-" << setw(8) << "-" << setw(8) << "-" << setw(8) << "-" << flush; 
+            cout << setw(10) << "-" << setw(10) << "-" << setw(10) << "-" << setw(10) << "-" << flush; 
         }
         #ifdef DEBUGA 
         printImage(imageWidth, imageHeight, imageStride, outputImage);
@@ -320,7 +320,7 @@ void runScTest(const string testName, const int iterations, vector<int>& kernels
                float* inputImage, float* outputImage) { 
               
      //#if aligned
-    cout << left << setw(40) << testName;
+    cout << left << setw(50) << testName;
     for ( vector<int>::iterator it = kernels.begin(); it != kernels.end(); it++ ) {
         int kernelWidth = *it; 
         if(kernelWidth >= minKernelWidth && (kernelWidth <= maxKernelWidth || maxKernelWidth == 0)) {
@@ -401,18 +401,18 @@ void runScTest(const string testName, const int iterations, vector<int>& kernels
             double stdev = StDev(iter);
             if (testName == "separableConvolve") {
                 separableTimes[kernelWidth] = mean;
-                cout << setw(8) << mean << setw(8) << setprecision(2) << naiveTimes[kernelWidth] / mean << 
-                    setprecision(4) << setw(8) << stdev << setw(8) << setprecision(1) << stdev / mean * 100 << 
-                    setprecision(4)  << flush;                 
+                cout << setw(10) << mean << setw(10) << setprecision(2) << naiveTimes[kernelWidth] / mean << 
+                    setprecision(6) << setw(10) << stdev << setw(10) << setprecision(1) << stdev / mean * 100 << 
+                    setprecision(6)  << flush;                 
             }
             else {
-                cout << setw(8) << mean << setw(8) << setprecision(2) << separableTimes[kernelWidth] / mean << 
-                    setprecision(4) << setw(8) << stdev << setw(8) << setprecision(1) << stdev / mean * 100 << 
-                    setprecision(4)  << flush; 
+                cout << setw(10) << mean << setw(10) << setprecision(2) << separableTimes[kernelWidth] / mean << 
+                    setprecision(6) << setw(10) << stdev << setw(10) << setprecision(1) << stdev / mean * 100 << 
+                    setprecision(6)  << flush; 
             }
         }
         else {
-            cout << setw(8) << "-" << setw(8) << "-" << setw(8) << "-" << setw(8) << "-" << flush; 
+            cout << setw(10) << "-" << setw(10) << "-" << setw(10) << "-" << setw(10) << "-" << flush; 
         }
         #ifdef DEBUGA
         printImage(imageWidth, imageHeight, imageStride, outputImage);
@@ -1073,7 +1073,7 @@ void naiveConvolveTest( const int iterations, vector<int>& kernels,
                         const int kernelWidth, 
                         const float* inputImage, const float* kernel) {
     //#if NAIVE
-    cout << left << setw(40) << "naiveConvolve";
+    cout << left << setw(50) << "naiveConvolve";
     float* naiveInputImage = new float[imageWidth * imageHeight];
     float* naiveOutputImage = new float[imageWidth * imageHeight];
     for ( vector<int>::iterator it = kernels.begin(); it != kernels.end(); it++ ) {
@@ -1122,7 +1122,7 @@ void naiveConvolveTest( const int iterations, vector<int>& kernels,
         delete[] kernel;
         double mean = Mean(iter);
         double stdev = StDev(iter);
-        cout << setw(8) << mean << setw(8) << setprecision(2) << 1.0 << setprecision(4) << setw(8) << stdev << setw(8) << setprecision(1) << stdev / mean * 100 << setprecision(4)  << flush; 
+        cout << setw(10) << mean << setw(10) << setprecision(2) << 1.0 << setprecision(6) << setw(10) << stdev << setw(10) << setprecision(1) << stdev / mean * 100 << setprecision(6)  << flush; 
         naiveTimes[kernelWidth]= mean;
         
 //        cout.precision(2); 
@@ -1264,12 +1264,13 @@ int main (int argc, char *argv[])
         int imageWidth = image.Width;
         int imageHeight = image.Height;
         
-        cout << string(40 + kernels.size() * 32, '-') << endl; 
+        string line = string(50 + kernels.size() * 40, '-');
+        cout << line << endl; 
         cout << "image size " << image.ToString() << " - max threads " << config["maxthreads"] << endl;
-        cout << string(40 + kernels.size() * 32, '-') << endl;
-        cout << left << setw(40) << "algorithm/kernel size";
+        cout << line << endl;
+        cout << left << setw(50) << "algorithm/kernel size";
         foreach (int i, kernels) {
-            cout << setw(8) << lexical_cast<string>(i) << setw(8) << "spdup" << setw(8) << "stdev" << setw(8) << "%"; 
+            cout << setw(10) << lexical_cast<string>(i) << setw(10) << "spdup" << setw(10) << "stdev" << setw(10) << "%"; 
         }
         cout << endl;
 //        cout << string(40 + kernels.size() * 32, '-') << endl;
@@ -1507,7 +1508,7 @@ int main (int argc, char *argv[])
     
         delete[] inputImage;
         delete[] outputImage;
-    cout << string(40 + kernels.size() * 32, '-') << endl;
+    cout << line << endl;
     cout << endl;
     cout << endl;
     }
