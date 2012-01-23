@@ -211,13 +211,13 @@ void runSSETest(const string testName, const int iterations, vector<int>& kernel
                                  outputImage, kernel);
                     m_StopWatch.Stop();
                 }
-                else if(testName == "sse11Convolve") {
-                    m_StopWatch.StartNew();    
-                    sse11Convolve(imageStride, imageWidth, imageHeight, 
-                                 kernelStride, inputImage, 
-                                 outputImage, kernel);
-                    m_StopWatch.Stop();
-                }
+//                else if(testName == "sse11Convolve") {
+//                    m_StopWatch.StartNew();    
+//                    sse11Convolve(imageStride, imageWidth, imageHeight, 
+//                                 kernelStride, inputImage, 
+//                                 outputImage, kernel);
+//                    m_StopWatch.Stop();
+//                }
                 iter.push_back(m_StopWatch.GetElapsedTime()); 
             }  
             delete[] kernel;
@@ -815,18 +815,18 @@ void assertTest() {
                 }
             }
                         
-            if(kernelWidth == 11) {                        
-                clear2DBuffer(outputImage, imageStride, imageHeight);
-                sse11Convolve(imageStride, imageWidth, imageHeight, 
-                            kernelStride, inputImage, 
-                            outputImage, kernel);
-                if(!assertConvolution(naiveOutputImage, outputImage, imageWidth, imageHeight, imageWidth, imageStride, kernelWidth)) {
-                    stringstream f;
-                    f << "sse11Convolve fail!" << endl;
-                    f << s.str();
-                    assertFailList.push_back(f.str());
-                }
-            }           
+//            if(kernelWidth == 11) {                        
+//                clear2DBuffer(outputImage, imageStride, imageHeight);
+//                sse11Convolve(imageStride, imageWidth, imageHeight, 
+//                            kernelStride, inputImage, 
+//                            outputImage, kernel);
+//                if(!assertConvolution(naiveOutputImage, outputImage, imageWidth, imageHeight, imageWidth, imageStride, kernelWidth)) {
+//                    stringstream f;
+//                    f << "sse11Convolve fail!" << endl;
+//                    f << s.str();
+//                    assertFailList.push_back(f.str());
+//                }
+//            }           
             
             clear2DBuffer(outputImage, imageStride, imageHeight);
             separableConvolve (imageStride, imageWidth, imageHeight, 
@@ -1378,9 +1378,9 @@ int main (int argc, char *argv[])
             runSSETest ("sse9Convolve1", iterations, kernels, 9, 9, imageStride, imageWidth, imageHeight, 
                      inputImage, outputImage);
     
-        if(find(algs.begin(), algs.end(), "sse11Convolve") != algs.end())
-            runSSETest ("sse11Convolve", iterations, kernels, 11, 11, imageStride, imageWidth, imageHeight, 
-                     inputImage, outputImage);
+//        if(find(algs.begin(), algs.end(), "sse11Convolve") != algs.end())
+//            runSSETest ("sse11Convolve", iterations, kernels, 11, 11, imageStride, imageWidth, imageHeight, 
+//                     inputImage, outputImage);
     
         if(find(algs.begin(), algs.end(), "sseNoReuse1Convolve") != algs.end())
             run2DTest (sseNoReuse1Convolve, "sseNoReuse1Convolve", iterations, kernels, 2, 0, imageStride, imageWidth, imageHeight, 

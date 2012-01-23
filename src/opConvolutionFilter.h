@@ -103,11 +103,21 @@
                      
 #define ROTATE_RIGHT_BLEND(vector1, vector2) \
     vector1 = _mm_shuffle_ps(vector1, vector1, _MM_SHUFFLE(2, 1, 0, 3)); PRINT_VECTOR(vector1); \
-    vector2 = _mm_blend_ps(vector2, vector1, 1); PRINT_VECTOR(vector2); 
-                     
+    vector2 = _mm_move_ss(vector2, vector1); PRINT_VECTOR(vector2); 
+    
+    
+//    vector1 = _mm_shuffle_ps(vector1, vector1, _MM_SHUFFLE(2, 1, 0, 3)); PRINT_VECTOR(vector1);
+//    vector2 = _mm_blend_ps(vector2, vector1, 1); PRINT_VECTOR(vector2); 
+    
+    
 #define BLEND_ROTATE_LEFT(vector0, vector1) \
-    vector0 = _mm_blend_ps(vector0, vector1, 1); PRINT_VECTOR(vector0); \
+    vector0 = _mm_move_ss(vector0, vector1); PRINT_VECTOR(vector0); \
     ROTATE_LEFT(vector0);
+    
+    
+    //vector0 = _mm_blend_ps(vector0, vector1, 1); PRINT_VECTOR(vector0);
+    //ROTATE_LEFT(vector0);
+
 
 #define BLEND_ROTATE1_LEFT(vector0, vector1) \
     BLEND_ROTATE_LEFT(vector0, vector1) \
@@ -394,9 +404,9 @@ void sse9Convolve (const int s, const int w, const int h, const int ks,
 void sse9Convolve1 (const int s, const int w, const int h, const int ks, 
                    const float* input, float* output, const float* kernel);
                    
-void sse11Convolve (const int s, const int w, const int h, const int ks, 
-                   const float* input, float* output, const float* kernel);
-                   
+//void sse11Convolve (const int s, const int w, const int h, const int ks, 
+//                   const float* input, float* output, const float* kernel);
+//                   
 void sse3CmConvolve (const int s, const int w, const int h, const int ks, 
                    const float* input, float* output, const float* kernel);
                    
