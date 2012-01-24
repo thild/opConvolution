@@ -129,8 +129,9 @@ void opSeparableConvolve (const int s, const int w, const int h, const int kw,
         return;
      
     }
-        separableConvolve (s, w, h, kw, 
-                           input, output, kernelX, kernelY, true);  
+       sc5SSE (s, w, h,
+                    input, output, 
+                    kernelX, kernelY);
                     
 //                  
 //    switch (kw) {
