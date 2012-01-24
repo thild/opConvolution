@@ -58,7 +58,7 @@ void opConvolve (const int s, const int w, const int h,
         return;
      
     }                
-                  
+#ifdef __SSE4_1__                  
     switch (kw) {
         case 3:
             sse3Convolve (s, w, h, ks, 
@@ -84,7 +84,35 @@ void opConvolve (const int s, const int w, const int h,
                 sseNoReuse4Convolve (s, w, h, ks, kw, 
                              input, output, kernel);
             break;
-    }                  
+    }            
+#else
+    switch (kw) {
+        case 3:
+            sse3Convolve (s, w, h, ks, 
+                          input, output, kernel);
+            break;
+        case 5:
+            sseNoReuse2Convolve (s, w, h, ks, kw,
+                                 input, output, kernel);
+            break;
+        case 7:
+            sseReuse3Convolve (s, w, h, ks, kw,
+                          input, output, kernel);
+            break;
+        case 9:
+            sseReuse3Convolve (s, w, h, ks, kw,
+                          input, output, kernel);
+            break;
+        case 11:
+            sseReuse3Convolve (s, w, h, ks, kw, 
+                               input, output, kernel);
+            break;
+        default:
+                sseReuse3Convolve (s, w, h, ks, kw, 
+                             input, output, kernel);
+            break;
+    }            
+#endif
 }
  
 void opSeparableConvolve (const int s, const int w, const int h, const int kw, 
