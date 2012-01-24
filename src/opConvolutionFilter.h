@@ -276,7 +276,7 @@
     _mm_dp226_ps (__m128 a, __m128 b) {
         static const __m128 imask = _mm_set_ps(0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0x0);
         static const __m128 omask = _mm_set_ps(0x0, 0x0, 0xFFFFFFFF, 0x0);
-        a = _mm_and_ps( a, imask )
+        a = _mm_and_ps( a, imask );
         a = _mm_mul_ps( a, b );
         a = _mm_hadd_ps( a, a ); // Horizontally add the 4 values
         a = _mm_hadd_ps( a, a ); // Horizontally add the 4 values
@@ -286,7 +286,7 @@
     _mm_dp50_ps (__m128 a, __m128 b) {
         static const __m128 imask = _mm_set_ps(0x0, 0x0, 0xFFFFFFFF, 0xFFFFFFFF);
         static const __m128 omask = _mm_set_ps(0x0, 0x0, 0xFFFFFFFF, 0x0);
-        a = _mm_and_ps( a, imask )
+        a = _mm_and_ps( a, imask );
         a = _mm_mul_ps( a, b );
         a = _mm_hadd_ps( a, a ); // Horizontally add the 4 values
         a = _mm_hadd_ps( a, a ); // Horizontally add the 4 values
@@ -296,7 +296,7 @@
     _mm_dp196_ps (__m128 a, __m128 b) {
         static const __m128 imask = _mm_set_ps(0xFFFFFFFF, 0xFFFFFFFF, 0x0, 0x0);
         static const __m128 omask = _mm_set_ps(0x0, 0xFFFFFFFF, 0x0, 0x0);
-        a = _mm_and_ps( a, imask )
+        a = _mm_and_ps( a, imask );
         a = _mm_mul_ps( a, b );
         a = _mm_hadd_ps( a, a ); // Horizontally add the 4 values
         a = _mm_hadd_ps( a, a ); // Horizontally add the 4 values
@@ -306,7 +306,7 @@
     _mm_dp116_ps (__m128 a, __m128 b) {
         static const __m128 imask = _mm_set_ps(0x0, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF);
         static const __m128 omask = _mm_set_ps(0x0, 0xFFFFFFFF, 0x0, 0x0);
-        a = _mm_and_ps( a, imask )
+        a = _mm_and_ps( a, imask );
         a = _mm_mul_ps( a, b );
         a = _mm_hadd_ps( a, a ); // Horizontally add the 4 values
         a = _mm_hadd_ps( a, a ); // Horizontally add the 4 values
