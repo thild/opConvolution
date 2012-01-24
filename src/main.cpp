@@ -92,8 +92,8 @@ void run2DTest(void (*convolutionFunction)(const int imageStride, const int imag
             vector<double> iter;
             for (int i = 0; i < iterations; i++) {
                 clearCache();
-                prepareTestBuffers(imageStride, imageHeight, 
-                                   inputImage, outputImage);
+//                prepareTestBuffers(imageStride, imageHeight, 
+//                                   inputImage, outputImage);
                 
                 m_StopWatch.StartNew();    
                 convolutionFunction(imageStride, imageWidth, imageHeight, 
@@ -138,8 +138,8 @@ void runSSETest(const string testName, const int iterations, vector<int>& kernel
             vector<double> iter;
             for (int i = 0; i < iterations; i++) {
                 clearCache();
-                prepareTestBuffers(imageStride, imageHeight, 
-                                   inputImage, outputImage);
+//                prepareTestBuffers(imageStride, imageHeight, 
+//                                   inputImage, outputImage);
                 
                 if(testName == "sse3Convolve"){
                     m_StopWatch.StartNew();    
@@ -255,8 +255,8 @@ void runLoopBlockConvolveTest(const string testName, const int iterations, vecto
             vector<double> iter;
             for (int i = 0; i < iterations; i++) {
                 clearCache();
-                prepareTestBuffers(imageStride, imageHeight, 
-                                   inputImage, outputImage);                
+//                prepareTestBuffers(imageStride, imageHeight, 
+//                                   inputImage, outputImage);                
                 if(testName == "loopBlock128x128Convolve") {
                     m_StopWatch.StartNew();    
                     loopBlockConvolve (imageStride, imageWidth, imageHeight, 
@@ -331,8 +331,8 @@ void runScTest(const string testName, const int iterations, vector<int>& kernels
             vector<double> iter;
             for (int i = 0; i < iterations; i++) {
                 clearCache();
-                prepareTestBuffers(imageStride, imageHeight, 
-                                   inputImage, outputImage);                
+//                prepareTestBuffers(imageStride, imageHeight, 
+//                                   inputImage, outputImage);                
                 if(testName == "separableConvolve"){
                     m_StopWatch.StartNew();    
                     separableConvolve (imageStride, imageWidth, imageHeight, 
@@ -1285,6 +1285,9 @@ int main (int argc, char *argv[])
         int kernelWidth = 0;
         int kernelStride = 0;
         float* kernel;
+         
+        prepareTestBuffers(imageStride, imageHeight, 
+                           inputImage, outputImage);                
          
         if(find(algs.begin(), algs.end(), "naiveConvolveTest") != algs.end())
             naiveConvolveTest (iterations, kernels, imageWidth, imageHeight, 
