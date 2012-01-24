@@ -235,42 +235,42 @@
 #else 
     extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
     _mm_dp241_ps (__m128 a, __m128 b) {
-        static const __m128 mask = _mm_set_ps(0x0, 0x0, 0x0, 0xFFFFFFFF);
+        static const __m128 omask = _mm_set_ps(0x0, 0x0, 0x0, 0xFFFFFFFF);
         a = _mm_mul_ps( a, b );
         a = _mm_hadd_ps( a, a ); // Horizontally add the 4 values
         a = _mm_hadd_ps( a, a ); // Horizontally add the 4 values
-        return _mm_and_ps( a, mask );// Clear output using low bits of the mask
+        return _mm_and_ps( a, omask );// Clear output using low bits of the mask
     }
     
     extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
     _mm_dp242_ps (__m128 a, __m128 b) {
-        static const __m128 mask = _mm_set_ps(0x0, 0x0, 0xFFFFFFFF, 0x0);
+        static const __m128 omask = _mm_set_ps(0x0, 0x0, 0xFFFFFFFF, 0x0);
         a = _mm_mul_ps( a, b );
         a = _mm_hadd_ps( a, a ); // Horizontally add the 4 values
         a = _mm_hadd_ps( a, a ); // Horizontally add the 4 values
-        return _mm_and_ps( a, mask );// Clear output using low bits of the mask
+        return _mm_and_ps( a, omask );// Clear output using low bits of the mask
     }
     extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
     _mm_dp244_ps (__m128 a, __m128 b) {
-        static const __m128 mask = _mm_set_ps(0x0, 0xFFFFFFFF, 0x0, 0x0);
+        static const __m128 omask = _mm_set_ps(0x0, 0xFFFFFFFF, 0x0, 0x0);
         a = _mm_mul_ps( a, b );
         a = _mm_hadd_ps( a, a ); // Horizontally add the 4 values
         a = _mm_hadd_ps( a, a ); // Horizontally add the 4 values
-        return _mm_and_ps( a, mask );// Clear output using low bits of the mask
+        return _mm_and_ps( a, omask );// Clear output using low bits of the mask
     }
     extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
     _mm_dp248_ps (__m128 a, __m128 b) {
-        static const __m128 mask = _mm_set_ps(0xFFFFFFFF, 0x0, 0x0, 0x0);
+        static const __m128 omask = _mm_set_ps(0xFFFFFFFF, 0x0, 0x0, 0x0);
         a = _mm_mul_ps( a, b );
         a = _mm_hadd_ps( a, a ); // Horizontally add the 4 values
         a = _mm_hadd_ps( a, a ); // Horizontally add the 4 values
-        return _mm_and_ps( a, mask );// Clear output using low bits of the mask
+        return _mm_and_ps( a, omask );// Clear output using low bits of the mask
     }
     extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
     _mm_dp17_ps (__m128 a, __m128 b) {
-        static const __m128 mask = _mm_set_ps(0x0, 0x0, 0x0, 0xFFFFFFFF);
+        static const __m128 omask = _mm_set_ps(0x0, 0x0, 0x0, 0xFFFFFFFF);
         a = _mm_mul_ps( a, b );
-        return _mm_and_ps( a, mask );// Clear output using low bits of the mask
+        return _mm_and_ps( a, omask );// Clear output using low bits of the mask
     }
     extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
     _mm_dp226_ps (__m128 a, __m128 b) {
@@ -280,7 +280,7 @@
         a = _mm_mul_ps( a, b );
         a = _mm_hadd_ps( a, a ); // Horizontally add the 4 values
         a = _mm_hadd_ps( a, a ); // Horizontally add the 4 values
-        return _mm_and_ps( a, mask );// Clear output using low bits of the mask
+        return _mm_and_ps( a, omask );// Clear output using low bits of the mask
     }
     extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
     _mm_dp50_ps (__m128 a, __m128 b) {
@@ -290,7 +290,7 @@
         a = _mm_mul_ps( a, b );
         a = _mm_hadd_ps( a, a ); // Horizontally add the 4 values
         a = _mm_hadd_ps( a, a ); // Horizontally add the 4 values
-        return _mm_and_ps( a, mask );// Clear output using low bits of the mask
+        return _mm_and_ps( a, omask );// Clear output using low bits of the mask
     }
     extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
     _mm_dp196_ps (__m128 a, __m128 b) {
@@ -300,7 +300,7 @@
         a = _mm_mul_ps( a, b );
         a = _mm_hadd_ps( a, a ); // Horizontally add the 4 values
         a = _mm_hadd_ps( a, a ); // Horizontally add the 4 values
-        return _mm_and_ps( a, mask );// Clear output using low bits of the mask
+        return _mm_and_ps( a, omask );// Clear output using low bits of the mask
     }
     extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
     _mm_dp116_ps (__m128 a, __m128 b) {
@@ -310,7 +310,7 @@
         a = _mm_mul_ps( a, b );
         a = _mm_hadd_ps( a, a ); // Horizontally add the 4 values
         a = _mm_hadd_ps( a, a ); // Horizontally add the 4 values
-        return _mm_and_ps( a, mask );// Clear output using low bits of the mask
+        return _mm_and_ps( a, omask );// Clear output using low bits of the mask
     }
     extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
     _mm_dp136_ps (__m128 a, __m128 b) {
