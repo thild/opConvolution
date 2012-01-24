@@ -396,7 +396,7 @@
         a = _mm_and_ps( a, imask );
         a = _mm_mul_ps( a, b );
         a = _mm_hadd_ps( a, a ); // Horizontally add the 4 values
-        a = _mm_hadd_ps( a, a ); // Horizontally add the 4 values
+        ROTATE_LEFT(a);
         return _mm_and_ps( a, omask );// Clear output using low bits of the mask
     }
     extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
@@ -406,7 +406,7 @@
         a = _mm_and_ps( a, imask );
         a = _mm_mul_ps( a, b );
         a = _mm_hadd_ps( a, a ); // Horizontally add the 4 values
-        a = _mm_hadd_ps( a, a ); // Horizontally add the 4 values
+        ROTATE_RIGHT(a); 
         return _mm_and_ps( a, omask );// Clear output using low bits of the mask
     }
     extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
@@ -461,8 +461,7 @@
         static const __m128 omask = _mm_castsi128_ps(_mm_set_epi32(0x0, 0x0, 0xFFFFFFFF, 0x0));
         a = _mm_and_ps( a, imask );
         a = _mm_mul_ps( a, b );
-        a = _mm_hadd_ps( a, a ); // Horizontally add the 4 values
-        a = _mm_hadd_ps( a, a ); // Horizontally add the 4 values
+        ROTATE_LEFT(a);
         return _mm_and_ps( a, omask );// Clear output using low bits of the mask
     }
     extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
@@ -471,8 +470,7 @@
         static const __m128 omask = _mm_castsi128_ps(_mm_set_epi32(0x0, 0xFFFFFFFF, 0x0, 0x0));
         a = _mm_and_ps( a, imask );
         a = _mm_mul_ps( a, b );
-        a = _mm_hadd_ps( a, a ); // Horizontally add the 4 values
-        a = _mm_hadd_ps( a, a ); // Horizontally add the 4 values
+        a = _mm_shuffle_ps(a, a, _MM_SHUFFLE(0,0,0,0));
         return _mm_and_ps( a, omask );// Clear output using low bits of the mask
     }
     extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
@@ -481,8 +479,7 @@
         static const __m128 omask = _mm_castsi128_ps(_mm_set_epi32(0xFFFFFFFF, 0x0, 0x0, 0x0));
         a = _mm_and_ps( a, imask );
         a = _mm_mul_ps( a, b );
-        a = _mm_hadd_ps( a, a ); // Horizontally add the 4 values
-        a = _mm_hadd_ps( a, a ); // Horizontally add the 4 values
+        ROTATE_RIGHT(a);
         return _mm_and_ps( a, omask );// Clear output using low bits of the mask
     }
     extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
@@ -492,7 +489,7 @@
         a = _mm_and_ps( a, imask );
         a = _mm_mul_ps( a, b );
         a = _mm_hadd_ps( a, a ); // Horizontally add the 4 values
-        a = _mm_hadd_ps( a, a ); // Horizontally add the 4 values
+        ROTATE_RIGHT(a);
         return _mm_and_ps( a, omask );// Clear output using low bits of the mask
     }
 #endif
