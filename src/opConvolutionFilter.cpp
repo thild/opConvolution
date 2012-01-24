@@ -105,7 +105,7 @@ void opConvolve (const int s, const int w, const int h,
                           input, output, kernel);
             break;
         default:
-            sseConvolve (s, w, h, ks, kw, 
+            sseNoReuse4Convolve (s, w, h, ks, kw, 
                          input, output, kernel);
             break;
     }            
