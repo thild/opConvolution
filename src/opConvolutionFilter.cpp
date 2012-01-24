@@ -128,35 +128,38 @@ void opSeparableConvolve (const int s, const int w, const int h, const int kw,
                            input, output, kernelX, kernelY, true);  
         return;
      
-    }                
-                  
-    switch (kw) {
-        case 3:
-            sc3SSE (s, w, h,
-                    input, output, 
-                    kernelX, kernelY);
-            break;
-        case 5:
-            sc5SSE (s, w, h,
-                    input, output, 
-                    kernelX, kernelY);
-            break;
-        case 7:
-            sc7SSE (s, w, h,
-                    input, output, 
-                    kernelX, kernelY);
-            break;
-        case 9:
-            sc9SSE (s, w, h,
-                    input, output, 
-                    kernelX, kernelY);
-            break;
-        default:
-            scSSE (s, w, h, kw,
-                    input, output, 
-                    kernelX, kernelY);
-            break;
-    }                                             
+    }
+        separableConvolve (s, w, h, kw, 
+                           input, output, kernelX, kernelY, true);  
+                    
+//                  
+//    switch (kw) {
+//        case 3:
+//            sc3SSE (s, w, h,
+//                    input, output, 
+//                    kernelX, kernelY);
+//            break;
+//        case 5:
+//            sc5SSE (s, w, h,
+//                    input, output, 
+//                    kernelX, kernelY);
+//            break;
+//        case 7:
+//            sc7SSE (s, w, h,
+//                    input, output, 
+//                    kernelX, kernelY);
+//            break;
+//        case 9:
+//            sc9SSE (s, w, h,
+//                    input, output, 
+//                    kernelX, kernelY);
+//            break;
+//        default:
+//            scSSE (s, w, h, kw,
+//                    input, output, 
+//                    kernelX, kernelY);
+//            break;
+//    }                                             
 }
  
 
