@@ -3729,26 +3729,26 @@ void scSSE (const int s, const int w, const int h, int kw,
                 BLEND_ROTATE4_LEFT(iv0, iv1, iv2, iv3, iv4);
 
                 PRINT_LABEL("sum1"); 
-                sum0 += _mm_dp_ps(kvx, iv0, 242);    PRINT_VECTOR(sum0);
-                sum1 += _mm_dp_ps(kvx, iv1, 242);    PRINT_VECTOR(sum1);
-                sum2 += _mm_dp_ps(kvx, iv2, 242);    PRINT_VECTOR(sum2);
-                sum3 += _mm_dp_ps(kvx, iv3, 242);    PRINT_VECTOR(sum3);
+                sum0 += _mm_dp242_ps(kvx, iv0);    PRINT_VECTOR(sum0);
+                sum1 += _mm_dp242_ps(kvx, iv1);    PRINT_VECTOR(sum1);
+                sum2 += _mm_dp242_ps(kvx, iv2);    PRINT_VECTOR(sum2);
+                sum3 += _mm_dp242_ps(kvx, iv3);    PRINT_VECTOR(sum3);
                 
                 BLEND_ROTATE4_LEFT(iv0, iv1, iv2, iv3, iv4);
 
                 PRINT_LABEL("sum2"); 
-                sum0 += _mm_dp_ps(kvx, iv0, 244);    PRINT_VECTOR(sum0);
-                sum1 += _mm_dp_ps(kvx, iv1, 244);    PRINT_VECTOR(sum1);
-                sum2 += _mm_dp_ps(kvx, iv2, 244);    PRINT_VECTOR(sum2);
-                sum3 += _mm_dp_ps(kvx, iv3, 244);    PRINT_VECTOR(sum3);
+                sum0 += _mm_dp244_ps(kvx, iv0);    PRINT_VECTOR(sum0);
+                sum1 += _mm_dp244_ps(kvx, iv1);    PRINT_VECTOR(sum1);
+                sum2 += _mm_dp244_ps(kvx, iv2);    PRINT_VECTOR(sum2);
+                sum3 += _mm_dp244_ps(kvx, iv3);    PRINT_VECTOR(sum3);
                 
                 BLEND_ROTATE4_LEFT(iv0, iv1, iv2, iv3, iv4);
 
                 PRINT_LABEL("sum3"); 
-                sum0 += _mm_dp_ps(kvx, iv0, 248);    PRINT_VECTOR(sum0);
-                sum1 += _mm_dp_ps(kvx, iv1, 248);    PRINT_VECTOR(sum1);
-                sum2 += _mm_dp_ps(kvx, iv2, 248);    PRINT_VECTOR(sum2);
-                sum3 += _mm_dp_ps(kvx, iv3, 248);    PRINT_VECTOR(sum3);
+                sum0 += _mm_dp248_ps(kvx, iv0);    PRINT_VECTOR(sum0);
+                sum1 += _mm_dp248_ps(kvx, iv1);    PRINT_VECTOR(sum1);
+                sum2 += _mm_dp248_ps(kvx, iv2);    PRINT_VECTOR(sum2);
+                sum3 += _mm_dp248_ps(kvx, iv3);    PRINT_VECTOR(sum3);
                 
                 BLEND_ROTATE4_LEFT(iv0, iv1, iv2, iv3, iv4);
                 

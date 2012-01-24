@@ -191,22 +191,58 @@
     #error "nope"  
 #endif  
 
-//#ifdef __SSE4_1__ 
-//    extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
-//    _mm_dp241_ps (__m128 a, __m128 b) {
-//        return _mm_dp_ps(a, b, 241);      
-//    }
-//#else 
+#ifdef __SSE4_1__ 
     extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
     _mm_dp241_ps (__m128 a, __m128 b) {
-//        static const __m128 mask = _mm_castsi128_ps(_mm_set1_epi32(0x80000000));
+        return _mm_dp_ps(a, b, 241);      
+    }
+    extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+    _mm_dp242_ps (__m128 a, __m128 b) {
+        return _mm_dp_ps(a, b, 242);      
+    }
+    extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+    _mm_dp244_ps (__m128 a, __m128 b) {
+        return _mm_dp_ps(a, b, 244);      
+    }
+    extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+    _mm_dp248_ps (__m128 a, __m128 b) {
+        return _mm_dp_ps(a, b, 248);      
+    }
+#else 
+    extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+    _mm_dp241_ps (__m128 a, __m128 b) {
         static const __m128 mask = _mm_set_ps(0x0, 0x0, 0x0, 0xFFFFFFFF);
         a = _mm_mul_ps( a, b );
         a = _mm_hadd_ps( a, a ); // Horizontally add the 4 values
         a = _mm_hadd_ps( a, a ); // Horizontally add the 4 values
         return _mm_and_ps( a, mask );// Clear output using low bits of the mask
     }
-//#endif
+    
+    extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+    _mm_dp242_ps (__m128 a, __m128 b) {
+        static const __m128 mask = _mm_set_ps(0x0, 0x0, 0xFFFFFFFF, 0x0);
+        a = _mm_mul_ps( a, b );
+        a = _mm_hadd_ps( a, a ); // Horizontally add the 4 values
+        a = _mm_hadd_ps( a, a ); // Horizontally add the 4 values
+        return _mm_and_ps( a, mask );// Clear output using low bits of the mask
+    }
+    extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+    _mm_dp244_ps (__m128 a, __m128 b) {
+        static const __m128 mask = _mm_set_ps(0x0, 0xFFFFFFFF, 0x0, 0x0);
+        a = _mm_mul_ps( a, b );
+        a = _mm_hadd_ps( a, a ); // Horizontally add the 4 values
+        a = _mm_hadd_ps( a, a ); // Horizontally add the 4 values
+        return _mm_and_ps( a, mask );// Clear output using low bits of the mask
+    }
+    extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+    _mm_dp248_ps (__m128 a, __m128 b) {
+        static const __m128 mask = _mm_set_ps(0xFFFFFFFF, 0x0, 0x0, 0x0);
+        a = _mm_mul_ps( a, b );
+        a = _mm_hadd_ps( a, a ); // Horizontally add the 4 values
+        a = _mm_hadd_ps( a, a ); // Horizontally add the 4 values
+        return _mm_and_ps( a, mask );// Clear output using low bits of the mask
+    }
+#endif
     
 #ifndef __SSE4_1__ 
   
