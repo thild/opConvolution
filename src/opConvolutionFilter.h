@@ -191,6 +191,79 @@
     #error "nope"  
 #endif  
 
+#ifndef __SSE4_1__ 
+  
+    typedef union 
+    {
+        __m128  f;
+        __m128i i;
+    } ssp_m128;
+    
+    extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+    _mm_dp_ps (__m128 a, __m128 b, const int mask) {
+        //http://sseplus.sourceforge.net/group__emulated___s_s_e3.html
+        // Shift mask multiply moves 0,1,2,3 bits to left, becomes MSB
+        const static __m128i mulShiftImm_0123 = _mm_set_epi32( 0x010000, 0x020000, 
+                                                               0x040000, 0x080000 );  
+        // Shift mask multiply moves 4,5,6,7 bits to left, becomes MSB 
+        const static __m128i mulShiftImm_4567 = _mm_set_epi32( 0x100000, 0x200000, 
+                                                               0x400000, 0x800000 );  
+        
+        // Begin mask preparation
+        ssp_m128 mHi, mLo;
+        mLo.i = _mm_set1_epi32( mask ); // Load the mask into register
+        mLo.i = _mm_slli_si128( mLo.i, 3 );// Shift into reach of the 16 bit multiply
+        
+        mHi.i = _mm_mullo_epi16( mLo.i, mulShiftImm_0123 );  // Shift the bits
+        mLo.i = _mm_mullo_epi16( mLo.i, mulShiftImm_4567 );  // Shift the bits
+        
+        // FFFFFFFF if bit set, 00000000 if not set
+        mHi.i = _mm_cmplt_epi32( mHi.i, _mm_setzero_si128() );    
+        // FFFFFFFF if bit set, 00000000 if not set
+        mLo.i = _mm_cmplt_epi32( mLo.i, _mm_setzero_si128() );    
+        // End mask preparation - Mask bits 0-3 in mLo, 4-7 in mHi
+        a = _mm_and_ps( a, mHi.f ); // Clear input using the high bits of the mask
+        a = _mm_mul_ps( a, b );
+        a = _mm_hadd_ps( a, a ); // Horizontally add the 4 values
+        a = _mm_hadd_ps( a, a ); // Horizontally add the 4 values
+        a = _mm_and_ps( a, mLo.f );// Clear output using low bits of the mask
+        return a;   
+    }  
+
+    extern __inline __m128i 
+    __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+    ssp_movmask_imm8_to_epi32_SSE2( int mask ) {
+        __m128i screen;
+        // Shift mask multiply moves all bits to left, becomes MSB
+        const static __m128i mulShiftImm = 
+          _mm_set_epi16( 0x1000, 0x0000, 0x2000, 0x0000, 
+                         0x4000, 0x0000, 0x8000, 0x0000 ); 
+        // Load the mask into register
+        screen = _mm_set1_epi16 ( mask );   
+        // Shift bits to MSB
+        screen = _mm_mullo_epi16( screen, mulShiftImm );   
+        // Shift bits to obtain all F's or all 0's
+        screen = _mm_srai_epi32 ( screen, 31  );   
+        return screen;  
+    } 
+
+    extern __inline __m128 
+    __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+    _mm_blend_ps( __m128  a, __m128  b, const int mask )// _mm_blend_ps [SSE4.1]
+    {
+
+        ssp_m128 screen, A, B;
+        A.f = a;
+        B.f = b;
+        screen.i = ssp_movmask_imm8_to_epi32_SSE2 ( mask ); 
+        B.i = _mm_and_si128   ( B.i, screen.i);  // clear a where mask = 0
+        A.i = _mm_andnot_si128( screen.i, A.i ); // clear b where mask = 1
+        screen.i = _mm_or_si128  ( A.i, B.i );   // a = a OR b        
+        return screen.f;
+    }  
+    
+#endif  
+
 //#ifdef __SSE4_1__ 
     extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
     _mm_dp241_ps (__m128 a, __m128 b) {
@@ -418,78 +491,7 @@
 //    }
 //#endif
     
-#ifndef __SSE4_1__ 
-  
-    typedef union 
-    {
-        __m128  f;
-        __m128i i;
-    } ssp_m128;
-    
-    extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
-    _mm_dp_ps (__m128 a, __m128 b, const int mask) {
-        //http://sseplus.sourceforge.net/group__emulated___s_s_e3.html
-        // Shift mask multiply moves 0,1,2,3 bits to left, becomes MSB
-        const static __m128i mulShiftImm_0123 = _mm_set_epi32( 0x010000, 0x020000, 
-                                                               0x040000, 0x080000 );  
-        // Shift mask multiply moves 4,5,6,7 bits to left, becomes MSB 
-        const static __m128i mulShiftImm_4567 = _mm_set_epi32( 0x100000, 0x200000, 
-                                                               0x400000, 0x800000 );  
-        
-        // Begin mask preparation
-        ssp_m128 mHi, mLo;
-        mLo.i = _mm_set1_epi32( mask ); // Load the mask into register
-        mLo.i = _mm_slli_si128( mLo.i, 3 );// Shift into reach of the 16 bit multiply
-        
-        mHi.i = _mm_mullo_epi16( mLo.i, mulShiftImm_0123 );  // Shift the bits
-        mLo.i = _mm_mullo_epi16( mLo.i, mulShiftImm_4567 );  // Shift the bits
-        
-        // FFFFFFFF if bit set, 00000000 if not set
-        mHi.i = _mm_cmplt_epi32( mHi.i, _mm_setzero_si128() );    
-        // FFFFFFFF if bit set, 00000000 if not set
-        mLo.i = _mm_cmplt_epi32( mLo.i, _mm_setzero_si128() );    
-        // End mask preparation - Mask bits 0-3 in mLo, 4-7 in mHi
-        a = _mm_and_ps( a, mHi.f ); // Clear input using the high bits of the mask
-        a = _mm_mul_ps( a, b );
-        a = _mm_hadd_ps( a, a ); // Horizontally add the 4 values
-        a = _mm_hadd_ps( a, a ); // Horizontally add the 4 values
-        a = _mm_and_ps( a, mLo.f );// Clear output using low bits of the mask
-        return a;   
-    }  
 
-    extern __inline __m128i 
-    __attribute__((__gnu_inline__, __always_inline__, __artificial__))
-    ssp_movmask_imm8_to_epi32_SSE2( int mask ) {
-        __m128i screen;
-        // Shift mask multiply moves all bits to left, becomes MSB
-        const static __m128i mulShiftImm = 
-          _mm_set_epi16( 0x1000, 0x0000, 0x2000, 0x0000, 
-                         0x4000, 0x0000, 0x8000, 0x0000 ); 
-        // Load the mask into register
-        screen = _mm_set1_epi16 ( mask );   
-        // Shift bits to MSB
-        screen = _mm_mullo_epi16( screen, mulShiftImm );   
-        // Shift bits to obtain all F's or all 0's
-        screen = _mm_srai_epi32 ( screen, 31  );   
-        return screen;  
-    } 
-
-    extern __inline __m128 
-    __attribute__((__gnu_inline__, __always_inline__, __artificial__))
-    _mm_blend_ps( __m128  a, __m128  b, const int mask )// _mm_blend_ps [SSE4.1]
-    {
-
-        ssp_m128 screen, A, B;
-        A.f = a;
-        B.f = b;
-        screen.i = ssp_movmask_imm8_to_epi32_SSE2 ( mask ); 
-        B.i = _mm_and_si128   ( B.i, screen.i);  // clear a where mask = 0
-        A.i = _mm_andnot_si128( screen.i, A.i ); // clear b where mask = 1
-        screen.i = _mm_or_si128  ( A.i, B.i );   // a = a OR b        
-        return screen.f;
-    }  
-    
-#endif  
 
 void opConvolve (const int s, const int w, const int h,
                  const int ks, const int kw, 
