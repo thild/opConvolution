@@ -1257,7 +1257,9 @@ int main (int argc, char *argv[])
                                    lexical_cast<int>(simg[1])));
     }
     
+#ifdef _OPENMP     
     omp_set_num_threads(lexical_cast<int>(config["maxthreads"]));
+#endif
     
     foreach (ImageSize image, images) {
      
