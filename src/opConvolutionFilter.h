@@ -342,7 +342,7 @@
 #else 
     extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
     _mm_dp241_ps (__m128 a, __m128 b) {
-        static const __m128 omask = _mm_castsi128_ps(_mm_set_epi32(0x00000000, 0x00000000, 0x00000000, 0xFFFFFFFF));
+        __m128 omask = _mm_castsi128_ps(_mm_set_epi32(0x00000000, 0x00000000, 0x00000000, 0xFFFFFFFF));
         a = _mm_mul_ps( a, b );
         a = _mm_hadd_ps( a, a ); // Horizontally add the 4 values
         a = _mm_hadd_ps( a, a ); // Horizontally add the 4 values
@@ -351,7 +351,7 @@
     
     extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
     _mm_dp242_ps (__m128 a, __m128 b) {
-        static const __m128 omask = _mm_castsi128_ps(_mm_set_epi32(0x0, 0x0, 0xFFFFFFFF, 0x0));
+        __m128 omask = _mm_castsi128_ps(_mm_set_epi32(0x0, 0x0, 0xFFFFFFFF, 0x0));
         a = _mm_mul_ps( a, b );
         a = _mm_hadd_ps( a, a ); // Horizontally add the 4 values
         a = _mm_hadd_ps( a, a ); // Horizontally add the 4 values
@@ -359,7 +359,7 @@
     }
     extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
     _mm_dp244_ps (__m128 a, __m128 b) {
-        static const __m128 omask = _mm_castsi128_ps(_mm_set_epi32(0x0, 0xFFFFFFFF, 0x0, 0x0));
+        __m128 omask = _mm_castsi128_ps(_mm_set_epi32(0x0, 0xFFFFFFFF, 0x0, 0x0));
         a = _mm_mul_ps( a, b );
         a = _mm_hadd_ps( a, a ); // Horizontally add the 4 values
         a = _mm_hadd_ps( a, a ); // Horizontally add the 4 values
@@ -367,7 +367,7 @@
     }
     extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
     _mm_dp248_ps (__m128 a, __m128 b) {
-        static const __m128 omask = _mm_castsi128_ps(_mm_set_epi32(0xFFFFFFFF, 0x0, 0x0, 0x0));
+        __m128 omask = _mm_castsi128_ps(_mm_set_epi32(0xFFFFFFFF, 0x0, 0x0, 0x0));
         a = _mm_mul_ps( a, b );
         a = _mm_hadd_ps( a, a ); // Horizontally add the 4 values
         a = _mm_hadd_ps( a, a ); // Horizontally add the 4 values
@@ -375,14 +375,14 @@
     }
     extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
     _mm_dp17_ps (__m128 a, __m128 b) {
-        static const __m128 omask = _mm_castsi128_ps(_mm_set_epi32(0x0, 0x0, 0x0, 0xFFFFFFFF));
+        __m128 omask = _mm_castsi128_ps(_mm_set_epi32(0x0, 0x0, 0x0, 0xFFFFFFFF));
         a = _mm_mul_ps( a, b );
         return _mm_and_ps( a, omask );// Clear output using low bits of the mask
     }
     extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
     _mm_dp226_ps (__m128 a, __m128 b) {
-        static const __m128 imask = _mm_castsi128_ps(_mm_set_epi32(0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0x0));
-        static const __m128 omask = _mm_castsi128_ps(_mm_set_epi32(0x0, 0x0, 0xFFFFFFFF, 0x0));
+        __m128 imask = _mm_castsi128_ps(_mm_set_epi32(0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0x0));
+        __m128 omask = _mm_castsi128_ps(_mm_set_epi32(0x0, 0x0, 0xFFFFFFFF, 0x0));
         a = _mm_and_ps( a, imask );
         a = _mm_mul_ps( a, b );
         a = _mm_hadd_ps( a, a ); // Horizontally add the 4 values
@@ -391,8 +391,8 @@
     }
     extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
     _mm_dp50_ps (__m128 a, __m128 b) {
-        static const __m128 imask = _mm_castsi128_ps(_mm_set_epi32(0x0, 0x0, 0xFFFFFFFF, 0xFFFFFFFF));
-        static const __m128 omask = _mm_castsi128_ps(_mm_set_epi32(0x0, 0x0, 0xFFFFFFFF, 0x0));
+        __m128 imask = _mm_castsi128_ps(_mm_set_epi32(0x0, 0x0, 0xFFFFFFFF, 0xFFFFFFFF));
+        __m128 omask = _mm_castsi128_ps(_mm_set_epi32(0x0, 0x0, 0xFFFFFFFF, 0x0));
         a = _mm_and_ps( a, imask );
         a = _mm_mul_ps( a, b );
         a = _mm_hadd_ps( a, a ); // Horizontally add the 4 values
@@ -401,8 +401,8 @@
     }
     extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
     _mm_dp196_ps (__m128 a, __m128 b) {
-        static const __m128 imask = _mm_castsi128_ps(_mm_set_epi32(0xFFFFFFFF, 0xFFFFFFFF, 0x0, 0x0));
-        static const __m128 omask = _mm_castsi128_ps(_mm_set_epi32(0x0, 0xFFFFFFFF, 0x0, 0x0));
+        __m128 imask = _mm_castsi128_ps(_mm_set_epi32(0xFFFFFFFF, 0xFFFFFFFF, 0x0, 0x0));
+        __m128 omask = _mm_castsi128_ps(_mm_set_epi32(0x0, 0xFFFFFFFF, 0x0, 0x0));
         a = _mm_and_ps( a, imask );
         a = _mm_mul_ps( a, b );
         a = _mm_hadd_ps( a, a ); // Horizontally add the 4 values
@@ -411,8 +411,8 @@
     }
     extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
     _mm_dp116_ps (__m128 a, __m128 b) {
-        static const __m128 imask = _mm_castsi128_ps(_mm_set_epi32(0x0, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF));
-        static const __m128 omask = _mm_castsi128_ps(_mm_set_epi32(0x0, 0xFFFFFFFF, 0x0, 0x0));
+        __m128 imask = _mm_castsi128_ps(_mm_set_epi32(0x0, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF));
+        __m128 omask = _mm_castsi128_ps(_mm_set_epi32(0x0, 0xFFFFFFFF, 0x0, 0x0));
         a = _mm_and_ps( a, imask );
         a = _mm_mul_ps( a, b );
         a = _mm_hadd_ps( a, a ); // Horizontally add the 4 values
@@ -421,14 +421,14 @@
     }
     extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
     _mm_dp136_ps (__m128 a, __m128 b) {
-        static const __m128 omask = _mm_castsi128_ps(_mm_set_epi32(0xFFFFFFFF, 0x0, 0x0, 0x0));
+        __m128 omask = _mm_castsi128_ps(_mm_set_epi32(0xFFFFFFFF, 0x0, 0x0, 0x0));
         a = _mm_mul_ps( a, b );
         return _mm_and_ps( a, omask );// Clear output using low bits of the mask
     }
     extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
     _mm_dp120_ps (__m128 a, __m128 b) {
-        static const __m128 imask = _mm_castsi128_ps(_mm_set_epi32(0x0, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF));
-        static const __m128 omask = _mm_castsi128_ps(_mm_set_epi32(0xFFFFFFFF, 0x0, 0x0, 0x0));
+        __m128 imask = _mm_castsi128_ps(_mm_set_epi32(0x0, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF));
+        __m128 omask = _mm_castsi128_ps(_mm_set_epi32(0xFFFFFFFF, 0x0, 0x0, 0x0));
         a = _mm_and_ps( a, imask );
         a = _mm_mul_ps( a, b );
         a = _mm_hadd_ps( a, a ); // Horizontally add the 4 values
@@ -437,8 +437,8 @@
     }
     extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
     _mm_dp114_ps (__m128 a, __m128 b) {
-        static const __m128 imask = _mm_castsi128_ps(_mm_set_epi32(0x0, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF));
-        static const __m128 omask = _mm_castsi128_ps(_mm_set_epi32(0x0, 0x0, 0xFFFFFFFF, 0x0));
+        __m128 imask = _mm_castsi128_ps(_mm_set_epi32(0x0, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF));
+        __m128 omask = _mm_castsi128_ps(_mm_set_epi32(0x0, 0x0, 0xFFFFFFFF, 0x0));
         a = _mm_and_ps( a, imask );
         a = _mm_mul_ps( a, b );
         a = _mm_hadd_ps( a, a ); // Horizontally add the 4 values
@@ -447,8 +447,8 @@
     }
     extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
     _mm_dp113_ps (__m128 a, __m128 b) {
-        static const __m128 imask = _mm_castsi128_ps(_mm_set_epi32(0x0, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF));
-        static const __m128 omask = _mm_castsi128_ps(_mm_set_epi32(0x0, 0x0, 0x0, 0xFFFFFFFF));
+        __m128 imask = _mm_castsi128_ps(_mm_set_epi32(0x0, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF));
+        __m128 omask = _mm_castsi128_ps(_mm_set_epi32(0x0, 0x0, 0x0, 0xFFFFFFFF));
         a = _mm_and_ps( a, imask );
         a = _mm_mul_ps( a, b );
         a = _mm_hadd_ps( a, a ); // Horizontally add the 4 values
@@ -457,8 +457,8 @@
     }
     extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
     _mm_dp18_ps (__m128 a, __m128 b) {
-        static const __m128 imask = _mm_castsi128_ps(_mm_set_epi32(0x0, 0x0, 0x0, 0xFFFFFFFF));
-        static const __m128 omask = _mm_castsi128_ps(_mm_set_epi32(0x0, 0x0, 0xFFFFFFFF, 0x0));
+        __m128 imask = _mm_castsi128_ps(_mm_set_epi32(0x0, 0x0, 0x0, 0xFFFFFFFF));
+        __m128 omask = _mm_castsi128_ps(_mm_set_epi32(0x0, 0x0, 0xFFFFFFFF, 0x0));
         a = _mm_and_ps( a, imask );
         a = _mm_mul_ps( a, b );
         ROTATE_LEFT(a);
@@ -466,8 +466,8 @@
     }
     extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
     _mm_dp20_ps (__m128 a, __m128 b) {
-        static const __m128 imask = _mm_castsi128_ps(_mm_set_epi32(0x0, 0x0, 0x0, 0xFFFFFFFF));
-        static const __m128 omask = _mm_castsi128_ps(_mm_set_epi32(0x0, 0xFFFFFFFF, 0x0, 0x0));
+        __m128 imask = _mm_castsi128_ps(_mm_set_epi32(0x0, 0x0, 0x0, 0xFFFFFFFF));
+        __m128 omask = _mm_castsi128_ps(_mm_set_epi32(0x0, 0xFFFFFFFF, 0x0, 0x0));
         a = _mm_and_ps( a, imask );
         a = _mm_mul_ps( a, b );
         a = _mm_shuffle_ps(a, a, _MM_SHUFFLE(0,0,0,0));
@@ -475,8 +475,8 @@
     }
     extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
     _mm_dp24_ps (__m128 a, __m128 b) {
-        static const __m128 imask = _mm_castsi128_ps(_mm_set_epi32(0x0, 0x0, 0x0, 0xFFFFFFFF));
-        static const __m128 omask = _mm_castsi128_ps(_mm_set_epi32(0xFFFFFFFF, 0x0, 0x0, 0x0));
+        __m128 imask = _mm_castsi128_ps(_mm_set_epi32(0x0, 0x0, 0x0, 0xFFFFFFFF));
+        __m128 omask = _mm_castsi128_ps(_mm_set_epi32(0xFFFFFFFF, 0x0, 0x0, 0x0));
         a = _mm_and_ps( a, imask );
         a = _mm_mul_ps( a, b );
         ROTATE_RIGHT(a);
@@ -484,8 +484,8 @@
     }
     extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
     _mm_dp56_ps (__m128 a, __m128 b) {
-        static const __m128 imask = _mm_castsi128_ps(_mm_set_epi32(0x0, 0x0, 0xFFFFFFFF, 0xFFFFFFFF));
-        static const __m128 omask = _mm_castsi128_ps(_mm_set_epi32(0xFFFFFFFF, 0x0, 0x0, 0x0));
+        __m128 imask = _mm_castsi128_ps(_mm_set_epi32(0x0, 0x0, 0xFFFFFFFF, 0xFFFFFFFF));
+        __m128 omask = _mm_castsi128_ps(_mm_set_epi32(0xFFFFFFFF, 0x0, 0x0, 0x0));
         a = _mm_and_ps( a, imask );
         a = _mm_mul_ps( a, b );
         a = _mm_hadd_ps( a, a ); // Horizontally add the 4 values

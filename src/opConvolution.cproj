@@ -46,9 +46,9 @@
     <ExtraCompilerArguments>-fopenmp -O3 
 -msse -msse2 -msse3 -msse4 -msse4.1 -msse4.2
 -mfpmath=sse
--march=core2
+-march=native
 -ffast-math
--mtune=core2
+-mtune=native
 -ftree-vectorize
 -fabi-version=5</ExtraCompilerArguments>
     <ExtraLinkerArguments>-lgomp
