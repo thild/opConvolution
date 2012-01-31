@@ -1916,7 +1916,7 @@ void sse3CmConvolve (const int s, const int w, const int h, const int ks,
                        ks, kw, 
                        input, output, kernel);    
     
-//}
+}
 //
 ////no image vector reuse
 //void sse3ConvolveTest (const int s, const int w, const int h, 
