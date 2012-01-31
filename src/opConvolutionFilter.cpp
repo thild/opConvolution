@@ -89,23 +89,23 @@ void opConvolve (const int s, const int w, const int h,
 #else
     switch (kw) {
         case 3:
-            sseNoReuse4Convolve (s, w, h, ks,  kw, 
+            sse3Convolve (s, w, h, ks, 
                           input, output, kernel);
             break;
         case 5:
-            sseNoReuse4Convolve (s, w, h, ks, kw,
-                                 input, output, kernel);
+            sse5Convolve (s, w, h, ks, 
+                          input, output, kernel);
             break;
         case 7:
-            sseNoReuse4Convolve (s, w, h, ks, kw,
+            sseNoReuse3Convolve (s, w, h, ks, kw,
                           input, output, kernel);
             break;
         case 9:
-            sseNoReuse4Convolve (s, w, h, ks, kw,
+            sseNoReuse3Convolve (s, w, h, ks, kw,
                           input, output, kernel);
             break;
         default:
-            sseNoReuse4Convolve (s, w, h, ks, kw, 
+            sseNoReuse3Convolve (s, w, h, ks, kw, 
                          input, output, kernel);
             break;
     }            
