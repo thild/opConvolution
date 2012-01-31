@@ -1916,189 +1916,189 @@ void sse3CmConvolve (const int s, const int w, const int h, const int ks,
                        ks, kw, 
                        input, output, kernel);    
     
-}
-
-//no image vector reuse
-void sse3ConvolveTest (const int s, const int w, const int h, 
-                   const int ks, 
-                   const float* __restrict input, float* __restrict output, 
-                   const float* __restrict kernel) {
-
-    int kw = 3;
-    int hk = kw / 2;
-    int startX  = 0;
-    int stopX   = w - hk * 2;
-    int startY  = 0;
-    int stopY   = h - hk * 2;
-                         
-    #pragma omp parallel for shared (input, output)
-    for (int y = startY; y < stopY; ++y) {
-        const register __m128 kv0 = _mm_load_ps(&kernel[0]); PRINT_VECTOR(kv0); //{1,2,3,0}
-        const register __m128 kv1 = _mm_load_ps(&kernel[ks]); PRINT_VECTOR(kv1); //{4,5,6,0}
-        const register __m128 kv2 = _mm_load_ps(&kernel[ks + ks]); PRINT_VECTOR(kv2); //{7,8,9,0}
-        int yIdx = y * s; 
-
-        // line 0
-        register __m128 iv0, iv1, iv2, iv3, iv4; 
-        
-//        iv0 = _mm_load_ps(&input[yIdx]);               PRINT_VECTOR(iv0);
-//        iv1 = _mm_load_ps(&input[yIdx + 4]);           PRINT_VECTOR(iv1);
-//        iv2 = _mm_load_ps(&input[yIdx + 8]);           PRINT_VECTOR(iv2);
-//        iv3 = _mm_load_ps(&input[yIdx + 12]);          PRINT_VECTOR(iv3);
-         
-        for (int x = startX; x < stopX; x += 16) { 
-            register __m128 sum0, sum1, sum2, sum3; 
-            register __m128 tmp0, tmp1, tmp2; 
-            //sum0 = sum1 = sum2 = sum3 = _mm_setzero_ps();  
-            
-            int xIdx = yIdx + x;   
-            
-            iv0 = _mm_load_ps(&input[xIdx]);               PRINT_VECTOR(iv0);
-            iv1 = _mm_load_ps(&input[xIdx + 4]);           PRINT_VECTOR(iv1);
-            iv2 = _mm_load_ps(&input[xIdx + 8]);           PRINT_VECTOR(iv2);
-            iv3 = _mm_load_ps(&input[xIdx + 12]);          PRINT_VECTOR(iv3);
-            iv4 = _mm_load_ps(&input[xIdx + 16]);          PRINT_VECTOR(iv4);
-        
-            PRINT_LABEL("sum0"); 
-            tmp0 = _mm_mul_ps(kv0, iv0);
-            tmp1 = _mm_mul_ps(kv1, iv1);
-            tmp2 = _mm_mul_ps(kv2, iv2);
-            tmp0 = _mm_add_ps(tmp0, tmp1);
-            tmp0 = _mm_add_ps(tmp0, tmp2);
-            sum0 = _mm_hadd_ps(tmp0, tmp0)
-            sum0 = _mm_hadd_ps(sum0, sum0)
-            
-            
-            sum0 = _mm_dp113_ps(kv0, iv0);    PRINT_VECTOR(sum0); 
-            sum1 = _mm_dp113_ps(kv0, iv1);    PRINT_VECTOR(sum1);
-            sum2 = _mm_dp113_ps(kv0, iv2);    PRINT_VECTOR(sum2);
-            sum3 = _mm_dp113_ps(kv0, iv3);    PRINT_VECTOR(sum3);
-             
-            BLEND_ROTATE4_LEFT(iv0, iv1, iv2, iv3, iv4);
-
-            PRINT_LABEL("sum1"); 
-            sum0 += _mm_dp114_ps(kv0, iv0);    PRINT_VECTOR(sum0);
-            sum1 += _mm_dp114_ps(kv0, iv1);    PRINT_VECTOR(sum1);
-            sum2 += _mm_dp114_ps(kv0, iv2);    PRINT_VECTOR(sum2);
-            sum3 += _mm_dp114_ps(kv0, iv3);    PRINT_VECTOR(sum3);
-            
-            BLEND_ROTATE4_LEFT(iv0, iv1, iv2, iv3, iv4);
-
-            PRINT_LABEL("sum2"); 
-            sum0 += _mm_dp116_ps(kv0, iv0);    PRINT_VECTOR(sum0);
-            sum1 += _mm_dp116_ps(kv0, iv1);    PRINT_VECTOR(sum1);
-            sum2 += _mm_dp116_ps(kv0, iv2);    PRINT_VECTOR(sum2);
-            sum3 += _mm_dp116_ps(kv0, iv3);    PRINT_VECTOR(sum3);
-            
-            BLEND_ROTATE4_LEFT(iv0, iv1, iv2, iv3, iv4);
-
-            PRINT_LABEL("sum3"); 
-            sum0 += _mm_dp120_ps(kv0, iv0);    PRINT_VECTOR(sum0);
-            sum1 += _mm_dp120_ps(kv0, iv1);    PRINT_VECTOR(sum1);
-            sum2 += _mm_dp120_ps(kv0, iv2);    PRINT_VECTOR(sum2);
-            sum3 += _mm_dp120_ps(kv0, iv3);    PRINT_VECTOR(sum3);
-
-            // line 1
-            int yyIdx = yIdx + s;   
-            xIdx =  yyIdx + x;
-            
-            iv0 = _mm_load_ps(&input[xIdx]);               PRINT_VECTOR(iv0);
-            iv1 = _mm_load_ps(&input[xIdx + 4]);           PRINT_VECTOR(iv1);
-            iv2 = _mm_load_ps(&input[xIdx + 8]);           PRINT_VECTOR(iv2);
-            iv3 = _mm_load_ps(&input[xIdx + 12]);          PRINT_VECTOR(iv3);
-            iv4 = _mm_load_ps(&input[xIdx + 16]);          PRINT_VECTOR(iv4);
-     
-            PRINT_LABEL("sum0"); 
-            sum0 += _mm_dp113_ps(kv1, iv0);    PRINT_VECTOR(sum0); 
-            sum1 += _mm_dp113_ps(kv1, iv1);    PRINT_VECTOR(sum1);
-            sum2 += _mm_dp113_ps(kv1, iv2);    PRINT_VECTOR(sum2);
-            sum3 += _mm_dp113_ps(kv1, iv3);    PRINT_VECTOR(sum3);
-             
-            BLEND_ROTATE4_LEFT(iv0, iv1, iv2, iv3, iv4);
-
-            PRINT_LABEL("sum1"); 
-            sum0 += _mm_dp114_ps(kv1, iv0);    PRINT_VECTOR(sum0);
-            sum1 += _mm_dp114_ps(kv1, iv1);    PRINT_VECTOR(sum1);
-            sum2 += _mm_dp114_ps(kv1, iv2);    PRINT_VECTOR(sum2);
-            sum3 += _mm_dp114_ps(kv1, iv3);    PRINT_VECTOR(sum3);
-            
-            BLEND_ROTATE4_LEFT(iv0, iv1, iv2, iv3, iv4);
-
-            PRINT_LABEL("sum2"); 
-            sum0 += _mm_dp116_ps(kv1, iv0);    PRINT_VECTOR(sum0);
-            sum1 += _mm_dp116_ps(kv1, iv1);    PRINT_VECTOR(sum1);
-            sum2 += _mm_dp116_ps(kv1, iv2);    PRINT_VECTOR(sum2);
-            sum3 += _mm_dp116_ps(kv1, iv3);    PRINT_VECTOR(sum3);
-            
-            BLEND_ROTATE4_LEFT(iv0, iv1, iv2, iv3, iv4);
-
-            PRINT_LABEL("sum3"); 
-            sum0 += _mm_dp120_ps(kv1, iv0);    PRINT_VECTOR(sum0);
-            sum1 += _mm_dp120_ps(kv1, iv1);    PRINT_VECTOR(sum1);
-            sum2 += _mm_dp120_ps(kv1, iv2);    PRINT_VECTOR(sum2);
-            sum3 += _mm_dp120_ps(kv1, iv3);    PRINT_VECTOR(sum3);
-            
-            // line 2
-
-            yyIdx += s;
-            xIdx =  yyIdx + x;
-            
-            iv0 = _mm_load_ps(&input[xIdx]);               PRINT_VECTOR(iv0);
-            iv1 = _mm_load_ps(&input[xIdx + 4]);           PRINT_VECTOR(iv1);
-            iv2 = _mm_load_ps(&input[xIdx + 8]);           PRINT_VECTOR(iv2);
-            iv3 = _mm_load_ps(&input[xIdx + 12]);          PRINT_VECTOR(iv3);
-            iv4 = _mm_load_ps(&input[xIdx + 16]);          PRINT_VECTOR(iv4);
-     
-            PRINT_LABEL("sum0"); 
-            sum0 += _mm_dp113_ps(kv2, iv0);    PRINT_VECTOR(sum0); 
-            sum1 += _mm_dp113_ps(kv2, iv1);    PRINT_VECTOR(sum1);
-            sum2 += _mm_dp113_ps(kv2, iv2);    PRINT_VECTOR(sum2);
-            sum3 += _mm_dp113_ps(kv2, iv3);    PRINT_VECTOR(sum3);
-             
-            BLEND_ROTATE4_LEFT(iv0, iv1, iv2, iv3, iv4);
-
-            PRINT_LABEL("sum1"); 
-            sum0 += _mm_dp114_ps(kv2, iv0);    PRINT_VECTOR(sum0);
-            sum1 += _mm_dp114_ps(kv2, iv1);    PRINT_VECTOR(sum1);
-            sum2 += _mm_dp114_ps(kv2, iv2);    PRINT_VECTOR(sum2);
-            sum3 += _mm_dp114_ps(kv2, iv3);    PRINT_VECTOR(sum3);
-            
-            BLEND_ROTATE4_LEFT(iv0, iv1, iv2, iv3, iv4);
-
-            PRINT_LABEL("sum2"); 
-            sum0 += _mm_dp116_ps(kv2, iv0);    PRINT_VECTOR(sum0);
-            sum1 += _mm_dp116_ps(kv2, iv1);    PRINT_VECTOR(sum1);
-            sum2 += _mm_dp116_ps(kv2, iv2);    PRINT_VECTOR(sum2);
-            sum3 += _mm_dp116_ps(kv2, iv3);    PRINT_VECTOR(sum3);
-            
-            BLEND_ROTATE4_LEFT(iv0, iv1, iv2, iv3, iv4);
-
-            PRINT_LABEL("sum3"); 
-            sum0 += _mm_dp120_ps(kv2, iv0);    PRINT_VECTOR(sum0);
-            sum1 += _mm_dp120_ps(kv2, iv1);    PRINT_VECTOR(sum1);
-            sum2 += _mm_dp120_ps(kv2, iv2);    PRINT_VECTOR(sum2);
-            sum3 += _mm_dp120_ps(kv2, iv3);    PRINT_VECTOR(sum3); 
-            
-//            BLEND_ROTATE4_LEFT(iv0, iv1, iv2, iv3, iv4); 
-            
-//            iv0 = iv1;
-//            iv1 = iv2;
-//            iv3 = iv4;
-               
-             int outIdx = (y + hk) * s + (x + hk); 
-            _mm_storeu_ps(&output[outIdx], sum0);         PRINT_VECTOR(sum0);
-            _mm_storeu_ps(&output[outIdx + 4], sum1);     PRINT_VECTOR(sum1);
-            _mm_storeu_ps(&output[outIdx + 8], sum2);     PRINT_VECTOR(sum2);
-            _mm_storeu_ps(&output[outIdx + 12], sum3);    PRINT_VECTOR(sum3);
-        } //for (int x = 0...
-    } //for (int y = 0...
-    
-    processBoundaries2D (s, w, h, 
-                       ks, kw, 
-                       input, output, kernel);
-    
-//    printImage(w, h, s, output);
-}   
+//}
+//
+////no image vector reuse
+//void sse3ConvolveTest (const int s, const int w, const int h, 
+//                   const int ks, 
+//                   const float* __restrict input, float* __restrict output, 
+//                   const float* __restrict kernel) {
+//
+//    int kw = 3;
+//    int hk = kw / 2;
+//    int startX  = 0;
+//    int stopX   = w - hk * 2;
+//    int startY  = 0;
+//    int stopY   = h - hk * 2;
+//                         
+//    #pragma omp parallel for shared (input, output)
+//    for (int y = startY; y < stopY; ++y) {
+//        const register __m128 kv0 = _mm_load_ps(&kernel[0]); PRINT_VECTOR(kv0); //{1,2,3,0}
+//        const register __m128 kv1 = _mm_load_ps(&kernel[ks]); PRINT_VECTOR(kv1); //{4,5,6,0}
+//        const register __m128 kv2 = _mm_load_ps(&kernel[ks + ks]); PRINT_VECTOR(kv2); //{7,8,9,0}
+//        int yIdx = y * s; 
+//
+//        // line 0
+//        register __m128 iv0, iv1, iv2, iv3, iv4; 
+//        
+////        iv0 = _mm_load_ps(&input[yIdx]);               PRINT_VECTOR(iv0);
+////        iv1 = _mm_load_ps(&input[yIdx + 4]);           PRINT_VECTOR(iv1);
+////        iv2 = _mm_load_ps(&input[yIdx + 8]);           PRINT_VECTOR(iv2);
+////        iv3 = _mm_load_ps(&input[yIdx + 12]);          PRINT_VECTOR(iv3);
+//         
+//        for (int x = startX; x < stopX; x += 16) { 
+//            register __m128 sum0, sum1, sum2, sum3; 
+//            register __m128 tmp0, tmp1, tmp2; 
+//            //sum0 = sum1 = sum2 = sum3 = _mm_setzero_ps();  
+//            
+//            int xIdx = yIdx + x;   
+//            
+//            iv0 = _mm_load_ps(&input[xIdx]);               PRINT_VECTOR(iv0);
+//            iv1 = _mm_load_ps(&input[xIdx + 4]);           PRINT_VECTOR(iv1);
+//            iv2 = _mm_load_ps(&input[xIdx + 8]);           PRINT_VECTOR(iv2);
+//            iv3 = _mm_load_ps(&input[xIdx + 12]);          PRINT_VECTOR(iv3);
+//            iv4 = _mm_load_ps(&input[xIdx + 16]);          PRINT_VECTOR(iv4);
+//        
+//            PRINT_LABEL("sum0"); 
+//            tmp0 = _mm_mul_ps(kv0, iv0);
+//            tmp1 = _mm_mul_ps(kv1, iv1);
+//            tmp2 = _mm_mul_ps(kv2, iv2);
+//            tmp0 = _mm_add_ps(tmp0, tmp1);
+//            tmp0 = _mm_add_ps(tmp0, tmp2);
+//            sum0 = _mm_hadd_ps(tmp0, tmp0)
+//            sum0 = _mm_hadd_ps(sum0, sum0)
+//            
+//            
+//            sum0 = _mm_dp113_ps(kv0, iv0);    PRINT_VECTOR(sum0); 
+//            sum1 = _mm_dp113_ps(kv0, iv1);    PRINT_VECTOR(sum1);
+//            sum2 = _mm_dp113_ps(kv0, iv2);    PRINT_VECTOR(sum2);
+//            sum3 = _mm_dp113_ps(kv0, iv3);    PRINT_VECTOR(sum3);
+//             
+//            BLEND_ROTATE4_LEFT(iv0, iv1, iv2, iv3, iv4);
+//
+//            PRINT_LABEL("sum1"); 
+//            sum0 += _mm_dp114_ps(kv0, iv0);    PRINT_VECTOR(sum0);
+//            sum1 += _mm_dp114_ps(kv0, iv1);    PRINT_VECTOR(sum1);
+//            sum2 += _mm_dp114_ps(kv0, iv2);    PRINT_VECTOR(sum2);
+//            sum3 += _mm_dp114_ps(kv0, iv3);    PRINT_VECTOR(sum3);
+//            
+//            BLEND_ROTATE4_LEFT(iv0, iv1, iv2, iv3, iv4);
+//
+//            PRINT_LABEL("sum2"); 
+//            sum0 += _mm_dp116_ps(kv0, iv0);    PRINT_VECTOR(sum0);
+//            sum1 += _mm_dp116_ps(kv0, iv1);    PRINT_VECTOR(sum1);
+//            sum2 += _mm_dp116_ps(kv0, iv2);    PRINT_VECTOR(sum2);
+//            sum3 += _mm_dp116_ps(kv0, iv3);    PRINT_VECTOR(sum3);
+//            
+//            BLEND_ROTATE4_LEFT(iv0, iv1, iv2, iv3, iv4);
+//
+//            PRINT_LABEL("sum3"); 
+//            sum0 += _mm_dp120_ps(kv0, iv0);    PRINT_VECTOR(sum0);
+//            sum1 += _mm_dp120_ps(kv0, iv1);    PRINT_VECTOR(sum1);
+//            sum2 += _mm_dp120_ps(kv0, iv2);    PRINT_VECTOR(sum2);
+//            sum3 += _mm_dp120_ps(kv0, iv3);    PRINT_VECTOR(sum3);
+//
+//            // line 1
+//            int yyIdx = yIdx + s;   
+//            xIdx =  yyIdx + x;
+//            
+//            iv0 = _mm_load_ps(&input[xIdx]);               PRINT_VECTOR(iv0);
+//            iv1 = _mm_load_ps(&input[xIdx + 4]);           PRINT_VECTOR(iv1);
+//            iv2 = _mm_load_ps(&input[xIdx + 8]);           PRINT_VECTOR(iv2);
+//            iv3 = _mm_load_ps(&input[xIdx + 12]);          PRINT_VECTOR(iv3);
+//            iv4 = _mm_load_ps(&input[xIdx + 16]);          PRINT_VECTOR(iv4);
+//     
+//            PRINT_LABEL("sum0"); 
+//            sum0 += _mm_dp113_ps(kv1, iv0);    PRINT_VECTOR(sum0); 
+//            sum1 += _mm_dp113_ps(kv1, iv1);    PRINT_VECTOR(sum1);
+//            sum2 += _mm_dp113_ps(kv1, iv2);    PRINT_VECTOR(sum2);
+//            sum3 += _mm_dp113_ps(kv1, iv3);    PRINT_VECTOR(sum3);
+//             
+//            BLEND_ROTATE4_LEFT(iv0, iv1, iv2, iv3, iv4);
+//
+//            PRINT_LABEL("sum1"); 
+//            sum0 += _mm_dp114_ps(kv1, iv0);    PRINT_VECTOR(sum0);
+//            sum1 += _mm_dp114_ps(kv1, iv1);    PRINT_VECTOR(sum1);
+//            sum2 += _mm_dp114_ps(kv1, iv2);    PRINT_VECTOR(sum2);
+//            sum3 += _mm_dp114_ps(kv1, iv3);    PRINT_VECTOR(sum3);
+//            
+//            BLEND_ROTATE4_LEFT(iv0, iv1, iv2, iv3, iv4);
+//
+//            PRINT_LABEL("sum2"); 
+//            sum0 += _mm_dp116_ps(kv1, iv0);    PRINT_VECTOR(sum0);
+//            sum1 += _mm_dp116_ps(kv1, iv1);    PRINT_VECTOR(sum1);
+//            sum2 += _mm_dp116_ps(kv1, iv2);    PRINT_VECTOR(sum2);
+//            sum3 += _mm_dp116_ps(kv1, iv3);    PRINT_VECTOR(sum3);
+//            
+//            BLEND_ROTATE4_LEFT(iv0, iv1, iv2, iv3, iv4);
+//
+//            PRINT_LABEL("sum3"); 
+//            sum0 += _mm_dp120_ps(kv1, iv0);    PRINT_VECTOR(sum0);
+//            sum1 += _mm_dp120_ps(kv1, iv1);    PRINT_VECTOR(sum1);
+//            sum2 += _mm_dp120_ps(kv1, iv2);    PRINT_VECTOR(sum2);
+//            sum3 += _mm_dp120_ps(kv1, iv3);    PRINT_VECTOR(sum3);
+//            
+//            // line 2
+//
+//            yyIdx += s;
+//            xIdx =  yyIdx + x;
+//            
+//            iv0 = _mm_load_ps(&input[xIdx]);               PRINT_VECTOR(iv0);
+//            iv1 = _mm_load_ps(&input[xIdx + 4]);           PRINT_VECTOR(iv1);
+//            iv2 = _mm_load_ps(&input[xIdx + 8]);           PRINT_VECTOR(iv2);
+//            iv3 = _mm_load_ps(&input[xIdx + 12]);          PRINT_VECTOR(iv3);
+//            iv4 = _mm_load_ps(&input[xIdx + 16]);          PRINT_VECTOR(iv4);
+//     
+//            PRINT_LABEL("sum0"); 
+//            sum0 += _mm_dp113_ps(kv2, iv0);    PRINT_VECTOR(sum0); 
+//            sum1 += _mm_dp113_ps(kv2, iv1);    PRINT_VECTOR(sum1);
+//            sum2 += _mm_dp113_ps(kv2, iv2);    PRINT_VECTOR(sum2);
+//            sum3 += _mm_dp113_ps(kv2, iv3);    PRINT_VECTOR(sum3);
+//             
+//            BLEND_ROTATE4_LEFT(iv0, iv1, iv2, iv3, iv4);
+//
+//            PRINT_LABEL("sum1"); 
+//            sum0 += _mm_dp114_ps(kv2, iv0);    PRINT_VECTOR(sum0);
+//            sum1 += _mm_dp114_ps(kv2, iv1);    PRINT_VECTOR(sum1);
+//            sum2 += _mm_dp114_ps(kv2, iv2);    PRINT_VECTOR(sum2);
+//            sum3 += _mm_dp114_ps(kv2, iv3);    PRINT_VECTOR(sum3);
+//            
+//            BLEND_ROTATE4_LEFT(iv0, iv1, iv2, iv3, iv4);
+//
+//            PRINT_LABEL("sum2"); 
+//            sum0 += _mm_dp116_ps(kv2, iv0);    PRINT_VECTOR(sum0);
+//            sum1 += _mm_dp116_ps(kv2, iv1);    PRINT_VECTOR(sum1);
+//            sum2 += _mm_dp116_ps(kv2, iv2);    PRINT_VECTOR(sum2);
+//            sum3 += _mm_dp116_ps(kv2, iv3);    PRINT_VECTOR(sum3);
+//            
+//            BLEND_ROTATE4_LEFT(iv0, iv1, iv2, iv3, iv4);
+//
+//            PRINT_LABEL("sum3"); 
+//            sum0 += _mm_dp120_ps(kv2, iv0);    PRINT_VECTOR(sum0);
+//            sum1 += _mm_dp120_ps(kv2, iv1);    PRINT_VECTOR(sum1);
+//            sum2 += _mm_dp120_ps(kv2, iv2);    PRINT_VECTOR(sum2);
+//            sum3 += _mm_dp120_ps(kv2, iv3);    PRINT_VECTOR(sum3); 
+//            
+////            BLEND_ROTATE4_LEFT(iv0, iv1, iv2, iv3, iv4); 
+//            
+////            iv0 = iv1;
+////            iv1 = iv2;
+////            iv3 = iv4;
+//               
+//             int outIdx = (y + hk) * s + (x + hk); 
+//            _mm_storeu_ps(&output[outIdx], sum0);         PRINT_VECTOR(sum0);
+//            _mm_storeu_ps(&output[outIdx + 4], sum1);     PRINT_VECTOR(sum1);
+//            _mm_storeu_ps(&output[outIdx + 8], sum2);     PRINT_VECTOR(sum2);
+//            _mm_storeu_ps(&output[outIdx + 12], sum3);    PRINT_VECTOR(sum3);
+//        } //for (int x = 0...
+//    } //for (int y = 0...
+//    
+//    processBoundaries2D (s, w, h, 
+//                       ks, kw, 
+//                       input, output, kernel);
+//    
+////    printImage(w, h, s, output);
+//}   
 
 
 //no image vector reuse
