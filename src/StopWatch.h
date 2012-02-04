@@ -57,10 +57,21 @@ class Checkpoint
     double Instant;
     double Elapsed;
     bool Ignore;
+    int Position;
+    
     Checkpoint(string tag, double instant, double elapsed, bool ignore) {
       this->Tag = tag;
       this->Instant = instant;
       this->Elapsed = elapsed;
+      this->Ignore = ignore;
+      this->Position = 0;
+    }
+    
+    Checkpoint(string tag, double instant, double elapsed, bool ignore, int position) {
+      this->Tag = tag;
+      this->Instant = instant;
+      this->Elapsed = elapsed;
+      this->Position = position;
       this->Ignore = ignore;
     }
 };
@@ -104,6 +115,7 @@ public:
      */
     void AddCheckpoint(const string tag);
     void AddCheckpoint(const string tag, const bool ignore);
+    void AddCheckpoint(const string tag, const bool ignore, const int position);
     
     double GetTotalCheckpointsTime();
     
@@ -122,6 +134,7 @@ public:
     
     vector<Checkpoint>& GetCheckpoints();
     vector<Checkpoint> GetNotIgnoredCheckpoints();
+    unsigned int LastNotIgnoredCheckpointIndex();
     
     std::string ToString();
     

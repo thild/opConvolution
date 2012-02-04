@@ -48,7 +48,7 @@
                      << __builtin_ia32_vec_ext_v4sf(x, 2) << " " \
                      << __builtin_ia32_vec_ext_v4sf(x, 3) << " } " << std::endl;        
 
-//#define TRACE
+#define TRACE
 #ifdef TRACE
     #define PRINT_TRACE(x) \
         cout << #x << ":\t" << x << endl;
@@ -612,6 +612,11 @@ void loopBlockAlignedSSEConvolve (const int s, const int w, const int h,
                                                                
 void sse3Convolve (const int s, const int w, const int h, const int ks, 
                    const float* input, float* output, const float* kernel);
+                   
+void sse3ConvolveTest (const int s, const int w, const int h, 
+                   const int kernelStride, 
+                   const float* __restrict input, float* __restrict output, 
+                   const float* __restrict k);                   
                    
 void sse3Convolve1 (const int s, const int w, const int h, const int ks, 
                    const float* input, float* output, const float* kernel);

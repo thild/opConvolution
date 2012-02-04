@@ -155,9 +155,9 @@ void runSSETest(const string testName, const int iterations, vector<int>& kernel
                                  outputImage, kernel);                 
                     m_StopWatch.Stop();
                 }
-                else if(testName == "sse3CmConvolve"){ 
+                else if(testName == "sse3ConvolveTest"){ 
                     m_StopWatch.StartNew();    
-                    sse3CmConvolve(imageStride, imageWidth, imageHeight, 
+                    sse3ConvolveTest(imageStride, imageWidth, imageHeight, 
                                  kernelStride, inputImage, 
                                  outputImage, kernel);                 
                     m_StopWatch.Stop();
@@ -752,12 +752,12 @@ void assertTest() {
                         
             if(kernelWidth == 3) {                        
                 clear2DBuffer(outputImage, imageStride, imageHeight);
-                sse3CmConvolve(imageStride, imageWidth, imageHeight, 
+                sse3ConvolveTest(imageStride, imageWidth, imageHeight, 
                             kernelStride, inputImage, 
                             outputImage, kernel);                 
                 if(!assertConvolution(naiveOutputImage, outputImage, imageWidth, imageHeight, imageWidth, imageStride, kernelWidth)) {
                     stringstream f;
-                    f << "sse3CmConvolve fail!" << endl;
+                    f << "sse3ConvolveTest fail!" << endl;
                     f << s.str();
                     assertFailList.push_back(f.str());
                 }
@@ -1143,7 +1143,7 @@ static void prepareTestBuffers (const int imageStride, const int imageHeight,
     /* initialize random seed: */
     srand ( time(NULL) );
     for (int i = 0; i < imageStride * imageHeight; i++) {
-         inputImage[i] =  rand() % 255;
+         inputImage[i] =  i + 1;//rand() % 255;
     }       
 }
 
@@ -1337,8 +1337,8 @@ int main (int argc, char *argv[])
                      
         }
     
-        if(find(algs.begin(), algs.end(), "sse3CmConvolve") != algs.end())
-            runSSETest ("sse3CmConvolve", iterations, kernels, 3, 3, imageStride, imageWidth, imageHeight, 
+        if(find(algs.begin(), algs.end(), "sse3ConvolveTest") != algs.end())
+            runSSETest ("sse3ConvolveTest", iterations, kernels, 3, 3, imageStride, imageWidth, imageHeight, 
                      inputImage, outputImage);
     
         if(find(algs.begin(), algs.end(), "sse3LbConvolve") != algs.end())
@@ -1566,7 +1566,8 @@ float* gaussianKernel2D(const int kernelWidth, const float sigma) {
     for(int y = -radius; y < radius + 1; ++y) {
         for(int x = -radius; x < radius + 1; ++x) {
             float value = exp( (pow(x,2) + pow(y,2)) / (-2 * pow(sigma, 2))) / (2 * M_PI * pow(sigma, 2));       
-            kernel[(y + radius) * kernelStride + (x + radius)] = value;
+            //kernel[(y + radius) * kernelStride + (x + radius)] = value;
+            kernel[(y + radius) * kernelStride + (x + radius)] = x + 2;
             #ifdef DEBUGA 
             cout << value << " ";
             #endif

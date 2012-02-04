@@ -46,9 +46,9 @@ StopWatch::StopWatch() : _running(false), _cycles(0), _start(0)
 #ifdef _WIN32
 
     QueryPerformanceFrequency((LARGE_INTEGER *)&_frequency);
-
+ 
 #else
-    _frequency = 1000;
+    _frequency = 1000000;
 #endif
 
 }
@@ -80,9 +80,13 @@ i64 StopWatch::Now(void) {
     #ifdef _WIN32
         QueryPerformanceCounter((LARGE_INTEGER *)&n);
     #else
-        struct timeval s;
-        gettimeofday(&s, 0);
-        n = (i64)s.tv_sec * 1000 + (i64)s.tv_usec / 1000;
+        struct timespec ts;
+        clock_gettime(CLOCK_MONOTONIC, &ts);
+        n = (i64)ts.tv_sec * 1000000LL + (i64)ts.tv_nsec / 1000LL;
+    
+//        struct timeval s;
+//        gettimeofday(&s, 0);
+//        n = (i64)s.tv_sec * 1000 + (i64)s.tv_usec / 1000;
     #endif
     return n;
 }
@@ -107,11 +111,26 @@ StopWatch::AddCheckpoint(const string tag)
 void
 StopWatch::AddCheckpoint(const string tag, const bool ignore)
 {
+    if(ignore) {
+        AddCheckpoint(tag, ignore, -1);
+    }
+    else {
+        AddCheckpoint(tag, ignore, LastNotIgnoredCheckpointIndex());
+    }
+}
+
+unsigned int StopWatch::LastNotIgnoredCheckpointIndex() {
+    return  GetNotIgnoredCheckpoints().size();
+}
+
+void
+StopWatch::AddCheckpoint(const string tag, const bool ignore, const int position)
+{
     double instant = GetElapsedTime();
     double elapsed = 0;
     if(_checkpoints.size() > 0)
         elapsed = instant - _checkpoints[_checkpoints.size() - 1].Instant;
-    _checkpoints.push_back(Checkpoint(tag, instant, elapsed, ignore));
+    _checkpoints.push_back(Checkpoint(tag, instant, elapsed, ignore, position));
 }
 
 //returns only not ignored
