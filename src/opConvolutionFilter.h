@@ -48,7 +48,7 @@
                      << __builtin_ia32_vec_ext_v4sf(x, 2) << " " \
                      << __builtin_ia32_vec_ext_v4sf(x, 3) << " } " << std::endl;        
 
-#define TRACE
+//#define TRACE
 #ifdef TRACE
     #define PRINT_TRACE(x) \
         cout << #x << ":\t" << x << endl;
