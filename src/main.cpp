@@ -345,51 +345,51 @@ void runScTest(const string testName, const int iterations, vector<int>& kernels
                         kernelWidth, inputImage, outputImage, kernelX, kernelY);
                     m_StopWatch.Stop();
                 }
-                else if(testName == "sc3SSE") {
+                else if(testName == "sse3SConvolve") {
                     m_StopWatch.StartNew();    
-                    sc3SSE (imageStride, imageWidth, imageHeight, 
+                    sse3SConvolve (imageStride, imageWidth, imageHeight, 
                         inputImage, outputImage, kernelX, kernelY);
                     m_StopWatch.Stop();
                 }
-                else if(testName == "sc5SSE") {
+                else if(testName == "sse5SConvolve") {
                     m_StopWatch.StartNew();    
-                    sc5SSE (imageStride, imageWidth, imageHeight, 
+                    sse5SConvolve (imageStride, imageWidth, imageHeight, 
                         inputImage, outputImage, kernelX, kernelY);
                     m_StopWatch.Stop();
                 }
-                else if(testName == "sc7SSE") {
+                else if(testName == "sse7SConvolve") {
                     m_StopWatch.StartNew();    
-                    sc7SSE (imageStride, imageWidth, imageHeight, 
+                    sse7SConvolve (imageStride, imageWidth, imageHeight, 
                         inputImage, outputImage, kernelX, kernelY);
                     m_StopWatch.Stop();
                 }
-                else if(testName == "sc9SSE") {
+                else if(testName == "sse9SConvolve") {
                     m_StopWatch.StartNew();    
-                    sc9SSE (imageStride, imageWidth, imageHeight, 
+                    sse9SConvolve (imageStride, imageWidth, imageHeight, 
                         inputImage, outputImage, kernelX, kernelY);
                     m_StopWatch.Stop();
                 }
-                else if(testName == "scGaussian5SSE") {
+                else if(testName == "sse5GaussianSConvolve") {
                     m_StopWatch.StartNew();    
-                    scGaussian5SSE (imageStride, imageWidth, imageHeight, 
+                    sse5GaussianSConvolve (imageStride, imageWidth, imageHeight, 
                                     inputImage, outputImage, kernelX);
                     m_StopWatch.Stop();
                 }
-                else if(testName == "scGaussian7SSE") {
+                else if(testName == "sse7GaussianSConvolve") {
                     m_StopWatch.StartNew();    
-                    scGaussian7SSE (imageStride, imageWidth, imageHeight, 
+                    sse7GaussianSConvolve (imageStride, imageWidth, imageHeight, 
                                     inputImage, outputImage, kernelX);
                     m_StopWatch.Stop();
                 }
-                else if(testName == "scGaussian9SSE") {
+                else if(testName == "sse9GaussianSConvolve") {
                     m_StopWatch.StartNew();    
-                    scGaussian9SSE (imageStride, imageWidth, imageHeight, 
+                    sse9GaussianSConvolve (imageStride, imageWidth, imageHeight, 
                                     inputImage, outputImage, kernelX);
                     m_StopWatch.Stop();
                 }
-                else if(testName == "scSSE") {
+                else if(testName == "sseSConvolve") {
                     m_StopWatch.StartNew();    
-                    scSSE (imageStride, imageWidth, imageHeight, kernelWidth,
+                    sseSConvolve (imageStride, imageWidth, imageHeight, kernelWidth,
                         inputImage, outputImage, kernelX, kernelY);
                     m_StopWatch.Stop();
                 }
@@ -507,23 +507,23 @@ void assertTest() {
  
             //ok  
             clear2DBuffer(outputImage, imageStride, imageHeight);
-            unalignedSSEConvolve(imageStride, imageWidth, imageHeight, 
+            sseUnalignedConvolve(imageStride, imageWidth, imageHeight, 
                             kernelStride, kernelWidth, inputImage, 
                             outputImage, kernel); 
             if(!assertConvolution(naiveOutputImage, outputImage, imageWidth, imageHeight, imageWidth, imageStride, kernelWidth)) {
                 stringstream f;
-                f << "unalignedSSEConvolve fail!" << endl;
+                f << "sseUnalignedConvolve fail!" << endl;
                 f << s.str();
                 assertFailList.push_back(f.str());
             }
  
             clear2DBuffer(outputImage, imageStride, imageHeight);
-            unalignedSSE4Convolve(imageStride, imageWidth, imageHeight, 
+            sseUnaligned4Convolve(imageStride, imageWidth, imageHeight, 
                             kernelStride, kernelWidth, inputImage, 
                             outputImage, kernel); 
             if(!assertConvolution(naiveOutputImage, outputImage, imageWidth, imageHeight, imageWidth, imageStride, kernelWidth)) {
                 stringstream f;
-                f << "unalignedSSE4Convolve fail!" << endl;
+                f << "sseUnaligned4Convolve fail!" << endl;
                 f << s.str();
                 assertFailList.push_back(f.str());
             }
@@ -702,12 +702,12 @@ void assertTest() {
     
             if(imageWidth > 128 &&  imageHeight > 128) {                        
                 clear2DBuffer(outputImage, imageStride, imageHeight);
-                prefetchConvolve64(imageStride, imageWidth, imageHeight, 
+                prefetch64Convolve(imageStride, imageWidth, imageHeight, 
                                 kernelStride, kernelWidth, inputImage, 
                                 outputImage, kernel); 
                 if(!assertConvolution(naiveOutputImage, outputImage, imageWidth, imageHeight, imageWidth, imageStride, kernelWidth)) {
                     stringstream f;
-                    f << "prefetchConvolve64 fail!" << endl;
+                    f << "prefetch64Convolve fail!" << endl;
                     f << s.str();
                     assertFailList.push_back(f.str());
                 }
@@ -715,12 +715,12 @@ void assertTest() {
             
             if(imageWidth > 128 &&  imageHeight > 128) {                        
                 clear2DBuffer(outputImage, imageStride, imageHeight);
-                prefetchConvolve128(imageStride, imageWidth, imageHeight, 
+                prefetch128Convolve(imageStride, imageWidth, imageHeight, 
                                 kernelStride, kernelWidth, inputImage, 
                                 outputImage, kernel); 
                 if(!assertConvolution(naiveOutputImage, outputImage, imageWidth, imageHeight, imageWidth, imageStride, kernelWidth)) {
                     stringstream f;
-                    f << "prefetchConvolve128 fail!" << endl;
+                    f << "prefetch128Convolve fail!" << endl;
                     f << s.str();
                     assertFailList.push_back(f.str());
                 }
@@ -839,22 +839,22 @@ void assertTest() {
             }
                         
             clear2DBuffer(outputImage, imageStride, imageHeight);
-            scSSE (imageStride, imageWidth, imageHeight, 
+            sseSConvolve (imageStride, imageWidth, imageHeight, 
                    kernelWidth, inputImage, outputImage, kernelX, kernelY);
             if(!assertConvolution(naiveOutputImage, outputImage, imageWidth, imageHeight, imageWidth, imageStride, kernelWidth)) {
                 stringstream f;
-                f << "scSSE fail!" << endl;
+                f << "sseSConvolve fail!" << endl;
                 f << s.str();
                 assertFailList.push_back(f.str());
             }
             
             if(kernelWidth == 3) {
                 clear2DBuffer(outputImage, imageStride, imageHeight);
-                sc3SSE (imageStride, imageWidth, imageHeight, 
+                sse3SConvolve (imageStride, imageWidth, imageHeight, 
                             inputImage, outputImage, kernelX, kernelY);
                 if(!assertConvolution(naiveOutputImage, outputImage, imageWidth, imageHeight, imageWidth, imageStride, kernelWidth)) {
                     stringstream f;
-                    f << "sc3SSE fail!" << endl;
+                    f << "sse3SConvolve fail!" << endl;
                     f << s.str();
                     assertFailList.push_back(f.str());
                 }
@@ -862,11 +862,11 @@ void assertTest() {
             
             if(kernelWidth == 5) {
                 clear2DBuffer(outputImage, imageStride, imageHeight);
-                sc5SSE (imageStride, imageWidth, imageHeight, 
+                sse5SConvolve (imageStride, imageWidth, imageHeight, 
                             inputImage, outputImage, kernelX, kernelY);
                 if(!assertConvolution(naiveOutputImage, outputImage, imageWidth, imageHeight, imageWidth, imageStride, kernelWidth)) {
                     stringstream f;
-                    f << "sc5SSE fail!" << endl;
+                    f << "sse5SConvolve fail!" << endl;
                     f << s.str();
                     assertFailList.push_back(f.str());
                 }
@@ -874,11 +874,11 @@ void assertTest() {
             
             if(kernelWidth == 7) {
                 clear2DBuffer(outputImage, imageStride, imageHeight);
-                sc7SSE (imageStride, imageWidth, imageHeight, 
+                sse7SConvolve (imageStride, imageWidth, imageHeight, 
                             inputImage, outputImage, kernelX, kernelY);
                 if(!assertConvolution(naiveOutputImage, outputImage, imageWidth, imageHeight, imageWidth, imageStride, kernelWidth)) {
                     stringstream f;
-                    f << "sc7SSE fail!" << endl;
+                    f << "sse7SConvolve fail!" << endl;
                     f << s.str();
                     assertFailList.push_back(f.str());
                 }
@@ -886,11 +886,11 @@ void assertTest() {
             
             if(kernelWidth == 9) {                        
                 clear2DBuffer(outputImage, imageStride, imageHeight);
-                sc9SSE (imageStride, imageWidth, imageHeight, 
+                sse9SConvolve (imageStride, imageWidth, imageHeight, 
                             inputImage, outputImage, kernelX, kernelY);
                 if(!assertConvolution(naiveOutputImage, outputImage, imageWidth, imageHeight, imageWidth, imageStride, kernelWidth)) {
                     stringstream f;
-                    f << "sc9SSE fail!" << endl;
+                    f << "sse9SConvolve fail!" << endl;
                     f << s.str();
                     assertFailList.push_back(f.str());
                 }
@@ -1291,7 +1291,7 @@ int main (int argc, char *argv[])
         prepareTestBuffers(imageStride, imageHeight, 
                            inputImage, outputImage);                
          
-        if(find(algs.begin(), algs.end(), "naiveConvolveTest") != algs.end())
+        if(find(algs.begin(), algs.end(), "naiveConvolve") != algs.end())
             naiveConvolveTest (iterations, kernels, imageWidth, imageHeight, 
                                kernelWidth, inputImage, kernel);
         
@@ -1299,24 +1299,24 @@ int main (int argc, char *argv[])
             run2DTest (alignedConvolve, "alignedConvolve", iterations, kernels, 2, 0, imageStride, imageWidth, imageHeight, 
                        inputImage, outputImage);
      
-        if(find(algs.begin(), algs.end(), "unalignedSSEConvolve") != algs.end())
-            run2DTest (unalignedSSEConvolve, "unalignedSSEConvolve", iterations, kernels, 2, 0, imageStride, imageWidth, imageHeight, 
+        if(find(algs.begin(), algs.end(), "sseUnalignedConvolve") != algs.end())
+            run2DTest (sseUnalignedConvolve, "sseUnalignedConvolve", iterations, kernels, 2, 0, imageStride, imageWidth, imageHeight, 
                      inputImage, outputImage) ; 
                  
-        if(find(algs.begin(), algs.end(), "unalignedSSE4Convolve") != algs.end())
-            run2DTest (unalignedSSEConvolve, "unalignedSSE4Convolve", iterations, kernels, 2, 0, imageStride, imageWidth, imageHeight, 
+        if(find(algs.begin(), algs.end(), "sseUnaligned4Convolve") != algs.end())
+            run2DTest (sseUnalignedConvolve, "sseUnaligned4Convolve", iterations, kernels, 2, 0, imageStride, imageWidth, imageHeight, 
                      inputImage, outputImage) ;
                  
         if(find(algs.begin(), algs.end(), "loopUnrollConvolve") != algs.end())
             run2DTest (loopUnrollConvolve, "loopUnrollConvolve", iterations, kernels, 2, 0, imageStride, imageWidth, imageHeight, 
                      inputImage, outputImage);
                  
-        if(find(algs.begin(), algs.end(), "prefetchConvolve64") != algs.end())
-            run2DTest (prefetchConvolve64, "prefetchConvolve64", iterations, kernels, 2, 0, imageStride, imageWidth, imageHeight, 
+        if(find(algs.begin(), algs.end(), "prefetch64Convolve") != algs.end())
+            run2DTest (prefetch64Convolve, "prefetch64Convolve", iterations, kernels, 2, 0, imageStride, imageWidth, imageHeight, 
                      inputImage, outputImage);
     
-        if(find(algs.begin(), algs.end(), "prefetchConvolve128") != algs.end())
-            run2DTest (prefetchConvolve128, "prefetchConvolve128", iterations, kernels, 2, 0, imageStride, imageWidth, imageHeight, 
+        if(find(algs.begin(), algs.end(), "prefetch128Convolve") != algs.end())
+            run2DTest (prefetch128Convolve, "prefetch128Convolve", iterations, kernels, 2, 0, imageStride, imageWidth, imageHeight, 
                      inputImage, outputImage);
                      
         if(find(algs.begin(), algs.end(), "sse3Convolve") != algs.end()) {
@@ -1475,40 +1475,40 @@ int main (int argc, char *argv[])
             runScTest ("separableConvolve", iterations, kernels, 2, 0, imageStride, imageWidth, imageHeight, 
                      inputImage, outputImage);
     
-        if(find(algs.begin(), algs.end(), "scSSE") != algs.end())
-            runScTest ("scSSE", iterations, kernels, 2, 0, imageStride, imageWidth, imageHeight, 
+        if(find(algs.begin(), algs.end(), "sseSConvolve") != algs.end())
+            runScTest ("sseSConvolve", iterations, kernels, 2, 0, imageStride, imageWidth, imageHeight, 
                      inputImage, outputImage);
 
-         if(find(algs.begin(), algs.end(), "sc3SSE") != algs.end())
-            runScTest ("sc3SSE", iterations, kernels, 3, 3, imageStride, imageWidth, imageHeight, 
+         if(find(algs.begin(), algs.end(), "sse3SConvolve") != algs.end())
+            runScTest ("sse3SConvolve", iterations, kernels, 3, 3, imageStride, imageWidth, imageHeight, 
                      inputImage, outputImage);
     
-        if(find(algs.begin(), algs.end(), "sc5SSE") != algs.end())
-            runScTest ("sc5SSE", iterations, kernels, 5, 5, imageStride, imageWidth, imageHeight, 
+        if(find(algs.begin(), algs.end(), "sse5SConvolve") != algs.end())
+            runScTest ("sse5SConvolve", iterations, kernels, 5, 5, imageStride, imageWidth, imageHeight, 
                      inputImage, outputImage);
     
-        if(find(algs.begin(), algs.end(), "sc7SSE") != algs.end())
-            runScTest ("sc7SSE", iterations, kernels, 7, 7, imageStride, imageWidth, imageHeight, 
+        if(find(algs.begin(), algs.end(), "sse7SConvolve") != algs.end())
+            runScTest ("sse7SConvolve", iterations, kernels, 7, 7, imageStride, imageWidth, imageHeight, 
                      inputImage, outputImage);
     
-        if(find(algs.begin(), algs.end(), "sc9SSE") != algs.end())
-            runScTest ("sc9SSE", iterations, kernels, 9, 9, imageStride, imageWidth, imageHeight, 
+        if(find(algs.begin(), algs.end(), "sse9SConvolve") != algs.end())
+            runScTest ("sse9SConvolve", iterations, kernels, 9, 9, imageStride, imageWidth, imageHeight, 
                      inputImage, outputImage);
     
         if(find(algs.begin(), algs.end(), "opSeparableConvolve") != algs.end())
             runScTest ("opSeparableConvolve", iterations, kernels, 2, 0, imageStride, imageWidth, imageHeight, 
                      inputImage, outputImage);
     
-        if(find(algs.begin(), algs.end(), "scGaussian5SSE") != algs.end())
-            runScTest ("scGaussian5SSE", iterations, kernels, 5, 5, imageStride, imageWidth, imageHeight, 
+        if(find(algs.begin(), algs.end(), "sse5GaussianSConvolve") != algs.end())
+            runScTest ("sse5GaussianSConvolve", iterations, kernels, 5, 5, imageStride, imageWidth, imageHeight, 
                      inputImage, outputImage);
     
-        if(find(algs.begin(), algs.end(), "scGaussian7SSE") != algs.end())
-            runScTest ("scGaussian7SSE", iterations, kernels, 7, 7, imageStride, imageWidth, imageHeight, 
+        if(find(algs.begin(), algs.end(), "sse7GaussianSConvolve") != algs.end())
+            runScTest ("sse7GaussianSConvolve", iterations, kernels, 7, 7, imageStride, imageWidth, imageHeight, 
                      inputImage, outputImage);
     
-        if(find(algs.begin(), algs.end(), "scGaussian9SSE") != algs.end())
-            runScTest ("scGaussian9SSE", iterations, kernels, 9, 9, imageStride, imageWidth, imageHeight, 
+        if(find(algs.begin(), algs.end(), "sse9GaussianSConvolve") != algs.end())
+            runScTest ("sse9GaussianSConvolve", iterations, kernels, 9, 9, imageStride, imageWidth, imageHeight, 
                      inputImage, outputImage);
     
         delete[] inputImage;

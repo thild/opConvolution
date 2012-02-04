@@ -29,7 +29,7 @@
  
 #include <xmmintrin.h>  // SSE  (Required to use the __m128, and __m128d type)
 #include <emmintrin.h>  // SSE2 (Required to use the __m128i type)
-#include <pmmintrin.h>  // SSE3
+#include <pmmintrin.h>  // 3SSE
  
 #ifdef __SSE4_1__
 #include <smmintrin.h>  
@@ -571,11 +571,11 @@ void sseReuse7Convolve (const int s, const int w, const int h,
                       const int ks, const int kw, 
                       const float* input, float* output, const float* kernel);                       
 
-void unalignedSSEConvolve (const int s, const int w, const int h,
+void sseUnalignedConvolve (const int s, const int w, const int h,
                       const int ks, const int kw, 
                       const float* input, float* output, const float* kernel); 
 
-void unalignedSSE4Convolve (const int s, const int w, const int h,
+void sseUnaligned4Convolve (const int s, const int w, const int h,
                       const int ks, const int kw, 
                       const float* input, float* output, const float* kernel); 
 
@@ -583,11 +583,11 @@ void loopUnrollConvolve (const int s, const int w, const int h,
                          const int ks, const int kw, 
                          const float* __restrict input, float* __restrict output, const float* kernel);
 
-void prefetchConvolve64 (const int s, const int w, const int h, 
+void prefetch64Convolve (const int s, const int w, const int h, 
                          const int ks, const int kw, 
                          const float* input, float* output, const float* kernel); 
                          
-void prefetchConvolve128 (const int s, const int w, const int h, 
+void prefetch128Convolve (const int s, const int w, const int h, 
                           const int ks, const int kw, 
                           const float* input, float* output, const float* kernel);                                                    
                           
@@ -658,33 +658,33 @@ void separableLoopBlockConvolve (const int s, const int w, const int h, const in
                         const float* input, float* output, const float* kernelX, const float* kernelY, 
                         const int xBlock, const int yBlock);
 
-void scSSE (const int s, const int w, const int h, int kw, 
+void sseSConvolve (const int s, const int w, const int h, int kw, 
             const float* input, float* output, 
             const float* kernelX, const float* kernelY);
 
                                                                                        
-void sc3SSE (const int s, const int w, const int h, 
+void sse3SConvolve (const int s, const int w, const int h, 
              const float* input, float* output, 
              const float* kernelX, const float* kernelY);
                                        
-void sc5SSE (const int s, const int w, const int h, 
+void sse5SConvolve (const int s, const int w, const int h, 
              const float* input, float* output, const float* kernelX, const float* kernelY);
                                        
-void sc7SSE (const int s, const int w, const int h, 
+void sse7SConvolve (const int s, const int w, const int h, 
              const float* input, float* output, const float* kernelX, const float* kernelY);
                                        
-void sc9SSE (const int s, const int w, const int h, 
+void sse9SConvolve (const int s, const int w, const int h, 
              const float* input, float* output, const float* kernelX, const float* kernelY);
 
-void scGaussian5SSE (const int s, const int w, const int h, 
+void sse5GaussianSConvolve (const int s, const int w, const int h, 
                      const float* input, float* output, 
                      const float* kernel);
                      
-void scGaussian7SSE (const int s, const int w, const int h, 
+void sse7GaussianSConvolve (const int s, const int w, const int h, 
                      const float* input, float* output, 
                      const float* kernel);
                      
-void scGaussian9SSE (const int s, const int w, const int h, 
+void sse9GaussianSConvolve (const int s, const int w, const int h, 
                      const float* input, float* output, 
                      const float* kernel);       
                      

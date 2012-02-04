@@ -34,7 +34,7 @@
 #include <omp.h>
 #include <xmmintrin.h>  // SSE  (Required to use the __m128, and __m128d type)
 #include <emmintrin.h>  // SSE2 (Required to use the __m128i type)
-#include <pmmintrin.h>  // SSE3
+#include <pmmintrin.h>  // 3SSE
  
 #ifdef __SSE4_1__
 #include <smmintrin.h>  
@@ -129,27 +129,27 @@ void opSeparableConvolve (const int s, const int w, const int h, const int kw,
                   
     switch (kw) {
         case 3:
-            sc3SSE (s, w, h,
+            sse3SConvolve (s, w, h,
                     input, output, 
                     kernelX, kernelY);
             break;
         case 5:
-            sc5SSE (s, w, h,
+            sse5SConvolve (s, w, h,
                     input, output, 
                     kernelX, kernelY);
             break;
         case 7:
-            sc7SSE (s, w, h,
+            sse7SConvolve (s, w, h,
                     input, output, 
                     kernelX, kernelY);
             break;
         case 9:
-            sc9SSE (s, w, h,
+            sse9SConvolve (s, w, h,
                     input, output, 
                     kernelX, kernelY);
             break;
         default:
-            scSSE (s, w, h, kw,
+            sseSConvolve (s, w, h, kw,
                     input, output, 
                     kernelX, kernelY);
             break;
@@ -1254,7 +1254,7 @@ void sseReuse7Convolve (const int s, const int w, const int h,
     
 }
 
-void unalignedSSEConvolve (const int s, const int w, const int h, 
+void sseUnalignedConvolve (const int s, const int w, const int h, 
                            const int ks, int kw, 
                            const float* input, float* output,
                            const float* kernel) {
@@ -1291,7 +1291,7 @@ void unalignedSSEConvolve (const int s, const int w, const int h,
 }
 
 
-void unalignedSSE4Convolve (const int s, const int w, const int h, 
+void sseUnaligned4Convolve (const int s, const int w, const int h, 
                            const int ks, int kw, 
                            const float* input, float* output,
                            const float* kernel) {
@@ -1704,7 +1704,7 @@ void loopUnrollConvolve (const int s, const int w, const int h,
 
 
 
-void prefetchConvolve64 (const int s, const int w, const int h, 
+void prefetch64Convolve (const int s, const int w, const int h, 
                          const int ks, const int kw, 
                          const float* input, float* output, const float* kernel) {
     int hk = kw / 2;                       
@@ -1747,7 +1747,7 @@ void prefetchConvolve64 (const int s, const int w, const int h,
                        input, output, kernel);    
 }
 
-void prefetchConvolve128 (const int s, const int w, const int h, 
+void prefetch128Convolve (const int s, const int w, const int h, 
                           const int ks, const int kw, 
                           const float* __restrict input, float* __restrict output, const float* __restrict kernel)  {
 
@@ -3810,7 +3810,7 @@ void separableLoopBlockConvolve (const int s, const int w, const int h, const in
     //printImage(w, h, s, output);
 }
 
-void scSSE (const int s, const int w, const int h, int kw, 
+void sseSConvolve (const int s, const int w, const int h, int kw, 
             const float* input, float* output, 
             const float* kernelX, const float* kernelY) {
               
@@ -3991,7 +3991,7 @@ void scSSE (const int s, const int w, const int h, int kw,
 }
 
 
-void sc3SSE (const int s, const int w, const int h, 
+void sse3SConvolve (const int s, const int w, const int h, 
              const float* input, float* output, const float* kernelX, const float* kernelY) {
 
     const int kw = 3;
@@ -4071,7 +4071,7 @@ void sc3SSE (const int s, const int w, const int h,
                          input, output, kernelX, kernelY);        
 }
 
-void sc5SSE (const int s, const int w, const int h, 
+void sse5SConvolve (const int s, const int w, const int h, 
              const float* input, float* output, const float* kernelX, const float* kernelY) {
 
     const int kw = 5;
@@ -4175,7 +4175,7 @@ void sc5SSE (const int s, const int w, const int h,
 }
 
 
-void sc7SSE (const int s, const int w, const int h, 
+void sse7SConvolve (const int s, const int w, const int h, 
              const float* input, float* output, 
              const float* kernelX, const float* kernelY) {
 
@@ -4325,7 +4325,7 @@ void sc7SSE (const int s, const int w, const int h,
     
 }
 
-void sc9SSE (const int s, const int w, const int h, 
+void sse9SConvolve (const int s, const int w, const int h, 
              const float* input, float* output, 
              const float* kernelX, const float* kernelY) {
 
@@ -4510,7 +4510,7 @@ void sc9SSE (const int s, const int w, const int h,
 
 
 
-void scGaussian5SSE (const int s, const int w, const int h, 
+void sse5GaussianSConvolve (const int s, const int w, const int h, 
                      const float* input, float* output, 
                      const float* kernel) {
 
@@ -4612,7 +4612,7 @@ void scGaussian5SSE (const int s, const int w, const int h,
 
 
 
-void scGaussian7SSE (const int s, const int w, const int h, 
+void sse7GaussianSConvolve (const int s, const int w, const int h, 
                      const float* input, float* output, const float* kernel) {
 
     const int kw = 7;
@@ -4781,7 +4781,7 @@ void scGaussian7SSE (const int s, const int w, const int h,
 
 
 
-void scGaussian9SSE (const int s, const int w, const int h, 
+void sse9GaussianSConvolve (const int s, const int w, const int h, 
                      const float* input, float* output, 
                      const float* kernel) {
 
