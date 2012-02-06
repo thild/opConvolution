@@ -128,6 +128,12 @@
 #define BLEND_ROTATE1_LEFT(vector0, vector1) \
     BLEND_ROTATE_LEFT(vector0, vector1) \
     ROTATE_LEFT(vector1)
+    
+#define BLEND_ROTATE31_LEFT(vector00, vector01, vector10, vector11, vector20, vector21) \
+  BLEND_ROTATE1_LEFT(vector00, vector01); \
+  BLEND_ROTATE1_LEFT(vector10, vector11); \
+  BLEND_ROTATE1_LEFT(vector20, vector21)    
+    
 
 #define BLEND_ROTATE2_LEFT(vector0, vector1, vector2) \
     BLEND_ROTATE_LEFT(vector0, vector1) \
@@ -270,6 +276,204 @@
     
 #endif  
 
+
+//specialized convolvution functions
+//dp interlaved
+//this functions takes two vectors and operates a dot product on interleaved elements
+// a = |a0|a1|a2|a3|   
+// b = |b0|b1|b2|b3|   
+// r = |a0 * b0 + a2 * b2|a1 * b1 + a3 * b3|a0 * b0 + a2 * b2|a1 * b1 + a3 * b3|
+extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+_mm_dpi_ps (__m128 a, __m128 b) {
+    a *= b;                                           
+    a = _mm_shuffle_ps(a, a, _MM_SHUFFLE(3, 1, 2, 0));     
+    return _mm_hadd_ps(a, a);                                 
+}
+
+//dp interlaved low
+//this functions takes two vectors and operates a dot product on interleaved elements return only 2 low words
+// a = |a0|a1|a2|a3|   
+// b = |b0|b1|b2|b3|   
+// r = |a0 * b0 + a2 * b2|a1 * b1 + a3 * b3|a0 * b0 + a2 * b2|a1 * b1 + a3 * b3|
+extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+_mm_dpil_ps (__m128 a, __m128 b) {
+  return _mm_and_ps(_mm_dpi_ps(a, b), _mm_castsi128_ps(_mm_set_epi32(0x0, 0x0, 0xFFFFFFFF, 0xFFFFFFFF)));      
+}
+
+
+//dp interlaved hi
+//this functions takes two vectors and operates a dot product on interleaved elements return only 2 high words
+// a = |a0|a1|a2|a3|   
+// b = |b0|b1|b2|b3|   
+// r = |a0 * b0 + a2 * b2|a1 * b1 + a3 * b3|a0 * b0 + a2 * b2|a1 * b1 + a3 * b3|
+extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+_mm_dpih_ps (__m128 a, __m128 b) {
+  return _mm_and_ps(_mm_dpi_ps(a, b), _mm_castsi128_ps(_mm_set_epi32(0xFFFFFFFF, 0xFFFFFFFF, 0x0, 0x0)));      
+}
+
+
+//specialized convolvution functions
+//vertical dp interlaved
+//this functions takes four vectors and operates a dot product on interleaved 
+//elements of a and b and sum with interleaved dp of c and d
+//
+// a = |a0|a1|a2|a3|   
+// b = |b0|b1|b2|b3|   
+// c = |c0|c1|c2|c3|   
+// d = |d0|d1|d2|d3|   
+// r = |a0 * b0 + a2 * b2|a1 * b1 + a3 * b3|a0 * b0 + a2 * b2|a1 * b1 + a3 * b3|
+// r = |c0 * d0 + d2 * d2|c1 * d1 + c3 * d3|c0 * d0 + c2 * d2|c1 * d1 + c3 * d3|
+extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+_mm_vdpi_ps (__m128 a, __m128 b, __m128 c, __m128 d) {
+    a = a * b; 
+    a = _mm_shuffle_ps(a, a, _MM_SHUFFLE(3, 1, 2, 0)); 
+    a = _mm_hadd_ps(a, a); 
+    
+    b = c * d; 
+    b = _mm_shuffle_ps(b, b, _MM_SHUFFLE(3, 1, 2, 0)); 
+    b = _mm_hadd_ps(b, b); 
+    
+    return a + b; 
+}
+
+
+//specialized convolvution functions
+//vertical dp interlaved low
+//this functions takes four vectors and operates a dot product on interleaved 
+//elements of a and b and sum with interleaved dp of c and d
+//
+// a = |a0|a1|a2|a3|   
+// b = |b0|b1|b2|b3|   
+// c = |c0|c1|c2|c3|   
+// d = |d0|d1|d2|d3|   
+// r = |a0 * b0 + a2 * b2|a1 * b1 + a3 * b3|a0 * b0 + a2 * b2|a1 * b1 + a3 * b3|
+// r = |c0 * d0 + d2 * d2|c1 * d1 + c3 * d3|c0 * d0 + c2 * d2|c1 * d1 + c3 * d3|
+extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+_mm_vdpil_ps (__m128 a, __m128 b, __m128 c, __m128 d) {
+    return _mm_and_ps(_mm_vdpi_ps(a, b, c, d), _mm_castsi128_ps(_mm_set_epi32(0x0, 0x0, 0xFFFFFFFF, 0xFFFFFFFF)));      
+}
+
+
+//specialized convolvution functions
+//vertical dp interlaved hi
+//this functions takes four vectors and operates a dot product on interleaved 
+//elements of a and b and sum with interleaved dp of c and d
+//
+// a = |a0|a1|a2|a3|   
+// b = |b0|b1|b2|b3|   
+// c = |c0|c1|c2|c3|   
+// d = |d0|d1|d2|d3|   
+// r = |a0 * b0 + a2 * b2|a1 * b1 + a3 * b3|a0 * b0 + a2 * b2|a1 * b1 + a3 * b3|
+// r += |c0 * d0 + d2 * d2|c1 * d1 + c3 * d3|c0 * d0 + c2 * d2|c1 * d1 + c3 * d3|
+extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+_mm_vdpih_ps (__m128 a, __m128 b, __m128 c, __m128 d) {
+    return _mm_and_ps(_mm_vdpi_ps(a, b, c, d), _mm_castsi128_ps(_mm_set_epi32(0xFFFFFFFF, 0xFFFFFFFF, 0x0, 0x0)));      
+}
+
+
+
+//vertical dp two vectors
+//
+// a = |a0|a1|a2|a3|   
+// b = |b0|b1|b2|b3|   
+// c = |c0|c1|c2|c3|   
+// d = |d0|d1|d2|d3|   
+// a = |a0 * b0|a1 * b1|a2 * b2|a3 * b3|
+// b = |c0 * d0|c1 * d1|d2 * d2|d3 * d3|
+// r = a + b
+extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+_mm_v2dp_ps (__m128 a, __m128 b, __m128 c, __m128 d) {
+    a = a * b;    
+    b = c * d;   
+    return a + b; 
+}
+
+//vertical dp three vectors
+//this functions takes four vectors and operates a dot product on interleaved 
+//elements of a and b and sum with interleaved dp of c and d
+//
+// a = |a0|a1|a2|a3|   
+// b = |b0|b1|b2|b3|   
+// c = |c0|c1|c2|c3|   
+// d = |d0|d1|d2|d3|   
+// a = |a0 * b0|a1 * b1|a2 * b2|a3 * b3|
+// b = |c0 * d0|c1 * d1|d2 * d2|d3 * d3|
+// r = a + b
+extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+_mm_v3dp_ps (__m128 a, __m128 b, __m128 c, __m128 d, __m128 e, __m128 f) {
+    a = a * b;    
+    b = c * d;   
+    c = e * f;   
+    return a + b + c; 
+}
+
+//vertical sum i0 + (i1 *  k1) + i2
+//this functions takes four vectors and operates a dot product on interleaved 
+//elements of a and b and sum with interleaved dp of c and d
+//
+// a = |a0|a1|a2|a3|   
+// b = |b0|b1|b2|b3|   
+// c = |c0|c1|c2|c3|   
+// d = |d0|d1|d2|d3|   
+// a = |a0 * b0|a1 * b1|a2 * b2|a3 * b3|
+// b = |c0 * d0|c1 * d1|d2 * d2|d3 * d3|
+// r = a + b
+extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+_mm_v3mdp_ps (__m128 i0, __m128 i1, __m128 i2, __m128 k1) {
+    return i0 + (i1 * k1) + i2;   
+}
+
+extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+_mm_lvv_ps (__m128 dx, __m128 dy, __m128 dxx, __m128 dyy, __m128 dxy) {
+        dxy = _mm_set1_ps(2.0) * dx * dy * dxy; 
+        dx *= dx; dy *= dy; 
+        return (dx * dxx + dxy + dy * dyy) / (dx + dy); 
+}
+
+    extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+    _mm_dp17_ps (__m128 a, __m128 b) {
+        __m128 omask = _mm_castsi128_ps(_mm_set_epi32(0x0, 0x0, 0x0, 0xFFFFFFFF));
+        a = _mm_mul_ps( a, b );
+        return _mm_and_ps( a, omask );// Clear output using low bits of the mask
+    }
+    
+    extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+    _mm_dp136_ps (__m128 a, __m128 b) {
+        __m128 omask = _mm_castsi128_ps(_mm_set_epi32(0xFFFFFFFF, 0x0, 0x0, 0x0));
+        a = _mm_mul_ps( a, b );
+        return _mm_and_ps( a, omask );// Clear output using low bits of the mask
+    }
+    
+    extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+    _mm_dp18_ps (__m128 a, __m128 b) {
+        __m128 imask = _mm_castsi128_ps(_mm_set_epi32(0x0, 0x0, 0x0, 0xFFFFFFFF));
+        __m128 omask = _mm_castsi128_ps(_mm_set_epi32(0x0, 0x0, 0xFFFFFFFF, 0x0));
+        a = _mm_and_ps( a, imask );
+        a = _mm_mul_ps( a, b );
+        ROTATE_LEFT(a);
+        return _mm_and_ps( a, omask );// Clear output using low bits of the mask
+    }
+    
+    extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+    _mm_dp24_ps (__m128 a, __m128 b) {
+        __m128 imask = _mm_castsi128_ps(_mm_set_epi32(0x0, 0x0, 0x0, 0xFFFFFFFF));
+        __m128 omask = _mm_castsi128_ps(_mm_set_epi32(0xFFFFFFFF, 0x0, 0x0, 0x0));
+        a = _mm_and_ps( a, imask );
+        a = _mm_mul_ps( a, b );
+        ROTATE_RIGHT(a);
+        return _mm_and_ps( a, omask );// Clear output using low bits of the mask
+    }
+    
+    extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+    _mm_dp20_ps (__m128 a, __m128 b) {
+        __m128 imask = _mm_castsi128_ps(_mm_set_epi32(0x0, 0x0, 0x0, 0xFFFFFFFF));
+        __m128 omask = _mm_castsi128_ps(_mm_set_epi32(0x0, 0xFFFFFFFF, 0x0, 0x0));
+        a = _mm_and_ps( a, imask );
+        a = _mm_mul_ps( a, b );
+        a = _mm_shuffle_ps(a, a, _MM_SHUFFLE(0,0,0,0));
+        return _mm_and_ps( a, omask );// Clear output using low bits of the mask
+    }    
+
 #ifdef __SSE4_1__ 
     extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
     _mm_dp241_ps (__m128 a, __m128 b) {
@@ -288,10 +492,6 @@
         return _mm_dp_ps(a, b, 248);      
     }
     extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
-    _mm_dp17_ps (__m128 a, __m128 b) {
-        return _mm_dp_ps(a, b, 17);      
-    }
-    extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
     _mm_dp226_ps (__m128 a, __m128 b) {
         return _mm_dp_ps(a, b, 226);      
     }
@@ -308,10 +508,6 @@
         return _mm_dp_ps(a, b, 116);      
     }
     extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
-    _mm_dp136_ps (__m128 a, __m128 b) {
-        return _mm_dp_ps(a, b, 136);      
-    }
-    extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
     _mm_dp120_ps (__m128 a, __m128 b) {
         return _mm_dp_ps(a, b, 120);      
     }
@@ -324,21 +520,34 @@
         return _mm_dp_ps(a, b, 113);      
     }
     extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
-    _mm_dp18_ps (__m128 a, __m128 b) {
-        return _mm_dp_ps(a, b, 18);      
-    }
-    extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
-    _mm_dp20_ps (__m128 a, __m128 b) {
-        return _mm_dp_ps(a, b, 20);      
-    }
-    extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
-    _mm_dp24_ps (__m128 a, __m128 b) {
-        return _mm_dp_ps(a, b, 24);      
-    }
-    extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
     _mm_dp56_ps (__m128 a, __m128 b) {
         return _mm_dp_ps(a, b, 56);      
     }
+    
+
+// 
+//    extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+//    _mm_dp17_ps (__m128 a, __m128 b) {
+//        return _mm_dp_ps(a, b, 17);      
+//    }
+//    extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+//    _mm_dp136_ps (__m128 a, __m128 b) {
+//        return _mm_dp_ps(a, b, 136);      
+//    }
+//    extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+//    _mm_dp18_ps (__m128 a, __m128 b) {
+//        return _mm_dp_ps(a, b, 18);      
+//    }
+//    extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+//    _mm_dp20_ps (__m128 a, __m128 b) {
+//        return _mm_dp_ps(a, b, 20);      
+//    }
+//    extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+//    _mm_dp24_ps (__m128 a, __m128 b) {
+//        return _mm_dp_ps(a, b, 24);      
+//    }
+//      
+    
 #else 
     extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
     _mm_dp241_ps (__m128 a, __m128 b) {
@@ -374,12 +583,6 @@
         return _mm_and_ps( a, omask );// Clear output using low bits of the mask
     }
     extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
-    _mm_dp17_ps (__m128 a, __m128 b) {
-        __m128 omask = _mm_castsi128_ps(_mm_set_epi32(0x0, 0x0, 0x0, 0xFFFFFFFF));
-        a = _mm_mul_ps( a, b );
-        return _mm_and_ps( a, omask );// Clear output using low bits of the mask
-    }
-    extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
     _mm_dp226_ps (__m128 a, __m128 b) {
         __m128 imask = _mm_castsi128_ps(_mm_set_epi32(0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0x0));
         __m128 omask = _mm_castsi128_ps(_mm_set_epi32(0x0, 0x0, 0xFFFFFFFF, 0x0));
@@ -390,26 +593,6 @@
         return _mm_and_ps( a, omask );// Clear output using low bits of the mask
     }
     extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
-    _mm_dp50_ps (__m128 a, __m128 b) {
-        __m128 imask = _mm_castsi128_ps(_mm_set_epi32(0x0, 0x0, 0xFFFFFFFF, 0xFFFFFFFF));
-        __m128 omask = _mm_castsi128_ps(_mm_set_epi32(0x0, 0x0, 0xFFFFFFFF, 0x0));
-        a = _mm_and_ps( a, imask );
-        a = _mm_mul_ps( a, b );
-        a = _mm_hadd_ps( a, a ); // Horizontally add the 4 values
-        ROTATE_LEFT(a);
-        return _mm_and_ps( a, omask );// Clear output using low bits of the mask
-    }
-    extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
-    _mm_dp196_ps (__m128 a, __m128 b) {
-        __m128 imask = _mm_castsi128_ps(_mm_set_epi32(0xFFFFFFFF, 0xFFFFFFFF, 0x0, 0x0));
-        __m128 omask = _mm_castsi128_ps(_mm_set_epi32(0x0, 0xFFFFFFFF, 0x0, 0x0));
-        a = _mm_and_ps( a, imask );
-        a = _mm_mul_ps( a, b );
-        a = _mm_hadd_ps( a, a ); // Horizontally add the 4 values
-        ROTATE_RIGHT(a); 
-        return _mm_and_ps( a, omask );// Clear output using low bits of the mask
-    }
-    extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
     _mm_dp116_ps (__m128 a, __m128 b) {
         __m128 imask = _mm_castsi128_ps(_mm_set_epi32(0x0, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF));
         __m128 omask = _mm_castsi128_ps(_mm_set_epi32(0x0, 0xFFFFFFFF, 0x0, 0x0));
@@ -417,12 +600,6 @@
         a = _mm_mul_ps( a, b );
         a = _mm_hadd_ps( a, a ); // Horizontally add the 4 values
         a = _mm_hadd_ps( a, a ); // Horizontally add the 4 values
-        return _mm_and_ps( a, omask );// Clear output using low bits of the mask
-    }
-    extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
-    _mm_dp136_ps (__m128 a, __m128 b) {
-        __m128 omask = _mm_castsi128_ps(_mm_set_epi32(0xFFFFFFFF, 0x0, 0x0, 0x0));
-        a = _mm_mul_ps( a, b );
         return _mm_and_ps( a, omask );// Clear output using low bits of the mask
     }
     extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
@@ -456,32 +633,25 @@
         return _mm_and_ps( a, omask );// Clear output using low bits of the mask
     }
     extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
-    _mm_dp18_ps (__m128 a, __m128 b) {
-        __m128 imask = _mm_castsi128_ps(_mm_set_epi32(0x0, 0x0, 0x0, 0xFFFFFFFF));
+    _mm_dp50_ps (__m128 a, __m128 b) {
+        __m128 imask = _mm_castsi128_ps(_mm_set_epi32(0x0, 0x0, 0xFFFFFFFF, 0xFFFFFFFF));
         __m128 omask = _mm_castsi128_ps(_mm_set_epi32(0x0, 0x0, 0xFFFFFFFF, 0x0));
         a = _mm_and_ps( a, imask );
         a = _mm_mul_ps( a, b );
+        a = _mm_hadd_ps( a, a ); // Horizontally add the 4 values
         ROTATE_LEFT(a);
         return _mm_and_ps( a, omask );// Clear output using low bits of the mask
     }
     extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
-    _mm_dp20_ps (__m128 a, __m128 b) {
-        __m128 imask = _mm_castsi128_ps(_mm_set_epi32(0x0, 0x0, 0x0, 0xFFFFFFFF));
+    _mm_dp196_ps (__m128 a, __m128 b) {
+        __m128 imask = _mm_castsi128_ps(_mm_set_epi32(0xFFFFFFFF, 0xFFFFFFFF, 0x0, 0x0));
         __m128 omask = _mm_castsi128_ps(_mm_set_epi32(0x0, 0xFFFFFFFF, 0x0, 0x0));
         a = _mm_and_ps( a, imask );
         a = _mm_mul_ps( a, b );
-        a = _mm_shuffle_ps(a, a, _MM_SHUFFLE(0,0,0,0));
+        a = _mm_hadd_ps( a, a ); // Horizontally add the 4 values
+        ROTATE_RIGHT(a); 
         return _mm_and_ps( a, omask );// Clear output using low bits of the mask
-    }
-    extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
-    _mm_dp24_ps (__m128 a, __m128 b) {
-        __m128 imask = _mm_castsi128_ps(_mm_set_epi32(0x0, 0x0, 0x0, 0xFFFFFFFF));
-        __m128 omask = _mm_castsi128_ps(_mm_set_epi32(0xFFFFFFFF, 0x0, 0x0, 0x0));
-        a = _mm_and_ps( a, imask );
-        a = _mm_mul_ps( a, b );
-        ROTATE_RIGHT(a);
-        return _mm_and_ps( a, omask );// Clear output using low bits of the mask
-    }
+    }    
     extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
     _mm_dp56_ps (__m128 a, __m128 b) {
         __m128 imask = _mm_castsi128_ps(_mm_set_epi32(0x0, 0x0, 0xFFFFFFFF, 0xFFFFFFFF));
@@ -492,6 +662,52 @@
         ROTATE_RIGHT(a);
         return _mm_and_ps( a, omask );// Clear output using low bits of the mask
     }
+    
+    
+    
+//    extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+//    _mm_dp17_ps (__m128 a, __m128 b) {
+//        __m128 omask = _mm_castsi128_ps(_mm_set_epi32(0x0, 0x0, 0x0, 0xFFFFFFFF));
+//        a = _mm_mul_ps( a, b );
+//        return _mm_and_ps( a, omask );// Clear output using low bits of the mask
+//    }
+//    
+//    extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+//    _mm_dp136_ps (__m128 a, __m128 b) {
+//        __m128 omask = _mm_castsi128_ps(_mm_set_epi32(0xFFFFFFFF, 0x0, 0x0, 0x0));
+//        a = _mm_mul_ps( a, b );
+//        return _mm_and_ps( a, omask );// Clear output using low bits of the mask
+//    }
+//    
+//    extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+//    _mm_dp18_ps (__m128 a, __m128 b) {
+//        __m128 imask = _mm_castsi128_ps(_mm_set_epi32(0x0, 0x0, 0x0, 0xFFFFFFFF));
+//        __m128 omask = _mm_castsi128_ps(_mm_set_epi32(0x0, 0x0, 0xFFFFFFFF, 0x0));
+//        a = _mm_and_ps( a, imask );
+//        a = _mm_mul_ps( a, b );
+//        ROTATE_LEFT(a);
+//        return _mm_and_ps( a, omask );// Clear output using low bits of the mask
+//    }
+//    
+//    extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+//    _mm_dp24_ps (__m128 a, __m128 b) {
+//        __m128 imask = _mm_castsi128_ps(_mm_set_epi32(0x0, 0x0, 0x0, 0xFFFFFFFF));
+//        __m128 omask = _mm_castsi128_ps(_mm_set_epi32(0xFFFFFFFF, 0x0, 0x0, 0x0));
+//        a = _mm_and_ps( a, imask );
+//        a = _mm_mul_ps( a, b );
+//        ROTATE_RIGHT(a);
+//        return _mm_and_ps( a, omask );// Clear output using low bits of the mask
+//    }
+//    
+//    extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+//    _mm_dp20_ps (__m128 a, __m128 b) {
+//        __m128 imask = _mm_castsi128_ps(_mm_set_epi32(0x0, 0x0, 0x0, 0xFFFFFFFF));
+//        __m128 omask = _mm_castsi128_ps(_mm_set_epi32(0x0, 0xFFFFFFFF, 0x0, 0x0));
+//        a = _mm_and_ps( a, imask );
+//        a = _mm_mul_ps( a, b );
+//        a = _mm_shuffle_ps(a, a, _MM_SHUFFLE(0,0,0,0));
+//        return _mm_and_ps( a, omask );// Clear output using low bits of the mask
+//    }    
 #endif
     
 
