@@ -44,7 +44,7 @@
 #define foreach BOOST_FOREACH
 
 #include "opConvolutionFilter.h"
-
+#include <valgrind/callgrind.h>
                          
 using namespace std;
 using boost::lexical_cast;
@@ -1096,7 +1096,8 @@ void naiveConvolveTest( const int iterations, vector<int>& kernels,
         }
      
         float *naiveKernel = new float[kernelWidth * kernelWidth];
-     
+        CALLGRIND_START_INSTRUMENTATION;
+        
         for (int i = 0; i < kernelWidth * kernelWidth; i++) {
              naiveKernel[i] = 0;
         }       
@@ -1112,10 +1113,13 @@ void naiveConvolveTest( const int iterations, vector<int>& kernels,
      
          vector<double> iter;
          for (int i = 0; i < iterations; i++) {
-             m_StopWatch.StartNew();    
+             m_StopWatch.StartNew();
+             CALLGRIND_TOGGLE_COLLECT;    
              naiveConvolve(imageWidth, imageWidth, imageHeight, 
                              kernelWidth, kernelWidth, naiveInputImage, 
                              naiveOutputImage, naiveKernel);
+             CALLGRIND_TOGGLE_COLLECT;
+             CALLGRIND_STOP_INSTRUMENTATION;                               
              m_StopWatch.Stop();
               iter.push_back(m_StopWatch.GetElapsedTime()); 
          }
@@ -1143,7 +1147,7 @@ static void prepareTestBuffers (const int imageStride, const int imageHeight,
     /* initialize random seed: */
     srand ( time(NULL) );
     for (int i = 0; i < imageStride * imageHeight; i++) {
-         inputImage[i] =  i + 1;//rand() % 255;
+         inputImage[i] =  rand() * 255;
     }       
 }
 
