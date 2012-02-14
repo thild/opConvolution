@@ -146,9 +146,12 @@ void runSSETest(const string testName, const int iterations, vector<int>& kernel
                 
                 if(testName == "sse3Convolve"){
                     m_StopWatch.StartNew();    
+                    CALLGRIND_TOGGLE_COLLECT;    
                     sse3Convolve(imageStride, imageWidth, imageHeight, 
                                  kernelStride, inputImage, 
                                  outputImage, kernel);
+                    CALLGRIND_TOGGLE_COLLECT;
+                    CALLGRIND_STOP_INSTRUMENTATION;                               
                     m_StopWatch.Stop();
                 }  
                 else if(testName == "sse3Convolve1"){ 
@@ -1099,7 +1102,6 @@ void naiveConvolveTest( const int iterations, vector<int>& kernels,
         }
      
         float *naiveKernel = new float[kernelWidth * kernelWidth];
-        CALLGRIND_START_INSTRUMENTATION;
         
         for (int i = 0; i < kernelWidth * kernelWidth; i++) {
              naiveKernel[i] = 0;
