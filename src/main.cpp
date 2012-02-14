@@ -96,9 +96,12 @@ void run2DTest(void (*convolutionFunction)(const int imageStride, const int imag
 //                                   inputImage, outputImage);
                 
                 m_StopWatch.StartNew();    
+                CALLGRIND_TOGGLE_COLLECT;    
                 convolutionFunction(imageStride, imageWidth, imageHeight, 
                              kernelStride, kernelWidth, inputImage, 
                              outputImage, kernel);
+                CALLGRIND_TOGGLE_COLLECT;
+                CALLGRIND_STOP_INSTRUMENTATION;                               
                 m_StopWatch.Stop();
                 iter.push_back(m_StopWatch.GetElapsedTime()); 
             }  
@@ -1291,6 +1294,8 @@ int main (int argc, char *argv[])
         int kernelWidth = 0;
         int kernelStride = 0;
         float* kernel;
+        
+        CALLGRIND_START_INSTRUMENTATION;
          
         prepareTestBuffers(imageStride, imageHeight, 
                            inputImage, outputImage);                
