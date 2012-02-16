@@ -1,0 +1,55 @@
+cmake_minimum_required(VERSION 2.8)
+PROJECT(opConvolution)
+
+SET(EXECUTABLE_OUTPUT_PATH
+  "${CMAKE_BINARY_DIR}/bin/${CMAKE_BUILD_TYPE}"
+)
+
+SET(LIBRARY_OUTPUT_PATH
+  "${CMAKE_BINARY_DIR}/bin/${CMAKE_BUILD_TYPE}"
+)
+
+#MESSAGE("${CMAKE_BINARY_DIR}/bin/${CMAKE_BUILD_TYPE}")
+
+ADD_EXECUTABLE(opconv main.cpp StopWatch.cxx util.h opConvolutionFilter.h statistics.h StopWatch.h) 
+
+ADD_LIBRARY(opConvolution SHARED opConvolutionFilter.cpp opConvolutionFilter.h)
+
+TARGET_LINK_LIBRARIES(opConvolution gomp)
+TARGET_LINK_LIBRARIES(opconv opConvolution boost_system boost_filesystem rt)
+
+INSTALL(TARGETS opConvolution LIBRARY DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
+INSTALL(TARGETS opconv RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
+INSTALL(FILES test.cfg DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
+
+INSTALL(CODE "MESSAGE(\"Installing headers...\")")
+
+SET(INCLUDE_OUTPUT_PATH
+  "${CMAKE_INSTALL_PREFIX}/include"
+)
+
+FILE(GLOB INCLUDES "*.h")
+
+INSTALL(FILES ${INCLUDES} DESTINATION ${INCLUDE_OUTPUT_PATH})
+
+SET_TARGET_PROPERTIES(opConvolution PROPERTIES
+                      LINKER_LANGUAGE C
+                      INSTALL_RPATH_USE_LINK_PATH TRUE)
+SET_TARGET_PROPERTIES(opconv PROPERTIES
+                      LINKER_LANGUAGE C
+                      INSTALL_RPATH ${CMAKE_INSTALL_PREFIX}/lib
+                      INSTALL_RPATH_USE_LINK_PATH TRUE)
+
+SET(CONFIG_FILES test.cfg)
+
+#FILE(MAKE_DIRECTORY ${EXECUTABLE_OUTPUT_PATH}/resources )
+FOREACH(file ${CONFIG_FILES} )
+  GET_FILENAME_COMPONENT(name ${file} NAME)
+  CONFIGURE_FILE( ${file} ${EXECUTABLE_OUTPUT_PATH}/ COPYONLY)
+ENDFOREACH(file) 
+
+
+
+
+
+
